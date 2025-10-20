@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +8,77 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  ARTISTA
+}
+
+model Usuario {
+  id      Int     @id @default(autoincrement())
+  nome    String
+  email   String  @unique
+  senha   String
+  contato String
+  foto    String?
+  bio     String?
+  role    Role    @default(ARTISTA)
+
+  // Relacionamentos
+  obras   Obra[] // Obras criadas pelo artista
+  eventos Evento[] // Eventos criados pelo admin
+
+  @@map("usuarios")
+}
+
+enum StatusObra {
+  pendente
+  aprovada
+  rejeitada
+  exposta
+}
+
+model Obra {
+  id_obra            Int        @id @default(autoincrement())
+  titulo_obra        String
+  descricao_obra     String?
+  imagens_obras      String?
+  categoria_obra     String
+  status             StatusObra @default(pendente)
+  data_envio         DateTime   @default(now())
+  data_exposicao     DateTime?
+  data_fim_exposicao DateTime?
+
+  artista_id Int
+  artista    Usuario @relation(fields: [artista_id], references: [id], onDelete: Cascade)
+
+  @@map("obras")
+}
+
+enum TipoEvento {
+  EXPOSICAO
+  OFICINA
+  PALESTRA
+  LANCAMENTO
+  OUTRO
+}
+
+model Evento {
+  id_evento        Int        @id @default(autoincrement())
+  titulo_evento    String
+  descricao_evento String
+  local_evento     String
+  imagem_evento    String?
+  data_hora_inicio DateTime
+  data_hora_fim    DateTime
+  tipo_evento      TipoEvento
+
+  criado_por_id Int
+  criado_por    Usuario @relation(fields: [criado_por_id], references: [id], onDelete: Cascade)
+
+  criado_em     DateTime @default(now())
+  atualizado_em DateTime @updatedAt
+
+  @@map("eventos")
 }
