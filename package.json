@@ -1,0 +1,20 @@
+{
+  "name": "fullstack-orm-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.19.1",
+    "fastify": "^4.25.0",
+    "prisma": "^5.19.1",
+    "tsx": "^4.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "typescript": "^5.6.2"
+  }
+}
