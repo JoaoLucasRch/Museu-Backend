@@ -1,13 +1,14 @@
 import fastify from 'fastify';
 import { authRoutes } from './routes/authRoutes';
 import { userRoutes } from './routes/userRoutes';
-
+import { eventoRoutes } from './routes/eventoRoutes';
 
 const app = fastify({ logger: true });
 
 //Rotas
 app.register(authRoutes, { prefix: '/auth' });
 app.register(userRoutes, { prefix: '/user' });
+app.register(eventoRoutes);
 
 app.get('/health', async () => ({ status: 'OK' }));
 
