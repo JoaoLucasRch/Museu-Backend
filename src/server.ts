@@ -1,38 +1,37 @@
 import fastify from 'fastify';
+import { authRoutes } from './routes/authRoutes';
+import { userRoutes } from './routes/userRoutes';
 
-const app = fastify({
-    logger: true, 
-});
+
+const app = fastify({ logger: true });
+
+//Rotas
+app.register(authRoutes, { prefix: '/auth' });
+app.register(userRoutes, { prefix: '/user' });
+
+app.get('/health', async () => ({ status: 'OK' }));
 
 app.setErrorHandler((error, request, reply) => {
-    app.log.error(error); 
+    app.log.error(error);
 
-    if (error.validation) {
+    if ((error as any).validation) {
         return reply.status(400).send({
-            message: 'Erro na validação dos dados',
-            errors: error.validation,
+            message: 'Erro de validação',
+            errors: (error as any).validation,
         });
     }
-
-    // Tratamento de erros genéricos
-    return reply.status(500).send({ 
-        message: 'Erro interno do servidor',
-        error: error.message 
-    });
+    return reply.status(500).send({ message: 'Erro interno do servidor' });
 });
 
-const startServer = async () => {
+//Inicia servidor
+const start = async () => {
     try {
-        const PORT = 3333;
-        await app.listen({ port: PORT });
-        
-        // Log de sucesso
-        console.log(`🚀 Servidor ouvindo na porta http://localhost:${PORT}`);
-        
+        const address = await app.listen({ port: 3333 });
+        console.log(`Servidor rodando em ${address}`);
     } catch (err) {
         app.log.error(err);
         process.exit(1);
     }
 };
 
-startServer();
+start();
