@@ -6,18 +6,14 @@ interface UserPayload {
     role: 'ARTISTA' | 'ADMIN';
 }
 
-interface AuthenticatedRequest extends FastifyRequest {
-    user: UserPayload;
-}
-
 interface ObrasQuery {
-  status?: 'pendente' | 'aprovada' | 'rejeitada'; // Tipos para o status
+  status?: 'pendente' | 'aprovada' | 'rejeitada'; 
 }
 
 
 // criar obra (Artista)
 
-export async function createObra(request: AuthenticatedRequest, reply: FastifyReply) {
+export async function createObra(request: FastifyRequest, reply: FastifyReply) {
   const { id: artistaId, role } = request.user;
 
  if (role !== 'ARTISTA') {
@@ -27,7 +23,6 @@ export async function createObra(request: AuthenticatedRequest, reply: FastifyRe
   const { titulo_obra, descricao_obra, imagens_obras, categoria_obra, data_exposicao, data_fim_exposicao } = request.body as any;
 
   try {
-    // Verificar limite de obras pendentes
     const obrasPendentes = await prisma.obra.count({
       where: { artista_id: artistaId, status: 'pendente' },
     });
@@ -59,7 +54,7 @@ export async function createObra(request: AuthenticatedRequest, reply: FastifyRe
 
 
 //listar obras de um artista
-export async function getMyObras(request: AuthenticatedRequest, reply: FastifyReply) {
+export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
   const { id: artistaId, role } = request.user;
 
   if (role !== 'ARTISTA') {
@@ -78,8 +73,9 @@ export async function getMyObras(request: AuthenticatedRequest, reply: FastifyRe
     return reply.status(500).send({ message: 'Erro ao buscar obras.' });
   }
 }
+
 // Excluir uma obra (Artista)
-export async function deleteObra(request: AuthenticatedRequest, reply: FastifyReply) {
+export async function deleteObra(request: FastifyRequest, reply: FastifyReply) {
   const { id: artistaId, role } = request.user;
   const { id_obra } = request.params as any;
 
@@ -103,11 +99,8 @@ export async function deleteObra(request: AuthenticatedRequest, reply: FastifyRe
   }
 }
 
-//Excluir obra por Adm
-
-
 // Listar todas as obras (ADMIN)
-export async function getAllObras(request: AuthenticatedRequest, reply: FastifyReply) {
+export async function getAllObras(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
 
   if (role !== 'ADMIN') {
@@ -130,9 +123,9 @@ export async function getAllObras(request: AuthenticatedRequest, reply: FastifyR
     return reply.status(500).send({ message: 'Erro ao listar obras.' });
   }
 }
-//listar obras de um artista específico (Adm)
 
-export async function getObrasArtista(request: AuthenticatedRequest, reply: FastifyReply) {
+//listar obras de um artista específico (Adm)
+export async function getObrasArtista(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
   const { artistaId } = request.params as any;
   const { status } = request.query as ObrasQuery;
@@ -167,8 +160,9 @@ export async function getObrasArtista(request: AuthenticatedRequest, reply: Fast
     return reply.status(500).send({ message: 'Erro ao buscar obras.' });
   }
 }
+
 // Atualizar status da obra (ADMIN)
-export async function updateObraStatus(request: AuthenticatedRequest, reply: FastifyReply) {
+export async function updateObraStatus(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
   const { id_obra } = request.params as any;
   const { status } = request.body as any;
