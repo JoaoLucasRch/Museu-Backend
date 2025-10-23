@@ -1,18 +1,18 @@
-    import fastify from 'fastify';
-    import { authRoutes } from './routes/authRoutes';
-    import { userRoutes } from './routes/userRoutes';
-    import { obraRoutes } from './routes/obraRoutes';
+import fastify from 'fastify';
+import { authRoutes } from './routes/authRoutes';
+import { userRoutes } from './routes/userRoutes';
+import { eventoRoutes } from './routes/eventoRoutes';
+import { obraRoutes } from './routes/obraRoutes';
 
     const app = fastify({ logger: true });
 
-    //Rotas
-    app.register(authRoutes, { prefix: '/auth' });
-    app.register(userRoutes, { prefix: '/user' });
-    app.register(obraRoutes, { prefix: '/obra' });
-    
-    app.get('/health', async () => ({ status: 'OK' }));
+//Rotas
+app.register(authRoutes, { prefix: '/auth' });
+app.register(userRoutes, { prefix: '/user' });
+app.register(eventoRoutes);
+app.register(obraRoutes, { prefix: '/obra' });
 
-  
+app.get('/health', async () => ({ status: 'OK' }));
 
     app.setErrorHandler((error, request, reply) => {
         app.log.error(error);
