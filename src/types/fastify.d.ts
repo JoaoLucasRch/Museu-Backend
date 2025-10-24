@@ -11,13 +11,3 @@ declare module 'fastify' {
         user: UserPayload;
     }
 }
-
-declare module 'fastify' {
-  interface FastifyRequest {
-    user?: {
-      id: number;
-      role: 'ADMIN' | 'ARTISTA';
-      email?: string;
-    };
-  }
-}
