@@ -301,6 +301,14 @@ export async function resetPassword(
 
     const hashedPassword = await bcrypt.hash(novaSenha, 10);
 
+      const JWT_SECRET = process.env.JWT_SECRET;
+  if (!JWT_SECRET) {
+
+    throw new Error('Variável de ambiente JWT_SECRET não está definida.'); 
+  }
+
+  const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
     //Atualiza senha
     await prisma.usuario.update({
       where: { id: user.id },
