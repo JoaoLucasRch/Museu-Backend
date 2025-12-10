@@ -1,7 +1,7 @@
 {
   "name": "fullstack-orm-template",
   "version": "1.0.0",
-  "description": "",          
+  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts"
@@ -27,4 +27,3 @@
     "typescript": "^5.6.2"
   }
 }
-
