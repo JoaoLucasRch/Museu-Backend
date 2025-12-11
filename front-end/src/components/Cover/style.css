@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+
+/* Reset básico para remover margens padrão do navegador */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* O container principal (header) ocupa toda a tela */
+header {
+  position: relative; /* Necessário para posicionar os filhos absolutos */
+  width: 100%;
+  height: 100vh; /* 100% da altura da visualização (viewport height) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza o texto verticalmente */
+  padding: 0 8%; /* Espaçamento nas laterais */
+  font-family: 'Inter', sans-serif;
+  color: white;
+  overflow: hidden; /* Evita barras de rolagem indesejadas */
+}
+
+/* --- CONFIGURAÇÃO DA IMAGEM DE FUNDO --- */
+.cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Joga para trás do texto */
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* A mágica: faz a imagem cobrir tudo sem distorcer */
+  object-position: center;
+}
+
+/* Criamos uma película preta semitransparente sobre a imagem 
+   para o texto branco ficar legível */
+.cover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4));
+}
+
+
+/* --- TEXTOS E TÍTULOS --- */
+.titles {
+
+
+  position: relative;
+  z-index: 2; /* Garante que o texto fique sobre a película escura */
+  max-width: 700px; /* Limita a largura para o texto não esticar demais */
+}
+
+.titles h5 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+/* O título gigante */
+.titles h1 {
+  font-size: 4.5rem; /* Tamanho bem grande */
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+/* O parágrafo descritivo */
+.titles p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 20px;
+  opacity: 0.8;
+  max-width: 500px;
+}
+
+/* --- RESPONSIVIDADE (CELULAR) --- */
+@media (max-width: 768px) {
+  nav {
+    display: none; /* Esconde o menu no celular por enquanto */
+  }
+  
+  .titles h1 {
+    font-size: 2.8rem;
+  }
+  
+  header {
+    padding: 0 5%;
+    text-align: center; /* Centraliza tudo no mobile */
+  }
+
+  .titles p {
+    margin: 20px auto; /* Centraliza o parágrafo */
+  }
+}
