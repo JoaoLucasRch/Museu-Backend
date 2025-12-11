@@ -37,7 +37,7 @@ export default function Rooms() {
              alt="Sala das Pinturas" 
            />
            <div className="slide-info">
-             <h3>Sala das Pinturas</h3>
+             <h2>Sala das Pinturas</h2>
              <p>Sala dedicada a pinturas de artistas da região...</p>
            </div>
         </div>

@@ -22,7 +22,7 @@
 /* O Conteúdo do Slide (Imagem) */
 .slide-content {
   position: relative;
-  width: 100%;
+  width: 1000px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -45,7 +45,23 @@
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.slide-info h3 {
-  font-size: 2.5rem;
+.slide-info h2 {
   margin-bottom: 10px;
 }
+
+/* Classe para o container do botão ESQUERDO */
+.nav-left {
+  position: absolute;
+  left: -50px; /* Puxa para a esquerda (negativo sai da caixa) */
+  transform: translateY(-50%); /* Garante o centro vertical exato */
+  z-index: 10; /* Fica acima da imagem */
+}
+ 
+.nav-right {
+  position: absolute;
+  top: 50%;
+  right: -50px; /* Puxa para a direita */
+  transform: translateY(-50%);
+  z-index: 10;
+}
+  
