@@ -1,0 +1,33 @@
+.home-container {
+  
+  flex-direction: column; /* Organiza um embaixo do outro */
+
+  
+  /* Opcional: Para garantir que não cole nas bordas da tela */
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* A CAPA FIXA */
+.fixed-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+height: 100vh; /* Define que a capa ocupa 100% da altura da tela */
+  z-index: -1;   /* Fica atrás do conteúdo */
+  
+}
+
+/* O CONTEÚDO QUE ROLA */
+.scrolling-content {
+  /* MÁGICA: Empurra o conteúdo para começar DEPOIS da capa */
+  margin-top: 100vh; 
+  
+  /* IMPORTANTE: Precisa de cor de fundo, senão fica transparente e vê a capa embaixo */
+  background-color: #F5F3EE; 
+  
+  position: relative; /* Garante o contexto de empilhamento */
+  z-index: 1; /* Fica na frente da capa */
+ 
+}

@@ -1,0 +1,122 @@
+/* Container principal dividindo esquerda e direita */
+.story-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 150px;
+  padding: 250px;
+  max-width: 1920px;
+  margin: 0 auto;
+  background-color: #F5F3EE; /* Cor de fundo creme da imagem */
+}
+
+/* Seção de Texto (Esquerda) */
+.text-section {
+  flex: 1;
+  max-width: 300px;
+}
+
+.text-section h2 {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  font-family: sans-serif;
+  color: #000;
+}
+
+.text-section p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Seção dos Cards (Direita) */
+.cards-section {
+  display: flex;
+  gap: 15px;
+  height: 400px; /* Altura fixa para os cards */
+  flex: 2;
+}
+
+/* O CARD INDIVIDUAL */
+.card {
+  /* O Truque de Expansão */
+  flex: 1; /* Largura padrão (pequena) */
+  transition: flex 1s ease-in-out; /* Animação suave */
+  
+  border-radius: 30px;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  
+  /* Sombra suave */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* O ESTADO HOVER (Quando o mouse passa em cima) */
+.card:hover {
+  flex: 4; /* O card cresce 4x o tamanho dos outros */
+}
+
+/* Conteúdo dentro do card (Texto e Ano) */
+.card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7)); /* Sombra para ler o texto */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.card:hover .card-content {
+  opacity: 1;
+}
+
+/* Ano */
+.card-year {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  
+  /* Mantém o ano visível e girado quando fechado */
+  transform-origin: bottom left;
+  transition: all 0.5s ease;
+}
+
+/* Descrição */
+.card-description {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  
+  /* Estado inicial: escondido */
+  opacity: 0; 
+  max-height: 0;
+  overflow: hidden;
+
+  /* MÁGICA 1: Na volta (ao tirar o mouse), a transição é IMEDIATA.
+     0s ou 0.1s faz sumir antes da caixa encolher. */
+  transition: opacity 0.1s ease-out, max-height 0.1s step-end;
+}
+/* Efeito no texto quando passa o mouse */
+.card:hover .card-description {
+  opacity: 1; /* Aparece */
+  max-height: 100px; /* Ocupa espaço */
+}
+
+/* (Opcional) Se quiser que o ano fique vertical quando fechado,
+   como na imagem de referência "2015" e "2025" */
+.card:not(:hover) .card-year {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}

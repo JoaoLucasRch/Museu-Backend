@@ -1,0 +1,51 @@
+.rooms-container {
+  padding: 50px;
+  text-align: center;
+  background-color: #f9f9f9; /* Fundo cinza claro da página */
+}
+
+.text-header {
+  margin-bottom: 40px;
+}
+
+/* O Wrapper que segura os botões e a imagem */
+.slider-wrapper {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente os botões com a imagem */
+  justify-content: center;
+  gap: 20px; /* Espaço entre o botão e a imagem */
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* O Conteúdo do Slide (Imagem) */
+.slide-content {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.slide-content img {
+  width: 100%;
+  height: 500px; /* Altura fixa ou ajuste conforme necessário */
+  object-fit: cover;
+  display: block;
+}
+
+/* Texto dentro da imagem */
+.slide-info {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  color: white;
+  text-align: left;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.slide-info h3 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
