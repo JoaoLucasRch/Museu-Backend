@@ -4,3 +4,9 @@
   font-weight: 400;
   font-family: 'Inter', sans-serif;
 }
+
+h2 {
+  font-size: 3rem; /* Escolha o tamanho único aqui */
+  font-weight: 600;
+}
+
