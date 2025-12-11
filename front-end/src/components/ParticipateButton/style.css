@@ -1,0 +1,50 @@
+.participate-btn {
+  /* Layout Flex para alinhar texto e ícone */
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espaço entre o texto e a seta */
+  
+  /* Tamanho e Formato */
+  padding: 12px 28px;
+  border-radius: 30px; /* Bordas bem arredondadas */
+  border: none;
+  
+  /* Cores e Sombra (Copiado do SlideButton) */
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  
+  /* Fonte */
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  
+  /* Comportamento */
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s, box-shadow 0.2s;
+}
+
+/* Estilo do texto */
+.btn-text {
+  white-space: nowrap; /* Evita que o texto quebre linha */
+}
+
+/* Estilo do ícone (opcional, para ajustes finos) */
+.btn-icon {
+  display: block;
+}
+
+/* --- EFEITOS DE INTERAÇÃO (Iguais ao SlideButton) --- */
+
+/* Hover: Cresce um pouco e muda levemente o fundo */
+.participate-btn:hover {
+  transform: scale(1.05);
+  background-color: #f9f9f9;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Click: Diminui um pouco */
+.participate-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}

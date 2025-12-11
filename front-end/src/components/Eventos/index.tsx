@@ -1,7 +1,7 @@
 import "./style.css";
 
 function Eventos() {
-  return <div></div>;
+  return <div>eventos aqui</div>;
 }
 
 export default Eventos;

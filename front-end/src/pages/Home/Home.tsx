@@ -13,14 +13,14 @@ function Home() {
     <main className="home-container">
       <Navbar />
       <div className="fixed-cover">
-        <section id="capa"><Cover /></section>
+        <section id="inicio"><Cover /></section>
       </div>
       <div className="scrolling-content">
-        <OurStory />
-        <Rooms />
-        <Expose />
-        <Eventos />
-        <section id="contato"><Footer /></section>
+      <section id="historia"><OurStory /> </section>
+      <section id="salas"><Rooms /></section>
+      <section id="eventos"><Eventos /></section> 
+      <section id="exposicoes"><Expose /></section>  
+      <section id="contato"><Footer /></section>
         
       </div>
     </main>
