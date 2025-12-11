@@ -42,12 +42,10 @@
   left: 40px;
   color: white;
   text-align: left;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
-.slide-info h2 {
-  margin-bottom: 10px;
-}
+
 
 /* Classe para o container do botão ESQUERDO */
 .nav-left {

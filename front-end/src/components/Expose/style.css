@@ -1,0 +1,118 @@
+/* Container Principal */
+.expose-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 100px 5%;
+  width: 100%;
+  max-width: 1900px; /* Limite para não esticar demais em telas gigantes */
+  margin: 0 auto;
+  gap: 50px;
+  background-color: #f9f9f9;
+}
+
+/* --- LADO ESQUERDO (Texto) --- */
+.expose-text-content {
+  flex: 1;
+  max-width: 400px;
+  margin-left: 150px;
+}
+
+.expose-text-content h2 {
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.expose-text-content p {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 350px;
+}
+
+.cta-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* --- LADO DIREITO (Imagens) --- */
+.expose-images-wrapper {
+  flex: 2;
+  display: flex;
+  justify-content: center; /* Centraliza o bloco de imagens */
+}
+
+.cards-display {
+  display: flex;
+  gap: 20px;
+  /* Removemos o overflow e scroll behavior pois agora são estáticas */
+  flex-wrap: wrap; /* Se a tela for muito pequena, as imagens descem para outra linha */
+  justify-content: center;
+}
+
+/* O Cartão da Imagem Individual */
+.art-card {
+  width: 220px;
+  height: 320px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.art-card:hover {
+  transform: translateY(-10px);
+}
+
+.art-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1024px) {
+  .expose-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .expose-text-content {
+    margin-bottom: 50px;
+    align-items: center;
+    max-width: 100%;
+  }
+  
+  .expose-text-content p {
+    margin: 0 auto 30px auto;
+  }
+
+  .cta-wrapper {
+    justify-content: center;
+  }
+  
+  /* Ajuste para tablets: imagens menores */
+  .art-card {
+    width: 180px;
+    height: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* No celular, mostra uma embaixo da outra ou menores */
+  .cards-display {
+    flex-direction: column; /* Empilha as imagens verticalmente */
+    align-items: center;
+  }
+  
+  .art-card {
+    width: 100%; /* Ocupa a largura do celular */
+    max-width: 300px; /* Mas não gigante */
+    height: 400px;
+  }
+}

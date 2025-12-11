@@ -29,7 +29,7 @@ export default function Navbar() {
       <ul className={styles.list}>
         <li className={styles.item}><a href="#inicio">Home</a></li>
         <li className={styles.item}><a href="#historia">História</a></li>
-        <li className={styles.item}><a href="#acomodacoes">Salas</a></li>
+        <li className={styles.item}><a href="#salas">Salas</a></li>
         <li className={styles.item}><a href="#eventos">Eventos</a></li>
         <li className={styles.item}><a href="#exposicoes">Exponha sua Arte</a></li>
         <li className={styles.item}><a href="#contato">Contatos</a></li>
