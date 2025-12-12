@@ -1,0 +1,131 @@
+.footer-container {
+  background-color: #FBFAF8; /* Fundo levemente cinza/branco igual da imagem */
+  padding: 80px 5% 40px; /* Mais espaço em cima */
+  color: #666; /* Cor do texto padrão cinza */
+}
+
+/* Container das 4 colunas */
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Permite quebrar linha no celular */
+  gap: 40px;
+  max-width: 1900px;
+  margin: 0 auto;
+  margin-bottom: 80px; /* Espaço antes da linha divisória */
+}
+
+.footer-col {
+  flex: 1; /* Todas colunas tentam ter o mesmo tamanho */
+  min-width: 200px; /* Tamanho mínimo antes de quebrar linha */
+}
+
+/* Títulos em Amarelo */
+.footer-title {
+  color: #FFC107; /* Amarelo Ouro igual da imagem */
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+/* Textos gerais */
+.footer-text {
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.footer-highlight {
+  font-weight: bold;
+  color: #555;
+}
+
+/* Links (Navegação) */
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #666;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #FFC107;
+}
+
+/* Itens de Contato (com ícones) */
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+/* Horários */
+.schedule-item {
+  margin-bottom: 15px;
+}
+
+.schedule-item strong {
+  display: block;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.schedule-item p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* --- BARRA INFERIOR (Copyright) --- */
+.footer-bottom {
+  border-top: 1px solid #ddd; /* Linha cinza separadora */
+  padding-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #F5F3EE;
+  transition: background-color 0.3s;
+}
+
+.social-icons a:hover {
+  background-color: #e0e0e0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column; /* Uma coluna embaixo da outra */
+    gap: 40px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}

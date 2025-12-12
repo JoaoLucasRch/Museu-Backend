@@ -1,4 +1,3 @@
-import React from 'react';
 import "./style.css";
 
 // Exemplo de dados (substitua pelas suas imagens importadas)
@@ -26,7 +25,7 @@ function OurStory() {
     <div className="story-container">
       {/* Lado Esquerdo: Textos */}
       <div className="text-section">
-        <h2>Nossa História</h2>
+        <h1>Nossa História</h1>
         <p>Acompanhe um pouco da história do museu</p>
       </div>
 

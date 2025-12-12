@@ -27,7 +27,7 @@ export default function Navbar() {
     <nav className={`${styles.container} ${fixo ? styles.scrolled : ''}`}>
       
       <ul className={styles.list}>
-        <li className={styles.item}><a href="#inicio">Home</a></li>
+        <li className={styles.item}><a href="#">Home</a></li>
         <li className={styles.item}><a href="#historia">História</a></li>
         <li className={styles.item}><a href="#salas">Salas</a></li>
         <li className={styles.item}><a href="#eventos">Eventos</a></li>

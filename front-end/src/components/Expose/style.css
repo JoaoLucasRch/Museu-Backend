@@ -7,8 +7,9 @@
   width: 100%;
   max-width: 1900px; /* Limite para não esticar demais em telas gigantes */
   margin: 0 auto;
-  gap: 50px;
-  background-color: #f9f9f9;
+  gap: 5px;
+  background-color: #F5F5F5;
+  height: 100vh;
 }
 
 /* --- LADO ESQUERDO (Texto) --- */
