@@ -1,0 +1,540 @@
+.eventosSection {
+  padding: 5rem 0;
+  background-color: #f5f5f5;
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* CABEÇALHO CENTRALIZADO */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CARROSSEL */
+.carouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.carouselButton {
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.carouselButton:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+.carouselButton:active {
+  transform: scale(0.95);
+}
+
+.prevButton {
+  margin-left: 0;
+}
+
+.nextButton {
+  margin-right: 0;
+}
+
+.carouselContent {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* GRUPO DE EVENTOS */
+.eventoGroup {
+  margin-bottom: 3rem;
+  overflow: hidden;
+}
+
+.carouselTrack {
+  display: flex;
+  gap: 2rem;
+  transition: transform 0.5s ease-in-out;
+  padding: 0.5rem 0;
+}
+
+/* CARD VISUAL DE EVENTO */
+.eventoCardVisual {
+  position: relative;
+  flex: 0 0 calc(33.333% - 1.34rem);
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.eventoCardVisual:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+.eventoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.eventoCardVisual:hover .eventoImage {
+  transform: scale(1.05);
+}
+
+.placeholderImage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-size: 4rem;
+}
+
+.statusBadgeVisual {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: #10b981;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.statusBadgeVisual.breve {
+  background-color: #fbbf24;
+  color: #1a1a1a;
+}
+
+.cardInfo {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardTitleVisual {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.4;
+  min-height: 2.8rem;
+}
+
+.overlayTitle {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.tooltipOverlay .statusBadgeVisual {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.overlayLocation,
+.overlayDateTime {
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+
+.overlayDescription {
+    font-size: 0.85rem;
+    margin-top: 10px;
+    opacity: 0.9; /* Deixa a descrição um pouco mais suave */
+}
+
+.cardLocal {
+  color: #e91e63;
+  font-size: 0.95rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+}
+
+.cardLocal::before {
+  content: '📍';
+  font-size: 0.9rem;
+}
+
+.cardData {
+  color: #007bff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ESTADOS */
+.noEvents {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.noEvents p {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.errorContainer {
+  margin-top: 2rem;
+}
+
+/* TOOLTIP HOVER - OCUPANDO TODO O CARD */
+.tooltipOverlay {
+  position: absolute; /* ← FIX PRINCIPAL */
+  z-index: 20;
+  pointer-events: none;
+  inset: 0; /* Faz ocupar exatamente o card */
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  animation: cardOverlaySlideIn 0.25s ease-out;
+}
+
+
+.tooltipContentCard {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    180deg, 
+    rgba(0, 0, 0, 0.1) 0%, 
+    rgba(0, 0, 0, 0.85) 30%, 
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  color: white;
+  padding: 1.5rem 1.25rem 2rem;
+  backdrop-filter: blur(12px);
+  border-radius: 0 0 12px 12px;
+  font-size: 0.9rem;
+  height: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.tooltipContentCard h5 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.tooltipContentCard p {
+  margin: 0.3rem 0;
+  line-height: 1.4;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.tooltipContentCardVisible {
+    position: absolute;
+    bottom: 0; /* Alinha o conteúdo ao fundo do card */
+    left: 0;
+    right: 0;
+    padding: 15px; /* Padding interno */
+    color: #fff; /* Texto branco */
+    /* Fundo ligeiramente mais opaco ou gradiente, como visto nas imagens */
+    background: rgba(0, 0, 0, 0.85); 
+    /* Altura que você deseja que a área de descrição ocupe */
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Conteúdo no rodapé */
+}
+
+.tooltipDesc {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0.9;
+  font-style: italic;
+}
+
+/* MODAL CLICK */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 20px;
+  max-width: 600px;
+  max-height: 90vh;
+  width: 90%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.modalClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.modalClose:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.modalImage {
+  height: 300px;
+  overflow: hidden;
+}
+
+.modalImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalInfo {
+  padding: 2.5rem;
+}
+
+.modalInfo h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem 0;
+}
+
+.modalLocation,
+.modalDate {
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.modalDescription {
+  line-height: 1.7;
+  color: #333;
+}
+
+/* ANIMAÇÕES */
+@keyframes cardOverlaySlideIn {
+  from {
+    opacity: 0;
+    clip-path: polygon(0 100%, 0 100%, 100% 100%, 100% 100%);
+  }
+  to {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 1200px) {
+  .eventoCardVisual {
+    flex: 0 0 calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .eventosSection {
+    padding: 3rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .carouselWrapper {
+    gap: 1rem;
+  }
+
+  .carouselButton {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .eventoCardVisual {
+    flex: 0 0 100%;
+  }
+
+  .carouselTrack {
+    gap: 1rem;
+  }
+
+  .imageContainer {
+    height: 220px;
+  }
+
+  .cardInfo {
+    padding: 1.25rem;
+  }
+
+  .cardTitleVisual {
+    font-size: 1.1rem;
+    min-height: auto;
+  }
+
+  .tooltipContentCard {
+    padding: 1.25rem 1rem 1.5rem;
+    height: 70%;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .carouselButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .imageContainer {
+    height: 200px;
+  }
+
+  .cardInfo {
+    padding: 1rem;
+  }
+
+  .tooltipContentCard {
+    padding: 1rem 0.875rem 1.25rem;
+    height: 75%;
+  }
+
+  .tooltipContentCard h5 {
+    font-size: 1rem;
+  }
+}

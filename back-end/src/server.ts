@@ -1,6 +1,7 @@
 import fastify from 'fastify';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
+import fastifyCors from '@fastify/cors';
 
 import { authRoutes } from './routes/authRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
@@ -12,6 +13,16 @@ const app = fastify({
   ajv: {
     customOptions: { strict: false },
   },
+});
+
+// 🔥 CONFIGURAÇÃO CORS - VERSÃO 8.x
+app.register(fastifyCors, {
+  origin: '*', // Para desenvolvimento, permite todas as origens
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  maxAge: 86400 // 24 horas
 });
 
 // Swagger (documentação técnica da API)
@@ -65,10 +76,11 @@ app.setErrorHandler((error, request, reply) => {
 
 const start = async () => {
   try {
-
     const address = await app.listen({ port: 3333, host: '0.0.0.0' });
-    console.log(`Servidor rodando em ${address}`);
+    console.log(`✅ Servidor rodando em ${address}`);
     console.log(`Documentação disponível em ${address}/docs`);
+    console.log(`CORS configurado: Permitindo todas as origens (*)`);
+    console.log(`Fastify v4.29.1 com @fastify/cors v8.x`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
