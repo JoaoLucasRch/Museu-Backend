@@ -1,7 +1,7 @@
 import ParticipateButton from '../ParticipateButton';
-import Pintura from '../../assets/Expose/pinturaManuel.jpg';
-import Arara from '../../assets/Expose/Arara.jpg';
-import Onca from '../../assets/Expose/Onca.jpg';
+import Pintura from '../../../assets/Expose/pinturaManuel.jpg';
+import Arara from '../../../assets/Expose/Arara.jpg';
+import Onca from '../../../assets/Expose/Onca.jpg';
 import './style.css';
 
 

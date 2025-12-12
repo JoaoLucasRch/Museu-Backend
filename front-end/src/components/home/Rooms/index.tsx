@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import SlideButton from '../SlideButton';
 import './style.css';
-import Pintura from '../../assets/Salas/pintura.jpg';
-import Marco from '../../assets/Salas/Marco.jpg';
-import Etnologia from '../../assets/Salas/etnologia.jpg';
-import Arqueologo from '../../assets/Salas/arqueologo.jpg';
+import Pintura from '../../../assets/Salas/pintura.jpg';
+import Marco from '../../../assets/Salas/Marco.jpg';
+import Etnologia from '../../../assets/Salas/etnologia.jpg';
+import Arqueologo from '../../../assets/Salas/arqueologo.jpg';
 // 1. Dados das Salas (pode adicionar quantas quiser)
 const roomsData = [
   {
