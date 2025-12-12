@@ -1,6 +1,6 @@
 import "./style.css";
 
-import coverImg from '../../assets/Cover.png';
+import coverImg from '../../../assets/Cover.png';
 
 function Cover() {
   return (

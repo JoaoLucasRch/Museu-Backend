@@ -1,10 +1,10 @@
-import Navbar from "../../components/Menu/Navbar";
-import Cover from "../../components/Cover/index";
-import OurStory from "../../components/ourStory/index";
-import Rooms from "../../components/Rooms";
-import Expose from "../../components/Expose";
-import Eventos from "../../components/Eventos";
-import Footer from "../../components/footer";
+import Navbar from "../../components/home/Menu/Navbar";
+import Cover from "../../components/home/Cover/index";
+import OurStory from "../../components/home/ourStory/index";
+import Rooms from "../../components/home/Rooms";
+import Expose from "../../components/home/Expose";
+import Eventos from "../../components/home/Eventos";
+import Footer from "../../components/home/footer";
 
 import "./style.css";
 
