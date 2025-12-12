@@ -58,7 +58,7 @@ export default function Rooms() {
   const currentRoom = roomsData[currentIndex];
 
   return (
-    <section className="rooms-container" id="acomodacoes">
+    <section className="rooms-container" id="salas">
       <div className="text-header">
         <h2>Salas em Destaque</h2>
         <p>Acompanhe algumas das salas presentes no museu</p>
