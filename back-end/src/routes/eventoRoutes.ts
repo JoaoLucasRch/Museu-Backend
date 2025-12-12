@@ -57,12 +57,10 @@ export async function eventoRoutes(app: FastifyInstance) {
 
   // Listar todos os eventos
   app.get('/eventos', {
-    preHandler: [verifyJWT, authorizeRole(['ADMIN', 'ARTISTA'])],
     schema: {
       summary: 'Listar eventos',
       description: 'Retorna todos os eventos cadastrados no sistema, incluindo informações do criador.',
       tags: ['Eventos'],
-      security: [{ bearerAuth: [] }],
       response: {
         200: { type: 'array', items: eventoSchema },
         500: {
@@ -75,12 +73,10 @@ export async function eventoRoutes(app: FastifyInstance) {
 
   // Buscar evento por ID
   app.get('/eventos/:id', {
-    preHandler: [verifyJWT, authorizeRole(['ADMIN', 'ARTISTA'])],
     schema: {
       summary: 'Buscar evento por ID',
       description: 'Retorna um evento específico com base em seu ID.',
       tags: ['Eventos'],
-      security: [{ bearerAuth: [] }],
       params: {
         type: 'object',
         properties: { id: { type: 'number', example: 1 } },

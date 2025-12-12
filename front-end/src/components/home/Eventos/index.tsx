@@ -1,7 +1,2 @@
-import "./style.css";
-
-function Eventos() {
-  return <div>eventos aqui</div>;
-}
-
-export default Eventos;
+export { default } from './eventos';
+export type { Evento } from './eventos';
