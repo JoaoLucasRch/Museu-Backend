@@ -1,0 +1,39 @@
+.container {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  background: linear-gradient(
+    135deg,
+    #f6a37a 0%,
+    #f8b18c 45%,
+    #fbd786 75%,
+    #fff0a5 100%
+  );
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10rem;
+  color: #fff;
+}
+
+.left h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.left p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 440px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5rem;
+}
