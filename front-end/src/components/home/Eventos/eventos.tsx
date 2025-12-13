@@ -93,15 +93,32 @@ const Eventos: React.FC = () => {
         try {
             const inicioDate = new Date(inicio);
             const fimDate = new Date(fim);
-            return `${inicioDate.toLocaleDateString('pt-BR', {
+
+            const timeOptions = {
+                hour: '2-digit',
+                minute: '2-digit',
+            } as const;
+
+            const dateOptions = {
                 day: '2-digit',
                 month: 'short',
-                hour: '2-digit',
-                minute: '2-digit'
-            })} - ${fimDate.toLocaleTimeString('pt-BR', {
-                hour: '2-digit',
-                minute: '2-digit'
-            })}`;
+            } as const;
+
+            const dataInicio = inicioDate.toLocaleDateString('pt-BR', dateOptions).replace('.', ''); // Remove o ponto/vírgula do mês abreviado
+            const horaInicio = inicioDate.toLocaleTimeString('pt-BR', timeOptions);
+
+            const dataFim = fimDate.toLocaleDateString('pt-BR', dateOptions).replace('.', '');
+            const horaFim = fimDate.toLocaleTimeString('pt-BR', timeOptions);
+
+            // Verifica se o evento ocorre no mesmo dia
+            const isMesmoDia = inicioDate.toDateString() === fimDate.toDateString();
+
+            if (isMesmoDia) {
+                return `${dataInicio} ${horaInicio} - ${horaFim}`;
+            } else {
+                return `${dataInicio} ${horaInicio} - ${dataFim} ${horaFim}`;
+            }
+
         } catch {
             return 'Horário indisponível';
         }
@@ -123,7 +140,6 @@ const Eventos: React.FC = () => {
         }
     };
 
-    // Tooltip NOVO — sem posições e sem viewport
     const handleMouseEnter = (eventoId: number) => {
         setActiveTooltipId(eventoId);
     };
@@ -215,7 +231,6 @@ const Eventos: React.FC = () => {
                                             <p className={styles.cardData}>{formatarData(evento.data_hora_inicio)}</p>
                                         </div>
 
-                                        {/* Tooltip AGORA dentro do card */}
                                         {activeTooltipId === evento.id_evento && (
                                             <div className={styles.tooltipOverlay}>
                                                 <div className={styles.tooltipContentCard}>
