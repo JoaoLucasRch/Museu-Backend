@@ -1,0 +1,38 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.inputWrapper img {
+  width: 16px;
+  opacity: 0.7;
+}
+
+.inputWrapper input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.65rem;
+}
+
+.error {
+  font-size: 0.1rem;
+  color: #d32f2f;
+}

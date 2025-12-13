@@ -308,18 +308,16 @@
 
 .tooltipContentCardVisible {
     position: absolute;
-    bottom: 0; /* Alinha o conteúdo ao fundo do card */
+    bottom: 0; 
     left: 0;
     right: 0;
-    padding: 15px; /* Padding interno */
-    color: #fff; /* Texto branco */
-    /* Fundo ligeiramente mais opaco ou gradiente, como visto nas imagens */
+    padding: 15px;
+    color: #fff; 
     background: rgba(0, 0, 0, 0.85); 
-    /* Altura que você deseja que a área de descrição ocupe */
     height: 100%; 
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Conteúdo no rodapé */
+    justify-content: flex-end; 
 }
 
 .tooltipDesc {
