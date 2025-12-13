@@ -1,6 +1,6 @@
 .form {
   background: #fff;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 20px;
   width: 420px;
   display: flex;
@@ -10,11 +10,12 @@
 }
 
 .form h2 {
+  font-size: 1.2rem;
   margin-bottom: 0;
 }
 
 .form p {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #666;
   margin-bottom: 0.5rem;
 }
@@ -22,7 +23,8 @@
 .actions {
   display: flex;
   gap: 1rem;
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
+  margin-bottom: 0.3rem;
 }
 
 .cancel {
@@ -44,12 +46,13 @@
   cursor: pointer;
 }
 
-.login {
+.loginLink {
+  margin-top: 0.5rem;
   font-size: 0.85rem;
   text-align: center;
 }
 
-.login a {
+.loginLink a {
   color: #f4b400;
   font-weight: 500;
 }

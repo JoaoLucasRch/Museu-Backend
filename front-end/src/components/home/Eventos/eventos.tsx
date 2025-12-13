@@ -29,7 +29,6 @@ const Eventos: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    // 🔥 Estado corrigido — guarda apenas o ID do card ativo
     const [activeTooltipId, setActiveTooltipId] = useState<number | null>(null);
 
     const [selectedEvento, setSelectedEvento] = useState<Evento | null>(null);
