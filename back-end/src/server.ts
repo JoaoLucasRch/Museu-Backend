@@ -15,7 +15,7 @@ const app = fastify({
   },
 });
 
-// 🔥 CONFIGURAÇÃO CORS - VERSÃO 8.x
+//  CONFIGURAÇÃO CORS - VERSÃO 8.x
 app.register(fastifyCors, {
   origin: '*', // Para desenvolvimento, permite todas as origens
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
