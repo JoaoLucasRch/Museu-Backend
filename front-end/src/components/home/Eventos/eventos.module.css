@@ -159,11 +159,13 @@
   color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   z-index: 2;
+  opacity: 0.88;
 }
 
 .statusBadgeVisual.breve {
-  background-color: #fbbf24;
+  background-color: #ccd133ad;
   color: #1a1a1a;
+  opacity: 0.9;
 }
 
 .cardInfo {
@@ -209,7 +211,7 @@
 }
 
 .cardLocal {
-  color: #e91e63;
+  color: #0e0f0fcc;
   font-size: 0.95rem;
   margin: 0;
   display: flex;
@@ -224,7 +226,7 @@
 }
 
 .cardData {
-  color: #007bff;
+  color: #4b3d31;
   font-weight: 600;
   font-size: 0.95rem;
   margin: 0;
@@ -258,7 +260,7 @@
 
 /* TOOLTIP HOVER - OCUPANDO TODO O CARD */
 .tooltipOverlay {
-  position: absolute; /* ← FIX PRINCIPAL */
+  position: absolute;
   z-index: 20;
   pointer-events: none;
   inset: 0; /* Faz ocupar exatamente o card */
@@ -276,11 +278,11 @@
   right: 0;
   background: linear-gradient(
     180deg, 
-    rgba(0, 0, 0, 0.1) 0%, 
-    rgba(0, 0, 0, 0.85) 30%, 
-    rgba(0, 0, 0, 0.95) 100%
+    rgba(245, 241, 241, 0.1) 0%, 
+    rgba(255, 255, 255, 0.83) 40%, 
+    rgba(255, 255, 255, 0.67) 100%
   );
-  color: white;
+  color: rgb(12, 8, 8);
   padding: 1.5rem 1.25rem 2rem;
   backdrop-filter: blur(12px);
   border-radius: 0 0 12px 12px;
@@ -312,7 +314,7 @@
     left: 0;
     right: 0;
     padding: 15px;
-    color: #fff; 
+    color: #151414; 
     background: rgba(0, 0, 0, 0.85); 
     height: 100%; 
     display: flex;
@@ -325,7 +327,7 @@
   line-height: 1.45;
   margin-top: 0.75rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
   opacity: 0.9;
   font-style: italic;
 }
