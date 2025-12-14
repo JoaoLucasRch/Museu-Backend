@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import { InputField } from "../InputField";
@@ -124,10 +125,6 @@ export default function RegisterForm() {
       )}
 
       <div className={styles.actions}>
-        <button type="button" className={styles.cancel}>
-          Cancelar
-        </button>
-
         <button type="submit" className={styles.submit} disabled={isSubmitting}>
           Cadastre-se
         </button>

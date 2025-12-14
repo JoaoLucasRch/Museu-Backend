@@ -1,0 +1,149 @@
+.formContainer {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  /* Se o AuthLayout já tiver o card branco, pode remover o background/padding aqui */
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.passwordWrapper {
+  position: relative;
+}
+
+/* Posiciona o olho dentro do input, à direita */
+.eyeButton {
+  position: absolute;
+  top: 30px; /* Ajuste conforme a altura do seu label/input */
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9CA3AF;
+  display: flex;
+  align-items: center;
+}
+
+.forgotPassword {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.85rem;
+}
+
+.forgotPassword a {
+  color: #FBBF24; /* Tom amarelo/dourado da imagem */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.submitButton {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #FCD34D; /* Amarelo do botão */
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.submitButton:hover {
+  background-color: #FBBF24;
+}
+
+.submitButton:disabled {
+  background-color: #faeab6;
+  cursor: not-allowed;
+}
+
+/* Divisor "ou" */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  color: #9CA3AF;
+  font-size: 0.875rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.divider span {
+  padding: 0 10px;
+}
+
+/* Botão Google */
+.googleButton {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.googleButton:hover {
+  background-color: #F9FAFB;
+}
+
+.googleIcon {
+  font-weight: bold;
+  color: #EA4335; /* Cor do Google apenas para exemplo */
+}
+
+.footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.footer a {
+  color: #FBBF24;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+.errorBanner {
+  background-color: #FEF2F2;
+  color: #DC2626;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
