@@ -1,7 +1,7 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_MUSEUM,
     pass: process.env.EMAIL_PASS,
@@ -10,16 +10,16 @@ const transporter = nodemailer.createTransport({
 
 export class EmailService {
   static async sendResetPasswordEmail(
-    to: string, 
-    userName: string, 
+    to: string,
+    userName: string,
     resetToken: string
   ) {
-    const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
-    
+    const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
+
     const mailOptions = {
       from: process.env.EMAIL_MUSEUM,
       to: to,
-      subject: 'Redefinição de Senha - Museu Virtual',
+      subject: "Redefinição de Senha - Museu Virtual",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Redefinição de Senha</h2>
@@ -42,10 +42,10 @@ export class EmailService {
 
     try {
       await transporter.sendMail(mailOptions);
-      console.log('Email de redefinição enviado para:', to);
+      console.log("Email de redefinição enviado para:", to);
       return true;
     } catch (error) {
-      console.error('Erro ao enviar email:', error);
+      console.error("Erro ao enviar email:", error);
       return false;
     }
   }
