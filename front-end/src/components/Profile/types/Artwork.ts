@@ -4,4 +4,6 @@ export interface Artwork {
   descricao_obra: string;
   imagens_obras?: string;
   status: 'pendente' | 'aprovada' | 'rejeitada';
+
+  data_envio?: string;
 }

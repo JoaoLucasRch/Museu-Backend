@@ -6,17 +6,22 @@ import ArtworkCard from '../ArtworkCard';
 import { ArtworkService } from '../../Profile/types/artworkService';
 import type { Artwork } from '../../Profile/types/Artwork';
 
-// 1. IMPORTAR O NOVO MODAL
+// Importar os Modais
 import DeleteConfirmationModal from '../../Profile/DeleteConfirmationModal';
+// 1. IMPORTAR O NOVO MODAL DE CRIAR (Verifique se o caminho está correto)
+import CreateArtworkModal from '../../Profile/CreateArtworkModal'; 
 
 export default function ArtworksList() {
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 2. ESTADOS NOVOS PARA O DELETE
+  // Estados para o Delete
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [artworkToDelete, setArtworkToDelete] = useState<{id: number, title: string} | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // 2. NOVO ESTADO PARA O MODAL DE CRIAR
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useEffect(() => {
     fetchArtworks();
@@ -33,24 +38,19 @@ export default function ArtworksList() {
     }
   }
 
-  // 3. ESSA FUNÇÃO AGORA SÓ ABRE O MODAL
+  // Funções de Delete
   function handleTrashClick(id: number, title: string) {
     setArtworkToDelete({ id, title });
     setIsDeleteModalOpen(true);
   }
 
-  // 4. ESSA FUNÇÃO DELETA DE VERDADE (Chamada pelo Modal)
   async function confirmDelete() {
     if (!artworkToDelete) return;
     
     setIsDeleting(true);
     try {
       await ArtworkService.deleteArtwork(artworkToDelete.id);
-      
-      // Remove da lista visualmente
       setArtworks(artworks.filter(art => art.id_obra !== artworkToDelete.id));
-      
-      // Fecha o modal
       setIsDeleteModalOpen(false);
       setArtworkToDelete(null);
     } catch (error) {
@@ -60,8 +60,15 @@ export default function ArtworksList() {
     }
   }
 
+  // 3. ATUALIZADO: Agora abre o modal de criar
   function handleAddClick() {
-    console.log("Abrir modal de criar obra...");
+    setIsCreateModalOpen(true);
+  }
+
+  // 4. NOVA FUNÇÃO: Adiciona a obra criada na lista visualmente
+  function handleCreateSuccess(newArtwork: Artwork) {
+    // Adiciona a nova obra no começo da lista
+    setArtworks((prevArtworks) => [newArtwork, ...prevArtworks]);
   }
 
   return (
@@ -71,6 +78,7 @@ export default function ArtworksList() {
       </div>
 
       <div className={styles.grid}>
+        {/* Card de Adicionar (+ big button) */}
         <div className={styles.addCard} onClick={handleAddClick}>
           <Plus size={60} color="#fff" strokeWidth={3} />
         </div>
@@ -82,21 +90,26 @@ export default function ArtworksList() {
             <ArtworkCard 
               key={art.id_obra} 
               artwork={art} 
-              // 5. ATUALIZAR O PASSAGEM DA FUNÇÃO DELETE
-              // Agora passamos o ID e o Título, pois o ArtworkCard precisa mandar os dois
               onDelete={() => handleTrashClick(art.id_obra, art.titulo_obra)} 
             />
           ))
         )}
       </div>
 
-      {/* 6. COLOCAR O MODAL AQUI NO FINAL */}
+      {/* Modal de Exclusão */}
       <DeleteConfirmationModal 
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={confirmDelete}
         artworkTitle={artworkToDelete?.title || ''}
         isDeleting={isDeleting}
+      />
+
+      {/* 5. NOVO MODAL DE CRIAR OBRA */}
+      <CreateArtworkModal 
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={handleCreateSuccess}
       />
     </div>
   );

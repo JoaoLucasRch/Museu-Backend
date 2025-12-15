@@ -1,0 +1,128 @@
+/* src/components/dashboard/CreateArtworkModal/CreateArtworkModal.module.css */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px; /* Bordas arredondadas */
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  animation: fadeIn 0.3s ease;
+  max-height: 90vh; /* Evita que estoure a tela em celulares */
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+  font-weight: 500;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Estilos dos Inputs e Labels */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.input, .textarea, .select {
+  padding: 0.8rem 1rem;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #333;
+  width: 100%;
+  background-color: #fff;
+  transition: border-color 0.2s;
+}
+
+.input:focus, .textarea:focus, .select:focus {
+  outline: none;
+  border-color: #FDF0A5; /* Amarelo do tema ao focar */
+  box-shadow: 0 0 0 3px rgba(253, 240, 165, 0.2);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Botões do Rodapé */
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Botão Amarelo de Submeter */
+.submitBtn {
+  flex: 1;
+  padding: 0.8rem;
+  background-color: #FDF0A5; /* Amarelo */
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #4B3F05;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.submitBtn:hover {
+  filter: brightness(0.95);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
