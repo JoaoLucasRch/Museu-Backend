@@ -17,6 +17,12 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Interface para resposta do upload de foto
+interface PhotoUploadResponse {
+  message: string;
+  foto: string;
+}
+
 export const UserService = {
   // Pega os dados do usuário logado (GET /me)
   getProfile: async (): Promise<UserProfile> => {
@@ -28,5 +34,31 @@ export const UserService = {
   updateProfile: async (data: UpdateProfileData): Promise<UserProfile> => {
     const response = await api.put<UserProfile>('/user/me', data);
     return response.data;
+  },
+
+  // Upload de foto de perfil
+  uploadProfilePhoto: async (file: File): Promise<PhotoUploadResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Pegar token diretamente para não interferir com o interceptor do axios
+    const token = localStorage.getItem('token');
+    
+    const response = await fetch(`${API_URL}/user/me/photo`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ 
+        message: `Erro ${response.status}: ${response.statusText}` 
+      }));
+      throw new Error(errorData.message || 'Erro ao fazer upload da foto');
+    }
+
+    return await response.json();
   }
 };
