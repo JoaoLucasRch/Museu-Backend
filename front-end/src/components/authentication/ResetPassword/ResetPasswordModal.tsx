@@ -46,7 +46,7 @@ export default function ResetPasswordModal({ token, isOpen, onClose }: ResetPass
     try {
       await axios.post('http://localhost:3333/auth/reset-password', {
         token: token,
-        newPassword: data.senha
+        novaSenha: data.senha,
       });
       setStatus('success');
       
