@@ -1,10 +1,25 @@
+import { useNavigate } from 'react-router-dom'; // 1. Importe o hook
 import './style.css';
 
 export default function ParticipateButton({ onClick, text = "Quero Participar" }) {
+  const navigate = useNavigate(); // 2. Inicialize o hook
+
+  // 3. Função que lida com o clique
+  const handleClick = (e) => {
+    // Se você passou alguma outra função via prop (onClick), ela executa primeiro
+    if (onClick) {
+      onClick(e);
+    }
+    
+    // Redireciona para o login
+    navigate('/login');
+  };
+
   return (
-    <button className="participate-btn" onClick={onClick}>
+    // 4. Use a nova função no botão
+    <button className="participate-btn" onClick={handleClick}>
       <span className="btn-text">{text}</span>
-      {/* Ícone de seta para a direita (reutilizado do SlideButton) */}
+      {/* Ícone de seta para a direita */}
       <svg 
         className="btn-icon" 
         width="20" 
