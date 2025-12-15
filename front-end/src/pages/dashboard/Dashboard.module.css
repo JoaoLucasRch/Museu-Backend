@@ -1,0 +1,43 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+}
+
+
+.logoutBtn {
+  background-color: #FDF0A5; 
+  color: #4B3F05;            
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+
+.logoutBtn:hover {
+  transform: translateY(-2px); 
+  filter: brightness(0.95);    
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.logoutBtn:active {
+  transform: translateY(0);
+}
