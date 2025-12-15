@@ -1,0 +1,88 @@
+/* src/components/dashboard/UserProfileCard/UserProfileCard.module.css */
+.card {
+  background-color: #ffffff;
+  border-radius: 24px; /* Bordas bem arredondadas como na imagem */
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Sombra bem suave */
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f3f4f6; /* Borda sutil */
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827; /* Preto suave */
+  margin: 0;
+  line-height: 1.2;
+}
+
+.email {
+  color: #6B7280; /* Cinza médio */
+  font-size: 1rem;
+  margin: 0;
+}
+
+.bio {
+  color: #888888; /* Cinza um pouco mais claro */
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  max-width: 400px;
+}
+
+.editButton {
+  background-color: #FDF0A5; /* Aquele amarelo pastel da imagem */
+  color: #4B3F05; /* Texto escuro para contraste */
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover {
+  background-color: #fce982;
+  transform: translateY(-1px);
+}
+
+/* Responsividade para celular */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .leftSection {
+    flex-direction: column;
+  }
+  
+  .editButton {
+    width: 100%;
+  }
+}
