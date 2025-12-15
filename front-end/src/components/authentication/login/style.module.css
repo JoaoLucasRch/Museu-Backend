@@ -4,7 +4,7 @@
   padding: 2rem;
   background: #fff;
   border-radius: 16px;
-  /* Se o AuthLayout já tiver o card branco, pode remover o background/padding aqui */
+  box-sizing: border-box;
 }
 
 .header h2 {
@@ -146,4 +146,88 @@
   margin-bottom: 1rem;
   font-size: 0.9rem;
   text-align: center;
+}
+
+/* Google Button Wrapper */
+.googleButtonWrapper {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+/* Sobrescreve estilos padrão do Google */
+.googleButtonWrapper div[role="button"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-radius: 8px !important;
+  height: 44px !important;
+  border: 1px solid #E5E7EB !important;
+  background-color: white !important;
+}
+
+.googleButtonWrapper div[role="button"]:hover {
+  background-color: #F9FAFB !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Botão de fallback se Google não carregar */
+.googleFallbackButton {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.googleFallbackButton:hover {
+  background-color: #F9FAFB;
+}
+
+.googleIcon {
+  font-weight: bold;
+  color: #EA4335;
+  font-size: 1.2rem;
+}
+
+.googleWarning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.googleWarning p {
+  color: #856404;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.googleWarning small {
+  display: block;
+  color: #856404;
+  font-size: 0.8rem;
+}
+
+/* Loading overlay */
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  z-index: 10;
 }
