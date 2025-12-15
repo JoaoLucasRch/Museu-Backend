@@ -19,7 +19,9 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/reset-password" element={<Login />} />
       </Routes>
+      
   );
 }
 
