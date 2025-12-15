@@ -1,19 +1,24 @@
-// src/components/dashboard/EditProfileModal/index.tsx
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { X, User, Phone, Mail, PenLine, Pencil } from "lucide-react"; // Ícones
+import { X, Pencil, Upload } from "lucide-react";
 import styles from "./EditProfileModal.module.css";
 
-// Imports de Tipos e Serviços (cuidado com o caminho relativo!)
-import type { UserProfile, UpdateProfileData } from "../types/User";
+import type { UserProfile } from "../types/User";
 import { UserService } from "../types/UserService";
-import { InputField } from "../../authentication/InputField"; // Reutilizando seu InputField
 
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentUser: UserProfile | null;
-  onSuccess: (updatedUser: UserProfile) => void; // Para atualizar o dashboard sem recarregar
+  onSuccess: (updatedUser: UserProfile) => void;
+}
+
+// Interface específica para o formulário
+interface UpdateProfileFormData {
+  nome: string;
+  email: string;
+  contato: string;
+  bio: string;
 }
 
 export default function EditProfileModal({
@@ -23,6 +28,10 @@ export default function EditProfileModal({
   onSuccess,
 }: EditProfileModalProps) {
   const [isSaving, setIsSaving] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [fileError, setFileError] = useState<string>("");
 
   // Configuração do Formulário
   const {
@@ -30,7 +39,7 @@ export default function EditProfileModal({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<UpdateProfileData>();
+  } = useForm<UpdateProfileFormData>();
 
   // Resetar o formulário com os dados atuais sempre que o modal abrir
   useEffect(() => {
@@ -40,37 +49,130 @@ export default function EditProfileModal({
         email: currentUser.email,
         contato: currentUser.contato || "",
         bio: currentUser.bio || "",
-        foto: currentUser.foto || "", // Por enquanto tratamos como string/url
       });
+      setSelectedFile(null);
+      setPreviewUrl("");
+      setFileError("");
+      setUploadProgress(0);
     }
   }, [isOpen, currentUser, reset]);
 
-  if (!isOpen) return null;
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    
+    if (!file) {
+      return;
+    }
 
-  const onSubmit = async (data: UpdateProfileData) => {
+    setFileError("");
+
+    // Validação de tamanho (5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      setFileError("Arquivo muito grande. Tamanho máximo: 5MB.");
+      return;
+    }
+
+    // Validação de tipo
+    const allowedTypes = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/webp'
+    ];
+    
+    if (!allowedTypes.includes(file.type)) {
+      setFileError("Formato inválido. Use JPG, PNG ou WEBP.");
+      return;
+    }
+
+    setSelectedFile(file);
+    setUploadProgress(0);
+
+    // Criar preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const onSubmit = async (data: UpdateProfileFormData) => {
     setIsSaving(true);
-    try {
-      // Chama o backend
-      const updatedProfile = await UserService.updateProfile(data);
+    setUploadProgress(0);
 
-      // Avisa o componente pai (Dashboard) que atualizou
+    try {
+      let updatedProfile: UserProfile;
+
+      // Se houver arquivo selecionado, fazer upload primeiro
+      if (selectedFile) {
+        setUploadProgress(10);
+        
+        // Simular progresso para melhor UX
+        const progressInterval = setInterval(() => {
+          setUploadProgress(prev => {
+            if (prev >= 90) {
+              clearInterval(progressInterval);
+              return 90;
+            }
+            return prev + 10;
+          });
+        }, 200);
+
+        try {
+          // Fazer upload da foto usando o UserService
+          const photoResponse = await UserService.uploadProfilePhoto(selectedFile);
+          setUploadProgress(100);
+          
+          // Atualizar o perfil com a nova URL da foto
+          updatedProfile = await UserService.updateProfile({
+            ...data,
+            foto: photoResponse.foto,
+          });
+        } catch (uploadError) {
+          clearInterval(progressInterval);
+          setUploadProgress(0);
+          throw uploadError;
+        } finally {
+          clearInterval(progressInterval);
+        }
+      } else {
+        updatedProfile = await UserService.updateProfile(data);
+      }
+
       onSuccess(updatedProfile);
       onClose();
-    } catch (error) {
+      
+    } catch (error: any) {
       console.error("Erro ao atualizar perfil:", error);
-      alert("Erro ao salvar alterações. Verifique os dados.");
+      
+      if (error.message?.includes("token") || error.message?.includes("Sessão expirada")) {
+        alert("Sessão expirada. Por favor, faça login novamente.");
+      } else if (error.message?.includes("email") || error.message?.includes("já está em uso")) {
+        alert("Este email já está em uso. Por favor, use outro.");
+      } else if (error.message?.includes("arquivo") || error.message?.includes("Formato inválido")) {
+        alert("Erro ao fazer upload da foto. Verifique o formato e tamanho.");
+      } else {
+        alert("Erro ao salvar alterações. Verifique os dados e tente novamente.");
+      }
     } finally {
       setIsSaving(false);
+      setUploadProgress(0);
     }
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        {/* Cabeçalho */}
         <div className={styles.header}>
           <h2>Edite Seu Perfil</h2>
-          <button onClick={onClose} className={styles.closeButton}>
+          <button 
+            onClick={onClose} 
+            className={styles.closeButton}
+            disabled={isSaving}
+          >
             <X size={24} />
           </button>
         </div>
@@ -81,49 +183,143 @@ export default function EditProfileModal({
             <div className={styles.photoSection}>
               <div className={styles.avatarWrapper}>
                 <img
-                  src={currentUser?.foto || "https://via.placeholder.com/150"}
-                  alt="Avatar"
+                  src={
+                    previewUrl || 
+                    currentUser?.foto || 
+                    "https://via.placeholder.com/150"
+                  }
+                  alt="Avatar do usuário"
                   className={styles.avatar}
                 />
-                {/* Botão de lápis sobre a foto (apenas visual por enquanto) */}
-                <div className={styles.editIconWrapper} title="Alterar foto">
+                
+                {/* Botão de upload */}
+                <label 
+                  htmlFor="file-upload" 
+                  className={styles.editIconWrapper}
+                  title="Alterar foto"
+                >
                   <Pencil size={18} />
-                </div>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={handleFileChange}
+                    className={styles.fileInput}
+                    disabled={isSaving}
+                  />
+                </label>
               </div>
+              
+              {/* Informações do arquivo */}
+              {selectedFile && (
+                <div className={styles.fileInfo}>
+                  <p className={styles.fileName}>
+                    <Upload size={12} /> {selectedFile.name}
+                  </p>
+                  <p className={styles.fileSize}>
+                    {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                  </p>
+                  
+                  {/* Barra de progresso */}
+                  {uploadProgress > 0 && uploadProgress < 100 && (
+                    <div className={styles.progressBar}>
+                      <div 
+                        className={styles.progressFill}
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                      <span className={styles.progressText}>
+                        {uploadProgress}%
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Mensagem de erro do arquivo */}
+              {fileError && (
+                <p className={styles.fileError}>{fileError}</p>
+              )}
+              
+              <p className={styles.photoHint}>
+                Clique no ícone para alterar sua foto
+              </p>
             </div>
 
             {/* Coluna da Direita: Inputs */}
             <div className={styles.formSection}>
-              <InputField
-                label="Nome"
-                placeholder="Seu nome completo"
-                icon={<User size={20} color="#9CA3AF" />}
-                {...register("nome", { required: "Nome é obrigatório" })}
-                error={errors.nome?.message}
-              />
+              {/* Nome */}
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  Nome
+                </label>
+                <input
+                  type="text"
+                  placeholder="Seu nome completo"
+                  {...register("nome", { 
+                    required: "Nome é obrigatório",
+                    minLength: {
+                      value: 2,
+                      message: "Nome deve ter pelo menos 2 caracteres"
+                    }
+                  })}
+                  className={styles.input}
+                  disabled={isSaving}
+                />
+                {errors.nome && (
+                  <span className={styles.errorText}>{errors.nome.message}</span>
+                )}
+              </div>
 
-              <InputField
-                label="Contato"
-                placeholder="(00) 00000-0000"
-                icon={<Phone size={20} color="#9CA3AF" />}
-                {...register("contato")}
-              />
+              {/* Contato */}
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  Contato
+                </label>
+                <input
+                  type="text"
+                  placeholder="(00) 00000-0000"
+                  {...register("contato")}
+                  className={styles.input}
+                  disabled={isSaving}
+                />
+              </div>
 
-              <InputField
-                label="Email"
-                placeholder="seu@email.com"
-                type="email"
-                icon={<Mail size={20} color="#9CA3AF" />}
-                {...register("email", { required: "Email é obrigatório" })}
-                error={errors.email?.message}
-              />
+              {/* Email */}
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="seu@email.com"
+                  {...register("email", { 
+                    required: "Email é obrigatório",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Email inválido"
+                    }
+                  })}
+                  className={styles.input}
+                  disabled={isSaving}
+                />
+                {errors.email && (
+                  <span className={styles.errorText}>{errors.email.message}</span>
+                )}
+              </div>
 
-              <InputField
-                label="Bio"
-                placeholder="Fale um pouco sobre você..."
-                icon={<PenLine size={20} color="#9CA3AF" />}
-                {...register("bio")}
-              />
+              {/* Bio */}
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>
+                  Bio
+                </label>
+                <textarea
+                  placeholder="Fale um pouco sobre você..."
+                  {...register("bio")}
+                  className={styles.textarea}
+                  disabled={isSaving}
+                  rows={4}
+                />
+              </div>
             </div>
           </div>
 
@@ -133,6 +329,7 @@ export default function EditProfileModal({
               type="button"
               onClick={onClose}
               className={styles.cancelBtn}
+              disabled={isSaving}
             >
               Cancelar
             </button>
@@ -141,7 +338,13 @@ export default function EditProfileModal({
               disabled={isSaving}
               className={styles.saveBtn}
             >
-              {isSaving ? "Salvando..." : "Salvar"}
+              {isSaving ? (
+                <>
+                  {uploadProgress > 0 ? `Salvando... ${uploadProgress}%` : "Salvando..."}
+                </>
+              ) : (
+                "Salvar"
+              )}
             </button>
           </div>
         </form>

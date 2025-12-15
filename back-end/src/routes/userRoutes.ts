@@ -1,12 +1,10 @@
 import { FastifyInstance } from 'fastify';
-import { getMyProfile, updateMyProfile } from '../controllers/userController';
+import { getMyProfile, updateMyProfile, uploadProfilePhoto } from '../controllers/userController';
 import { verifyJWT as authenticate } from '../middlewares/verifyJWT';
 
 export async function userRoutes(app: FastifyInstance) {
+  app.addHook('preHandler', authenticate);
 
-    app.addHook('preHandler', authenticate);
-
-  // Schema base de usuário
   const userSchema = {
     type: 'object',
     properties: {
@@ -20,7 +18,6 @@ export async function userRoutes(app: FastifyInstance) {
     },
   };
 
-  // Corpo da requisição para atualização de perfil
   const updateUserBody = {
     type: 'object',
     properties: {
@@ -124,4 +121,39 @@ export async function userRoutes(app: FastifyInstance) {
       },
     },
   }, updateMyProfile);
+
+  // Upload de foto de perfil
+  app.post('/me/photo', {
+    schema: {
+      tags: ['Usuário'],
+      summary: 'Upload de foto de perfil',
+      description: 'Permite fazer upload de uma imagem para o perfil do usuário.',
+      security: [{ bearerAuth: [] }],
+      consumes: ['multipart/form-data'],
+      response: {
+        200: {
+          description: 'Foto atualizada com sucesso',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  message: { type: 'string', example: 'Foto atualizada com sucesso' },
+                  foto: { type: 'string', example: 'http://localhost:3333/uploads/profile-photos/usuario-123.jpg' }
+                }
+              }
+            },
+          },
+        },
+        400: {
+          description: 'Arquivo inválido',
+          content: {
+            'application/json': {
+              schema: { type: 'object', properties: { message: { type: 'string' } } },
+            },
+          },
+        },
+      },
+    },
+  }, uploadProfilePhoto);
 }

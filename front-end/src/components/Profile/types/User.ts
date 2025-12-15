@@ -14,7 +14,11 @@ export interface UpdateProfileData {
   email: string;
   contato: string;
   bio: string;
-  // Foto geralmente tratamos separado se for upload de arquivo, 
-  // mas se for URL (string) segue aqui:
-  foto?: string; 
+  foto?: string; // URL da foto
+}
+
+// Interface para resposta do upload de foto
+export interface PhotoUploadResponse {
+  message: string;
+  foto: string;
 }

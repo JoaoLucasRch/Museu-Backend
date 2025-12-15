@@ -2,11 +2,16 @@ import fastify from 'fastify';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import fastifyCors from '@fastify/cors';
+import multipart from '@fastify/multipart';
+import fastifyStatic from '@fastify/static';
+import path from 'path';
 
 import { authRoutes } from './routes/authRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
 import { eventoRoutes } from './routes/eventoRoutes.js';
 import { obraRoutes } from './routes/obraRoutes.js';
+
+const __dirname = process.cwd();
 
 const app = fastify({
   logger: true,
@@ -15,9 +20,23 @@ const app = fastify({
   },
 });
 
-//  CONFIGURAÇÃO CORS - VERSÃO 8.x
+// Plugin de Upload de Arquivos
+app.register(multipart, {
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+    files: 1, // Apenas 1 arquivo por vez
+  },
+});
+
+app.register(fastifyStatic, {
+  root: path.join(__dirname, 'uploads'), // Diretório uploads na raiz do projeto
+  prefix: '/uploads/',
+  decorateReply: true,
+});
+
+// CONFIGURAÇÃO CORS - VERSÃO 8.x
 app.register(fastifyCors, {
-  origin: '*', // Para desenvolvimento, permite todas as origens
+  origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true,
@@ -77,10 +96,12 @@ app.setErrorHandler((error, request, reply) => {
 const start = async () => {
   try {
     const address = await app.listen({ port: 3333, host: '0.0.0.0' });
-    console.log(`✅ Servidor rodando em ${address}`);
+    console.log(`Servidor rodando em ${address}`);
+    console.log(`Uploads disponíveis em ${address}/uploads/`);
     console.log(`Documentação disponível em ${address}/docs`);
     console.log(`CORS configurado: Permitindo todas as origens (*)`);
     console.log(`Fastify v4.29.1 com @fastify/cors v8.x`);
+    console.log(`Upload de arquivos habilitado (máx 5MB)`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
