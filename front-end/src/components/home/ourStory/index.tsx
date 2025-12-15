@@ -1,22 +1,27 @@
 import "./style.css";
 
+import Museu2020 from '../../../assets/Museu/museu2020.png';
+import Museu2022 from '../../../assets/Museu/museu2022.png';
+import Museu2025 from '../../../assets/Museu/museu2025.png';
+
+
 // Exemplo de dados (substitua pelas suas imagens importadas)
 // import img2010 from '../../assets/img2010.jpg';
 const historyData = [
   {
-    year: "2010",
-    text: "Surgiu em 2010 ocupando o espaço do antigo palacete Augusto Dias",
-    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600&auto=format&fit=crop" // Exemplo
+    year: "2020",
+    text: "Em 2020 é inaugurado o museu municipal francisco coelho ocupando o espaço do antigo palacete Augusto Dias.",
+    image: Museu2020
   },
   {
-    year: "2015",
-    text: "Expansão para novas galerias e acervo internacional",
-    image: "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=600&auto=format&fit=crop" // Exemplo
+    year: "2022",
+    text: "1º Giro Cultural no Museu de Marabá,  em abril de 2022 para celebrar a cultura popular e a história local.",
+    image: Museu2022
   },
   {
     year: "2025",
-    text: "Futuro projeto de digitalização e museu virtual",
-    image: "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=600&auto=format&fit=crop" // Exemplo
+    text: "Atualmente o museu se encontra com uma bela decoração de guarda-chuvas cor-de-rosa, em homenagem ao outubro rosa.",
+    image: Museu2025
   }
 ];
 
@@ -26,7 +31,7 @@ function OurStory() {
       {/* Lado Esquerdo: Textos */}
       <div className="text-section">
         <h1>Nossa História</h1>
-        <p>Acompanhe um pouco da história do museu</p>
+        <p>Conheça os momentos que marcaram a história do Museu e sua importância para a cultura e a memória de Marabá.</p>
       </div>
 
       {/* Lado Direito: Cards Expansíveis */}
