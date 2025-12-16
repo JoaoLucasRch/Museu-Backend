@@ -17,8 +17,7 @@ export interface CreateArtworkData {
   titulo_obra: string;
   descricao_obra: string;
   categoria_obra: string;
-  imagens_obras: string; // Na imagem pede link, então mantemos string
-  // Datas são opcionais no backend, então podemos omitir por enquanto ou enviar null
+  imagens_obras: string;
 }
 
 

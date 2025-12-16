@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "./DashboardAdmin.module.css";
 
 // Componentes existentes
-import UserProfileCard from "../../components/Profile/UserProfileCard";
+import AdmUserProfileCard from "../../components/Adm/AdmUserProfileCard";
 import AdmEditProfileModal from "../../components/Adm/AdmEditProfileModal";
+import AdmRegisterForm from "../../components/Adm/AdmRegisterForm"; // Importar o novo componente
 import { UserService } from "../../components/Profile/types/UserService";
 import type { UserProfile } from "../../components/Profile/types/User";
 
@@ -17,6 +18,8 @@ export default function AdminDashboard() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [showNewAdminModal, setShowNewAdminModal] = useState(false); // Mudado para modal
+  const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -56,6 +59,47 @@ export default function AdminDashboard() {
     setUser(updatedUser);
   }
 
+  // Função para abrir o modal de novo admin
+  function handleNewAdmin() {
+    setShowNewAdminModal(true);
+  }
+
+  // Função para fechar o modal de novo admin
+  function handleCloseNewAdminModal() {
+    setShowNewAdminModal(false);
+  }
+
+  // Função para enviar o formulário de novo admin
+  async function handleRegisterAdmin(formData: any) {
+    setIsRegistering(true);
+    try {
+      const token = localStorage.getItem("token");
+      
+      const response = await fetch("http://localhost:3333/auth/register-admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Administrador ${data.nome} cadastrado com sucesso!`);
+        handleCloseNewAdminModal(); // Fecha o modal após sucesso
+      } else {
+        const error = await response.json();
+        alert(`Erro: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("Erro ao registrar admin:", error);
+      alert("Erro ao conectar com o servidor");
+    } finally {
+      setIsRegistering(false);
+    }
+  }
+
   return (
     <div className={styles.container}>
       {/* Cabeçalho com título e botão Sair no canto superior direito */}
@@ -70,10 +114,11 @@ export default function AdminDashboard() {
       <div className={styles.main}>
         {/* Seção do Perfil */}
         <section className={styles.profileSection}>
-          <UserProfileCard
+          <AdmUserProfileCard
             user={user}
             isLoading={isLoading}
             onEdit={() => setIsEditModalOpen(true)}
+            onNewAdmin={handleNewAdmin} // Passa a função para abrir modal
           />
         </section>
 
@@ -90,6 +135,31 @@ export default function AdminDashboard() {
         currentUser={user}
         onSuccess={handleProfileUpdate}
       />
+
+      {/* Modal de Cadastro de Novo Administrador */}
+      {showNewAdminModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.newAdminModal}>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Cadastrar Novo Administrador</h2>
+              <button 
+                onClick={handleCloseNewAdminModal}
+                className={styles.closeButton}
+                disabled={isRegistering}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className={styles.modalContent}>
+              <AdmRegisterForm
+                onSubmit={handleRegisterAdmin}
+                isLoading={isRegistering}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
