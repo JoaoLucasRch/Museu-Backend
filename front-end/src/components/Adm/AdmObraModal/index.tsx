@@ -36,7 +36,7 @@ export default function AdmObraModal({ isOpen, onClose, obra, onStatusUpdate }: 
   if (!isOpen || !obra) return null;
 
   const formatDate = (dateString: string) => {
-    if (!dateString) return "Não definida";
+    if (!dateString) return "";
     const date = new Date(dateString);
     return date.toLocaleDateString("pt-BR");
   };
