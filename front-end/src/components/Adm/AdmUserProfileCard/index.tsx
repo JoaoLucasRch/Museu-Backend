@@ -1,16 +1,18 @@
-import styles from "./UserProfileCard.module.css";
-import type { UserProfile } from "../types/User";
+import styles from "./AdmUserProfileCard.module.css";
+import type { UserProfile } from "../../Profile/types/User";
 
 interface UserProfileCardProps {
   user: UserProfile | null; 
   isLoading?: boolean;
   onEdit: () => void;
+  onNewAdmin?: () => void; // Nova prop para abrir o formulário de cadastro
 }
 
 export default function UserProfileCard({
   user,
   isLoading,
   onEdit,
+  onNewAdmin,
 }: UserProfileCardProps) {
   // Estado de carregamento
   if (isLoading || !user) {
@@ -36,13 +38,20 @@ export default function UserProfileCard({
         <div className={styles.info}>
           <h2 className={styles.name}>{user.nome}</h2>
           <p className={styles.email}>{user.email}</p>
-          <p className={styles.bio}>{user.bio || "Sem biografia definida."}</p>
+          <p className={styles.bio}>{user.bio || ""}</p>
         </div>
       </div>
-
-      <button onClick={onEdit} className={styles.editButton}>
-        Editar Perfil
-      </button>
+      
+      <div className={styles.buttonGroup}>
+        <button onClick={onEdit} className={styles.editButton}>
+          Editar Perfil
+        </button>
+        {user.role === 'ADMIN' && onNewAdmin && (
+          <button onClick={onNewAdmin} className={styles.newAdminButton}>
+            Novo Admin
+          </button>
+        )}
+      </div>
     </div>
   );
 }
