@@ -7,7 +7,7 @@
   padding: 250px;
   max-width: 1920px;
   margin: 0 auto;
-  background-color: #F5F3EE; /* Cor de fundo creme da imagem */
+  background-color: #F5F3EE;
 }
 
 /* Seção de Texto (Esquerda) */
@@ -39,8 +39,8 @@
 /* O CARD INDIVIDUAL */
 .card {
   /* O Truque de Expansão */
-  flex: 1; /* Largura padrão (pequena) */
-  transition: flex 1s ease-in-out; /* Animação suave */
+  flex: 1;
+  transition: flex 1s ease-in-out;
   
   border-radius: 30px;
   background-size: cover;
@@ -53,12 +53,10 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-/* O ESTADO HOVER (Quando o mouse passa em cima) */
 .card:hover {
   flex: 4; /* O card cresce 4x o tamanho dos outros */
 }
 
-/* Conteúdo dentro do card (Texto e Ano) */
 .card-content {
   position: absolute;
   bottom: 0;
@@ -85,7 +83,6 @@
   font-weight: bold;
   margin: 0;
   
-  /* Mantém o ano visível e girado quando fechado */
   transform-origin: bottom left;
   transition: all 0.5s ease;
 }
@@ -94,14 +91,14 @@
 .card-description {
   font-size: 1rem;
   margin-bottom: 5px;
+  color: #f5f3eed5;
   
   /* Estado inicial: escondido */
   opacity: 0; 
   max-height: 0;
   overflow: hidden;
 
-  /* MÁGICA 1: Na volta (ao tirar o mouse), a transição é IMEDIATA.
-     0s ou 0.1s faz sumir antes da caixa encolher. */
+  /* Na volta (ao tirar o mouse)*/
   transition: opacity 0.1s ease-out, max-height 0.1s step-end;
 }
 /* Efeito no texto quando passa o mouse */

@@ -5,7 +5,6 @@ import Pintura from '../../../assets/Salas/pintura.jpg';
 import Marco from '../../../assets/Salas/Marco.jpg';
 import Etnologia from '../../../assets/Salas/etnologia.jpg';
 import Arqueologo from '../../../assets/Salas/arqueologo.jpg';
-// 1. Dados das Salas (pode adicionar quantas quiser)
 const roomsData = [
   {
     id: 1,
@@ -35,13 +34,12 @@ const roomsData = [
 ];
 
 export default function Rooms() {
-  // 2. Estado para controlar qual sala está aparecendo (começa na 0)
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Função para ir para o PRÓXIMO slide
   const handleNext = () => {
     setCurrentIndex((prevIndex) => {
-      // Se for o último, volta para o primeiro (loop infinito)
+      // Se for o último, volta para o primeiro (loop)
       return prevIndex === roomsData.length - 1 ? 0 : prevIndex + 1;
     });
   };
@@ -49,7 +47,6 @@ export default function Rooms() {
   // Função para ir para o slide ANTERIOR
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => {
-      // Se for o primeiro, vai para o último
       return prevIndex === 0 ? roomsData.length - 1 : prevIndex - 1;
     });
   };
@@ -77,7 +74,6 @@ export default function Rooms() {
            <img 
              src={currentRoom.image} 
              alt={currentRoom.title} 
-             // Key ajuda o React a fazer uma animação sutil se tiver CSS de fade
              key={currentRoom.image} 
            />
            

@@ -278,10 +278,31 @@ export default function EditProfileModal({
                 <input
                   type="text"
                   placeholder="(00) 00000-0000"
-                  {...register("contato")}
+                  {...register("contato", {
+                    pattern: {
+                      value: /^[0-9\s()+-]*$/, 
+                      message: "Apenas números e caracteres de telefone (+, -, (, )) são permitidos.",
+                    },
+                    //Validação para Tamanho
+                    validate: (value) => {
+                      const digitsOnly = (value || '').replace(/[^\d]/g, '');
+                      if (digitsOnly.length === 0) {
+                        return true;
+                      }
+
+                      if (digitsOnly.length < 8) {
+                        return "O contato deve ter pelo menos 8 dígitos.";
+                      }
+
+                      return true; // Passou na validação
+                    }
+                  })}
                   className={styles.input}
                   disabled={isSaving}
                 />
+                {errors.contato && (
+                  <span className={styles.errorText}>{errors.contato.message}</span>
+                )}
               </div>
 
               {/* Email */}

@@ -240,6 +240,18 @@
   min-height: 80px;
 }
 
+.input,
+.textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box; /* Garante que padding e border estão dentro do width */
+    background-color: #f9f5f5;
+}
+
 .textarea:focus {
   outline: none;
   border-color: #4f46e5;
