@@ -5,7 +5,6 @@ import Museu2022 from '../../../assets/Museu/museu2022.png';
 import Museu2025 from '../../../assets/Museu/museu2025.png';
 
 
-// Exemplo de dados (substitua pelas suas imagens importadas)
 // import img2010 from '../../assets/img2010.jpg';
 const historyData = [
   {
