@@ -1,4 +1,4 @@
-/* Container principal */
+/* Container principal - igual ao do artista */
 .container {
   min-height: 100vh;
   background-color: #f8fafc;
@@ -22,7 +22,7 @@
   margin: 0;
 }
 
-/* Botão Sair - mesmo estilo do Admin */
+/* Botão Sair - posicionado no canto superior direito */
 .logoutButton {
   padding: 0.6rem 1.8rem;
   background: #FDF0A5;
@@ -57,7 +57,7 @@
   gap: 2rem;
 }
 
-/* Seção do Perfil */
+/* Seções */
 .profileSection {
   background: white;
   border-radius: 12px;
@@ -66,8 +66,7 @@
   border: 1px solid #e2e8f0;
 }
 
-/* Seção das Obras */
-.artworksSection {
+.obrasSection {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
@@ -94,7 +93,7 @@
   }
   
   .profileSection,
-  .artworksSection {
+  .obrasSection {
     padding: 1rem;
   }
 }

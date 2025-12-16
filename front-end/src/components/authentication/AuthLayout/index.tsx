@@ -3,8 +3,7 @@ import styles from './style.module.css';
 
 interface AuthLayoutProps {
   children: ReactNode;
-  // Adicionamos title e subtitle como opcionais e do tipo ReactNode 
-  // (para aceitar strings ou elementos com <br/>)
+
   title?: ReactNode;
   subtitle?: ReactNode;
 }

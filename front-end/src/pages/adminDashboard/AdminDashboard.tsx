@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./DashboardAdmin.module.css";
 
-import styles from "./Dashboard.module.css";
-
+// Componentes existentes
 import UserProfileCard from "../../components/Profile/UserProfileCard";
-import EditProfileModal from "../../components/Profile/EditProfileModal";
-import ArtworksList from "../../components/Profile/ArtworksList";
+import AdmEditProfileModal from "../../components/Adm/AdmEditProfileModal";
 import { UserService } from "../../components/Profile/types/UserService";
 import type { UserProfile } from "../../components/Profile/types/User";
 
-export default function Dashboard() {
+// Importando o novo componente de gerenciamento de obras
+import AdmObras from "../../components/Adm/AdmObras";
+
+export default function AdminDashboard() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -17,16 +19,19 @@ export default function Dashboard() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
-    // VERIFICAÇÃO DE ROLE - ESSENCIAL! (SEU CÓDIGO)
-    const userRole = localStorage.getItem('userRole');
-    
-    if (userRole === 'ADMIN') {
-      // Se for ADMIN, redireciona para admin dashboard
-      navigate('/admin/dashboard');
-      return; // IMPORTANTE: Parar a execução
+    const token = localStorage.getItem("token");
+    const userRole = localStorage.getItem("userRole");
+
+    if (!token) {
+      navigate("/login");
+      return;
     }
-    
-    // Se for ARTISTA, continua normalmente
+
+    if (userRole !== "ADMIN") {
+      navigate("/dashboard");
+      return;
+    }
+
     fetchUserData();
   }, [navigate]);
 
@@ -43,7 +48,7 @@ export default function Dashboard() {
 
   function handleLogout() {
     localStorage.removeItem("token");
-    localStorage.removeItem("userRole"); // Limpar role também (SEU CÓDIGO)
+    localStorage.removeItem("userRole");
     navigate("/login");
   }
 
@@ -64,22 +69,22 @@ export default function Dashboard() {
       {/* Conteúdo Principal */}
       <div className={styles.main}>
         {/* Seção do Perfil */}
-        <div className={styles.profileSection}>
+        <section className={styles.profileSection}>
           <UserProfileCard
             user={user}
             isLoading={isLoading}
             onEdit={() => setIsEditModalOpen(true)}
           />
-        </div>
+        </section>
 
         {/* Seção das Obras */}
-        <div className={styles.artworksSection}>
-          <ArtworksList />
-        </div>
+        <section className={styles.obrasSection}>
+          <AdmObras />
+        </section>
       </div>
 
       {/* Modal de Edição do Perfil */}
-      <EditProfileModal
+      <AdmEditProfileModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         currentUser={user}

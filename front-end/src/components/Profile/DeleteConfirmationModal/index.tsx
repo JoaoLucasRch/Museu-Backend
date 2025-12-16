@@ -7,7 +7,7 @@ interface DeleteConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  artworkTitle: string; // Título da obra para mostrar na mensagem
+  artworkTitle: string;
   isDeleting?: boolean; // Para mostrar estado de carregamento
 }
 

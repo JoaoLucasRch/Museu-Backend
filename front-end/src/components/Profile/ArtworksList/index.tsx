@@ -8,7 +8,6 @@ import type { Artwork } from '../../Profile/types/Artwork';
 
 // Importar os Modais
 import DeleteConfirmationModal from '../../Profile/DeleteConfirmationModal';
-// 1. IMPORTAR O NOVO MODAL DE CRIAR (Verifique se o caminho está correto)
 import CreateArtworkModal from '../../Profile/CreateArtworkModal'; 
 
 export default function ArtworksList() {
@@ -20,7 +19,7 @@ export default function ArtworksList() {
   const [artworkToDelete, setArtworkToDelete] = useState<{id: number, title: string} | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // 2. NOVO ESTADO PARA O MODAL DE CRIAR
+  // Estado para o Modal de Criar
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useEffect(() => {
@@ -50,7 +49,9 @@ export default function ArtworksList() {
     setIsDeleting(true);
     try {
       await ArtworkService.deleteArtwork(artworkToDelete.id);
+      
       setArtworks(artworks.filter(art => art.id_obra !== artworkToDelete.id));
+      
       setIsDeleteModalOpen(false);
       setArtworkToDelete(null);
     } catch (error) {
@@ -60,12 +61,12 @@ export default function ArtworksList() {
     }
   }
 
-  // 3. ATUALIZADO: Agora abre o modal de criar
+  // Função para abrir modal de criar obra
   function handleAddClick() {
     setIsCreateModalOpen(true);
   }
 
-  // 4. NOVA FUNÇÃO: Adiciona a obra criada na lista visualmente
+  // Função: Adiciona a obra criada na lista visualmente
   function handleCreateSuccess(newArtwork: Artwork) {
     // Adiciona a nova obra no começo da lista
     setArtworks((prevArtworks) => [newArtwork, ...prevArtworks]);
@@ -90,6 +91,7 @@ export default function ArtworksList() {
             <ArtworkCard 
               key={art.id_obra} 
               artwork={art} 
+              // ID e o Título, pois o ArtworkCard precisa mandar os dois
               onDelete={() => handleTrashClick(art.id_obra, art.titulo_obra)} 
             />
           ))
@@ -105,7 +107,7 @@ export default function ArtworksList() {
         isDeleting={isDeleting}
       />
 
-      {/* 5. NOVO MODAL DE CRIAR OBRA */}
+      {/* Modal de Criar Obra */}
       <CreateArtworkModal 
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}

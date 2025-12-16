@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { X, Pencil, Upload } from "lucide-react";
-import styles from "./EditProfileModal.module.css";
+import styles from "./style.module.css";
 
-import type { UserProfile } from "../types/User";
-import { UserService } from "../types/UserService";
+import type { UserProfile } from "../../Profile/types/User";
+import { UserService } from "../../Profile/types/UserService";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -48,7 +48,6 @@ export default function EditProfileModal({
         nome: currentUser.nome,
         email: currentUser.email,
         contato: currentUser.contato || "",
-        bio: currentUser.bio || "",
       });
       setSelectedFile(null);
       setPreviewUrl("");
@@ -305,20 +304,6 @@ export default function EditProfileModal({
                 {errors.email && (
                   <span className={styles.errorText}>{errors.email.message}</span>
                 )}
-              </div>
-
-              {/* Bio */}
-              <div className={styles.inputGroup}>
-                <label className={styles.label}>
-                  Bio
-                </label>
-                <textarea
-                  placeholder="Fale um pouco sobre você..."
-                  {...register("bio")}
-                  className={styles.textarea}
-                  disabled={isSaving}
-                  rows={4}
-                />
               </div>
             </div>
           </div>
