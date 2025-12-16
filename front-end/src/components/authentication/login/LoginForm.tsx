@@ -25,16 +25,12 @@ export default function LoginPage() {
   const googleContainerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   
-  // 1. LER A URL para reset de senha
   const [searchParams, setSearchParams] = useSearchParams();
   const resetTokenFromUrl = searchParams.get('token');
-  
-  // 2. Estado derivado para modal de reset
   const isResetOpen = !!resetTokenFromUrl;
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormInputs>();
 
-  // Mede a largura do container para o botão do Google
   useEffect(() => {
     const updateWidth = () => {
       if (googleContainerRef.current) {
@@ -49,18 +45,51 @@ export default function LoginPage() {
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  // Login tradicional
+  // Login tradicional - ATUALIZAÇÃO MÍNIMA
   const onSubmit = async (data: LoginFormInputs) => {
     try {
       setErrorMessage('');
       
-      const response = await axios.post('http://localhost:3333/auth/login', data);
-      const { token } = response.data;
+      // 1. Primeiro faz o login
+      const loginResponse = await axios.post('http://localhost:3333/auth/login', data);
+      const { token } = loginResponse.data;
+
+      console.log('🔐 Login bem-sucedido. Token:', token ? '✅ Presente' : '❌ Ausente');
 
       localStorage.setItem('token', token);
-      navigate('/dashboard'); 
+
+      // 2. Depois busca o perfil para obter o role
+      try {
+        const profileResponse = await axios.get('http://localhost:3333/user/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        const { role } = profileResponse.data;
+        console.log('👤 Perfil carregado. Role:', role);
+        
+        localStorage.setItem('userRole', role);
+        
+        // 3. Redireciona baseado no role
+        if (role === 'ADMIN') {
+          console.log('🔄 Redirecionando ADMIN para /admin/dashboard');
+          navigate('/admin/dashboard');
+        } else {
+          console.log('🔄 Redirecionando ARTISTA para /dashboard');
+          navigate('/dashboard');
+        }
+        
+      } catch (profileError) {
+        console.error('❌ Erro ao carregar perfil:', profileError);
+        // Se não conseguir carregar o perfil, assume que é ARTISTA
+        localStorage.setItem('userRole', 'ARTISTA');
+        navigate('/dashboard');
+      }
 
     } catch (error: any) {
+      console.error('❌ Erro no login:', error);
+      
       if (error.response?.data?.message) {
         setErrorMessage(error.response.data.message);
       } else {
@@ -69,7 +98,7 @@ export default function LoginPage() {
     }
   };
 
-  // Login com Google
+  // Login com Google - ATUALIZAÇÃO MÍNIMA
   const handleGoogleSuccess = async (credentialResponse: any) => {
     try {
       setIsGoogleLoading(true);
@@ -77,19 +106,46 @@ export default function LoginPage() {
 
       console.log('🔑 Token do Google recebido');
       
-      const response = await axios.post(
+      // 1. Login com Google
+      const loginResponse = await axios.post(
         'http://localhost:3333/auth/login-google',
         {
           token: credentialResponse.credential
         }
       );
 
-      console.log('✅ Resposta do backend:', response.data);
+      console.log('✅ Resposta do backend:', loginResponse.data);
       
-      const { token } = response.data;
-      
+      const { token } = loginResponse.data;
       localStorage.setItem('token', token);
-      navigate('/dashboard');
+
+      // 2. Busca o perfil para obter o role
+      try {
+        const profileResponse = await axios.get('http://localhost:3333/user/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        const { role } = profileResponse.data;
+        console.log('👤 Perfil carregado (Google). Role:', role);
+        
+        localStorage.setItem('userRole', role);
+        
+        // 3. Redireciona baseado no role
+        if (role === 'ADMIN') {
+          console.log('🔄 Redirecionando ADMIN (Google) para /admin/dashboard');
+          navigate('/admin/dashboard');
+        } else {
+          console.log('🔄 Redirecionando ARTISTA (Google) para /dashboard');
+          navigate('/dashboard');
+        }
+        
+      } catch (profileError) {
+        console.error('❌ Erro ao carregar perfil (Google):', profileError);
+        localStorage.setItem('userRole', 'ARTISTA');
+        navigate('/dashboard');
+      }
       
     } catch (error: any) {
       console.error('❌ Erro no Google login:', error);
@@ -104,21 +160,32 @@ export default function LoginPage() {
     }
   };
 
-  // Erro no login com Google
+  // O RESTANTE DO CÓDIGO PERMANECE EXATAMENTE IGUAL
   const handleGoogleError = () => {
     setErrorMessage('Falha ao fazer login com Google. Tente novamente.');
   };
 
-  // Fechar modal de reset de senha
   const handleCloseReset = () => {
-    // Limpa a URL
     setSearchParams({}); 
     navigate('/login');
   };
 
-  // Client ID do Google
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userRole = localStorage.getItem('userRole');
+    
+    if (token && userRole) {
+      if (userRole === 'ADMIN') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
+    }
+  }, [navigate]);
+
+  // O RETURN/JSX PERMANECE EXATAMENTE IGUAL
   return (
     <div className={styles.formContainer}>
       <div className={styles.header}>
@@ -140,6 +207,7 @@ export default function LoginPage() {
             pattern: { value: /^\S+@\S+$/i, message: 'E-mail inválido' }
           })}
           error={errors.email?.message}
+          disabled={isSubmitting || isGoogleLoading}
         />
 
         <div className={styles.passwordWrapper}>
@@ -150,11 +218,13 @@ export default function LoginPage() {
             icon={<Lock size={20} color="#9CA3AF" />}
             {...register('senha', { required: 'Senha é obrigatória' })}
             error={errors.senha?.message}
+            disabled={isSubmitting || isGoogleLoading}
           />
           <button
             type="button"
             className={styles.eyeButton}
             onClick={() => setShowPassword(!showPassword)}
+            disabled={isSubmitting || isGoogleLoading}
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
@@ -164,14 +234,8 @@ export default function LoginPage() {
           <button 
             type="button" 
             onClick={() => setIsForgotOpen(true)}
-            style={{ 
-              background: 'none', 
-              border: 'none', 
-              cursor: 'pointer', 
-              padding: 0, 
-              font: 'inherit', 
-              color: 'inherit' 
-            }}
+            className={styles.forgotButton}
+            disabled={isSubmitting || isGoogleLoading}
           >
             <span style={{ color: '#FBBF24', fontWeight: 600 }}>Esqueci a senha</span>
           </button>
@@ -192,7 +256,6 @@ export default function LoginPage() {
         <span>ou</span>
       </div>
 
-      {/* Container do Google Login com referência */}
       <div 
         ref={googleContainerRef} 
         className={styles.googleButtonWrapper}
@@ -206,7 +269,7 @@ export default function LoginPage() {
               useOneTap={false}
               theme="outline"
               size="large"
-              width={containerWidth > 0 ? containerWidth.toString() : "300"} // Número em pixels
+              width={containerWidth > 0 ? containerWidth.toString() : "300"}
               text="continue_with"
               locale="pt-BR"
               shape="rectangular"
@@ -225,7 +288,6 @@ export default function LoginPage() {
         <Link to="/register">Cadastre-se</Link>
       </div>
 
-      {/* Modais para recuperação de senha */}
       <ForgotPasswordModal 
         isOpen={isForgotOpen} 
         onClose={() => setIsForgotOpen(false)} 

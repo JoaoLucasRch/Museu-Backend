@@ -1,0 +1,360 @@
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Principal */
+.modal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  border-radius: 4px;
+}
+
+.closeButton:hover {
+  color: #111827;
+  background-color: #F3F4F6;
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Status Badge */
+.statusBadge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+}
+
+/* Título da Obra */
+.obraTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin: 8px 0;
+}
+
+/* Section */
+.section {
+  margin: 8px 0;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4B5563;
+  text-align: justify;
+  margin: 0;
+}
+
+/* Date Info */
+.dateInfo {
+  font-size: 14px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+/* Artist Section */
+.artistSection {
+  background-color: #F9FAFB;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 3px solid #3B82F6;
+}
+
+.artistName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.artistEmail {
+  font-size: 13px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* Image Section */
+.imageSection {
+  background-color: #F9FAFB;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.imageLabel {
+  font-size: 13px;
+  color: #6B7280;
+  margin: 0 0 8px 0;
+}
+
+.imageLink {
+  font-size: 13px;
+  color: #3B82F6;
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.2s;
+}
+
+.imageLink:hover {
+  color: #2563EB;
+  text-decoration: underline;
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.rejectButton,
+.approveButton {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: capitalize;
+}
+
+.rejectButton {
+  background-color: #EF4444;
+  color: white;
+}
+
+.rejectButton:hover:not(:disabled) {
+  background-color: #DC2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+}
+
+.approveButton {
+  background-color: #10B981;
+  color: white;
+}
+
+.approveButton:hover:not(:disabled) {
+  background-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+}
+
+.rejectButton:disabled,
+.approveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Confirm Modal */
+.confirmModal {
+  background: white;
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.3s ease-out;
+}
+
+.confirmTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.confirmText {
+  font-size: 14px;
+  color: #4B5563;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.confirmText strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Confirm Buttons */
+.confirmButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.cancelButton,
+.confirmApproveButton,
+.confirmRejectButton {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #E5E7EB;
+}
+
+.confirmApproveButton {
+  background-color: #10B981;
+  color: white;
+}
+
+.confirmApproveButton:hover:not(:disabled) {
+  background-color: #059669;
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+}
+
+.confirmRejectButton {
+  background-color: #EF4444;
+  color: white;
+}
+
+.confirmRejectButton:hover:not(:disabled) {
+  background-color: #DC2626;
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+}
+
+.cancelButton:disabled,
+.confirmApproveButton:disabled,
+.confirmRejectButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Scrollbar Styling */
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #F3F4F6;
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .modal {
+    padding: 24px;
+    max-width: 95%;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .obraTitle {
+    font-size: 18px;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+  }
+
+  .confirmModal {
+    padding: 20px;
+  }
+}
