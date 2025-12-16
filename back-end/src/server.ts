@@ -5,6 +5,8 @@ import fastifyCors from '@fastify/cors';
 import multipart from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
 import path from 'path';
+import fs from 'fs';
+import pump from 'pump';
 
 import { authRoutes } from './routes/authRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
@@ -34,11 +36,46 @@ app.register(fastifyStatic, {
   decorateReply: true,
 });
 
+// uploadRoutes.ts (opcional, ou direto no server.ts)
+
+app.post('/upload', async (req, reply) => {
+  try {
+    const data = await req.file();
+
+    if (!data) {
+      return reply.code(400).send({ erro: 'Nenhum arquivo enviado' });
+    }
+
+    // Validação de tipo (apenas imagens)
+    if (!data.mimetype.startsWith('image/')) {
+      return reply.code(400).send({ erro: 'Apenas arquivos de imagem são permitidos' });
+    }
+
+    // Define subpasta por tipo (opcional, mas organizado)
+    const subfolder = (req.headers['x-upload-type'] as string) || 'general';
+    const uploadDir = path.join(__dirname, 'uploads', subfolder);
+
+    await fs.promises.mkdir(uploadDir, { recursive: true });
+
+    const filename = `${Date.now()}-${data.filename.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+    const filepath = path.join(uploadDir, filename);
+
+    await pump(data.file, fs.createWriteStream(filepath));
+
+    const imageUrl = `http://localhost:3333/uploads/${subfolder}/${filename}`;
+
+    return reply.code(200).send({ imagem_evento: imageUrl });
+  } catch (error) {
+    console.error('Erro no upload:', error);
+    return reply.code(500).send({ erro: 'Falha ao salvar imagem' });
+  }
+});
+
 // CONFIGURAÇÃO CORS - VERSÃO 8.x
 app.register(fastifyCors, {
   origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-upload-type'],
   credentials: true,
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
   maxAge: 86400 // 24 horas

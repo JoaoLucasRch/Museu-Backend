@@ -31,6 +31,12 @@
   flex: 1;
 }
 
+p{
+  font-size: rem;
+  color: #4b5563;
+  margin: 0;
+}
+
 /* Barra de busca COM filtros */
 .searchFilterSection {
   display: flex;
@@ -250,6 +256,73 @@
 
 .clearButton:hover {
   background-color: #4b5563;
+}
+
+
+/* Header com Tabs */
+.header {
+  margin-bottom: 24px;
+}
+
+.tabsContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tabButton {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: #6B7280;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.tabButton:hover {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.tabButtonActive {
+  background-color: #111827;
+  color: white;
+}
+
+.tabButtonActive:hover {
+  background-color: #1F2937;
+  color: white;
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  color: #000000;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Ajustes para o título original (caso ainda exista) */
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+/* Responsive para tabs */
+@media (max-width: 640px) {
+  .tabButton {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .subtitle {
+    font-size: 13px;
+  }
 }
 
 @keyframes spin {
