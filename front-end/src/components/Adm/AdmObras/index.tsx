@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./AdmObras.module.css";
 import { Search } from "lucide-react";
 import AdmObraModal from "../AdmObraModal";
+import AdmEventos from "../AdmEventos";
 
 // Tipos
 export interface Obra {
@@ -35,6 +36,9 @@ export default function AdmObras() {
   // Estados do Modal
   const [selectedObra, setSelectedObra] = useState<Obra | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Estado da Tab ativa
+  const [activeTab, setActiveTab] = useState<"obras" | "eventos">("obras");
 
   useEffect(() => {
     fetchObras();
@@ -195,125 +199,151 @@ export default function AdmObras() {
 
   return (
     <div className={styles.container}>
-      {/* Título principal */}
+      {/* Cabeçalho com Tabs */}
       <div className={styles.header}>
-        <h2 className={styles.title}>Obras</h2>
-        <p className={styles.subtitle}>Gerencie as Obras de seus Artistas</p>
-      </div>
-
-      {/* Barra de busca com filtros */}
-      <div className={styles.searchFilterSection}>
-        <div className={styles.searchContainer}>
-          <Search size={18} className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder="Buscar obras..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={styles.searchInput}
-          />
+        <div className={styles.tabsContainer}>
+          <button
+            className={`${styles.tabButton} ${activeTab === "obras" ? styles.tabButtonActive : ""}`}
+            onClick={() => setActiveTab("obras")}
+          >
+            Obras
+          </button>
+          <button
+            className={`${styles.tabButton} ${activeTab === "eventos" ? styles.tabButtonActive : ""}`}
+            onClick={() => setActiveTab("eventos")}
+          >
+            Eventos
+          </button>
         </div>
         
-        {/* Filtros de status */}
-        <div className={styles.filtersContainer}>
-          <button
-            className={`${styles.filterButton} ${statusFilter === "todos" ? styles.filterButtonActive : ""}`}
-            onClick={() => setStatusFilter("todos")}
-          >
-            Todos
-          </button>
-          <button
-            className={`${styles.filterButton} ${statusFilter === "pendente" ? styles.filterButtonActive : ""}`}
-            onClick={() => setStatusFilter("pendente")}
-          >
-            Pendentes
-          </button>
-          <button
-            className={`${styles.filterButton} ${statusFilter === "rejeitada" ? styles.filterButtonActive : ""}`}
-            onClick={() => setStatusFilter("rejeitada")}
-          >
-            Rejeitadas
-          </button>
-          <button
-            className={`${styles.filterButton} ${statusFilter === "aprovada" ? styles.filterButtonActive : ""}`}
-            onClick={() => setStatusFilter("aprovada")}
-          >
-            Aprovadas
-          </button>
-        </div>
+        <p className={styles.subtitle}>
+          {activeTab === "obras" 
+            ? "Gerencie as Obras de seus Artistas" 
+            : "Gerencie os Eventos do Museu"}
+        </p>
       </div>
 
-      {/* Grid de Cards Quadrados */}
-      <div className={styles.cardsGrid}>
-        {filteredObras.length === 0 ? (
-          <div className={styles.emptyState}>
-            <p>
-              {searchTerm || statusFilter !== "todos" 
-                ? `Nenhuma obra encontrada${searchTerm ? ` para "${searchTerm}"` : ""}${statusFilter !== "todos" ? ` com status "${statusFilter}"` : ""}`
-                : "Nenhuma obra cadastrada no sistema"}
-            </p>
-            {(searchTerm || statusFilter !== "todos") && (
-              <button 
-                onClick={() => {
-                  setSearchTerm("");
-                  setStatusFilter("todos");
-                }}
-                className={styles.clearButton}
+      {/* Conteúdo baseado na tab ativa */}
+      {activeTab === "obras" ? (
+        <>
+          {/* Barra de busca com filtros */}
+          <div className={styles.searchFilterSection}>
+            <div className={styles.searchContainer}>
+              <Search size={18} className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="Buscar obras..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={styles.searchInput}
+              />
+            </div>
+            
+            {/* Filtros de status */}
+            <div className={styles.filtersContainer}>
+              <button
+                className={`${styles.filterButton} ${statusFilter === "todos" ? styles.filterButtonActive : ""}`}
+                onClick={() => setStatusFilter("todos")}
               >
-                Limpar filtros
+                Todos
               </button>
+              <button
+                className={`${styles.filterButton} ${statusFilter === "pendente" ? styles.filterButtonActive : ""}`}
+                onClick={() => setStatusFilter("pendente")}
+              >
+                Pendentes
+              </button>
+              <button
+                className={`${styles.filterButton} ${statusFilter === "rejeitada" ? styles.filterButtonActive : ""}`}
+                onClick={() => setStatusFilter("rejeitada")}
+              >
+                Rejeitadas
+              </button>
+              <button
+                className={`${styles.filterButton} ${statusFilter === "aprovada" ? styles.filterButtonActive : ""}`}
+                onClick={() => setStatusFilter("aprovada")}
+              >
+                Aprovadas
+              </button>
+            </div>
+          </div>
+
+          {/* Grid de Cards de Obras */}
+          <div className={styles.cardsGrid}>
+            {filteredObras.length === 0 ? (
+              <div className={styles.emptyState}>
+                <p>
+                  {searchTerm || statusFilter !== "todos" 
+                    ? `Nenhuma obra encontrada${searchTerm ? ` para "${searchTerm}"` : ""}${statusFilter !== "todos" ? ` com status "${statusFilter}"` : ""}`
+                    : "Nenhuma obra cadastrada no sistema"}
+                </p>
+                {(searchTerm || statusFilter !== "todos") && (
+                  <button 
+                    onClick={() => {
+                      setSearchTerm("");
+                      setStatusFilter("todos");
+                    }}
+                    className={styles.clearButton}
+                  >
+                    Limpar filtros
+                  </button>
+                )}
+              </div>
+            ) : (
+              filteredObras.map(obra => (
+                <div 
+                  key={obra.id_obra} 
+                  className={styles.squareCard}
+                  style={{ borderTopColor: getStatusColor(obra.status) }}
+                  onClick={() => handleCardClick(obra)}
+                >
+                  {/* Status no canto superior direito */}
+                  <div className={styles.cardStatus} style={{ backgroundColor: getStatusColor(obra.status) }}>
+                    {obra.status.toUpperCase()}
+                  </div>
+                  
+                  {/* Nome da obra */}
+                  <h3 className={styles.cardTitle}>
+                    {obra.titulo_obra}
+                  </h3>
+                  
+                  {/* Descrição no canto inferior */}
+                  <div className={styles.cardFooter}>
+                    <p className={styles.cardDescription}>
+                      {formatText(obra.descricao_obra)}
+                    </p>
+                  </div>
+                </div>
+              ))
             )}
           </div>
-        ) : (
-          filteredObras.map(obra => (
-            <div 
-              key={obra.id_obra} 
-              className={styles.squareCard}
-              style={{ borderTopColor: getStatusColor(obra.status) }}
-              onClick={() => handleCardClick(obra)}
-            >
-              {/* Status no canto superior direito */}
-              <div className={styles.cardStatus} style={{ backgroundColor: getStatusColor(obra.status) }}>
-                {obra.status.toUpperCase()}
-              </div>
-              
-              {/* Nome da obra */}
-              <h3 className={styles.cardTitle}>
-                {obra.titulo_obra}
-              </h3>
-              
-              {/* Descrição no canto inferior */}
-              <div className={styles.cardFooter}>
-                <p className={styles.cardDescription}>
-                  {formatText(obra.descricao_obra)}
-                </p>
-              </div>
+
+          {/* Se não houver obras no sistema */}
+          {obras.length === 0 && !isLoading && !error && (
+            <div className={styles.emptyDashboard}>
+              <h3>Nenhuma obra cadastrada</h3>
+              <p>Ainda não há obras para gerenciar no sistema.</p>
+              <button 
+                onClick={fetchObras}
+                className={styles.retryButton}
+              >
+                Atualizar
+              </button>
             </div>
-          ))
-        )}
-      </div>
+          )}
 
-      {/* Se não houver obras no sistema */}
-      {obras.length === 0 && !isLoading && !error && (
-        <div className={styles.emptyDashboard}>
-          <h3>Nenhuma obra cadastrada</h3>
-          <p>Ainda não há obras para gerenciar no sistema.</p>
-          <button 
-            onClick={fetchObras}
-            className={styles.retryButton}
-          >
-            Atualizar
-          </button>
-        </div>
+          {/* Modal de Visualização e Avaliação */}
+          <AdmObraModal
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            obra={selectedObra}
+            onStatusUpdate={handleStatusUpdate}
+          />
+        </>
+      ) : (
+        /* Componente de Eventos */
+        <AdmEventos />
       )}
-
-      {/* Modal de Visualização e Avaliação */}
-      <AdmObraModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        obra={selectedObra}
-        onStatusUpdate={handleStatusUpdate}
-      />
     </div>
   );
 }
