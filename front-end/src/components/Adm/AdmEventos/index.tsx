@@ -235,10 +235,9 @@ export default function AdmEventos() {
       if (response.ok) {
         const updated = await response.json();
 
-        // CORREÇÃO: Mantemos o criado_por do evento original
         const eventoAtualizadoCompleto: Evento = {
           ...updated,
-          criado_por: selectedEvento.criado_por, // Preserva o criador
+          criado_por: selectedEvento.criado_por,
         };
 
         setEventos((prev) =>
@@ -335,6 +334,19 @@ export default function AdmEventos() {
     setSelectedFile(null);
   };
 
+  const resetCreateForm = () => {
+    setFormData({
+      titulo_evento: "",
+      descricao_evento: "",
+      local_evento: "",
+      data_hora_inicio: "",
+      data_hora_fim: "",
+      tipo_evento: "" as any,
+      imagemPreview: "",
+    });
+    setSelectedFile(null);
+  };
+
   const formatDate = (iso: string) => {
     return new Date(iso).toLocaleString("pt-BR", {
       day: "2-digit",
@@ -406,6 +418,121 @@ export default function AdmEventos() {
           </div>
         )}
       </div>
+
+      {/* MODAL DE CRIAÇÃO DE EVENTO */}
+      {isCreateModalOpen && (
+        <div className={styles.modalOverlay} onClick={() => setIsCreateModalOpen(false)}>
+          <div className={styles.modalWide} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h2>Criar Novo Evento</h2>
+              <button onClick={() => setIsCreateModalOpen(false)} className={styles.closeBtn}>
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className={styles.modalBody}>
+              <div className={styles.formGroup}>
+                <label>Nome do Evento *</label>
+                <input
+                  type="text"
+                  placeholder="Digite o nome do evento"
+                  value={formData.titulo_evento}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, titulo_evento: e.target.value }))}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Descrição *</label>
+                <textarea
+                  rows={4}
+                  placeholder="Descreva o evento"
+                  value={formData.descricao_evento}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, descricao_evento: e.target.value }))}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Local do Evento *</label>
+                <input
+                  type="text"
+                  placeholder="Onde será o evento?"
+                  value={formData.local_evento}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, local_evento: e.target.value }))}
+                />
+              </div>
+
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label>Data e Hora Início *</label>
+                  <input
+                    type="datetime-local"
+                    value={formData.data_hora_inicio}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, data_hora_inicio: e.target.value }))}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Data e Hora Fim *</label>
+                  <input
+                    type="datetime-local"
+                    value={formData.data_hora_fim}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, data_hora_fim: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Categoria *</label>
+                <select
+                  value={formData.tipo_evento}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, tipo_evento: e.target.value as any }))}
+                >
+                  <option value="">Selecione uma categoria</option>
+                  <option value="EXPOSICAO">Exposição</option>
+                  <option value="OFICINA">Oficina</option>
+                  <option value="PALESTRA">Palestra</option>
+                </select>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Imagem do Evento</label>
+                <label className={styles.uploadArea}>
+                  <input type="file" accept="image/*" onChange={handleFileChange} hidden />
+                  {formData.imagemPreview ? (
+                    <div className={styles.previewContainer}>
+                      <img src={formData.imagemPreview} alt="Preview" className={styles.previewImage} />
+                      <p className={styles.fileName}>{selectedFile?.name || "Imagem selecionada"}</p>
+                    </div>
+                  ) : (
+                    <div className={styles.uploadPlaceholder}>
+                      <Upload size={32} />
+                      <span>Clique para fazer upload da imagem</span>
+                    </div>
+                  )}
+                </label>
+              </div>
+            </div>
+
+            <div className={styles.modalFooter}>
+              <button 
+                onClick={() => {
+                  setIsCreateModalOpen(false);
+                  resetCreateForm();
+                }} 
+                className={styles.cancelBtn}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleCreateSubmit}
+                disabled={isSubmitting || uploadProgress}
+                className={styles.submitBtn}
+              >
+                {isSubmitting || uploadProgress ? "Criando..." : "Criar Evento"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* MODAL DE VISUALIZAÇÃO / EDIÇÃO */}
       {selectedEvento && (

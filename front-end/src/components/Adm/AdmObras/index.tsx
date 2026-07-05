@@ -66,7 +66,59 @@ export default function AdmObras() {
 
       if (response.ok) {
         const data = await response.json();
-        setObras(data);
+        console.log("Obras recebidas:", data);
+        
+        // Buscar informações dos artistas para cada obra
+        const obrasComArtistas = await Promise.all(
+          data.map(async (obra: Obra) => {
+            // Se já tiver artista, retorna
+            if (obra.artista) {
+              return obra;
+            }
+            
+            // Se tiver artista_id, tenta buscar
+            if (obra.artista_id) {
+              try {
+                const artistaResponse = await fetch(`http://localhost:3333/user/${obra.artista_id}`, {
+                  method: "GET",
+                  headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                  },
+                });
+                
+                if (artistaResponse.ok) {
+                  const artistaData = await artistaResponse.json();
+                  return {
+                    ...obra,
+                    artista: {
+                      id: artistaData.id,
+                      nome: artistaData.nome,
+                      email: artistaData.email || "",
+                    }
+                  };
+                } else {
+                  console.error(`Erro ao buscar artista ${obra.artista_id}: Status ${artistaResponse.status}`);
+                }
+              } catch (error) {
+                console.error(`Erro ao buscar artista ${obra.artista_id}:`, error);
+              }
+            }
+            
+            // Fallback: mostra o ID do artista
+            return {
+              ...obra,
+              artista: {
+                id: obra.artista_id,
+                nome: `Artista #${obra.artista_id}`,
+                email: "",
+              }
+            };
+          })
+        );
+        
+        setObras(obrasComArtistas);
+        console.log("Obras processadas com artistas:", obrasComArtistas);
       } else {
         throw new Error("Erro ao carregar obras");
       }
@@ -100,7 +152,6 @@ export default function AdmObras() {
 
       console.log("Status da resposta:", response.status);
 
-      // Verificar se a resposta não é ok
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         console.error("Erro na resposta:", errorData);
@@ -112,7 +163,6 @@ export default function AdmObras() {
         throw new Error(errorData?.message || `Erro HTTP: ${response.status}`);
       }
 
-      // Tentar ler a resposta JSON
       const data = await response.json().catch(() => ({}));
       console.log("Resposta da API:", data);
 
@@ -126,19 +176,18 @@ export default function AdmObras() {
     }
   };
 
-  // Abrir modal com obra selecionada
   const handleCardClick = (obra: Obra) => {
+    console.log("Clicou na obra:", obra.titulo_obra);
     setSelectedObra(obra);
     setIsModalOpen(true);
   };
 
-  // Fechar modal
   const handleCloseModal = () => {
+    console.log("🔚 Fechando modal");
     setIsModalOpen(false);
     setSelectedObra(null);
   };
 
-  // Formatar texto para exibição
   const formatText = (text: string, maxLength: number = 60) => {
     if (!text) return "";
     return text.length > maxLength 
@@ -150,7 +199,8 @@ export default function AdmObras() {
   const filteredObras = obras.filter(obra => {
     const matchesSearch = 
       obra.titulo_obra.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      obra.descricao_obra.toLowerCase().includes(searchTerm.toLowerCase());
+      obra.descricao_obra.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (obra.artista?.nome || "").toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = 
       statusFilter === "todos" || 
@@ -159,7 +209,6 @@ export default function AdmObras() {
     return matchesSearch && matchesStatus;
   });
 
-  // Status colors
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pendente": return "#da9f408d";
@@ -232,7 +281,7 @@ export default function AdmObras() {
               <Search size={18} className={styles.searchIcon} />
               <input
                 type="text"
-                placeholder="Buscar obras..."
+                placeholder="Buscar obras ou artistas..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={styles.searchInput}
