@@ -1,6 +1,7 @@
-import { FastifyInstance } from 'fastify';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { getMyProfile, updateMyProfile, uploadProfilePhoto } from '../controllers/userController';
 import { verifyJWT as authenticate } from '../middlewares/verifyJWT';
+import { prisma } from '@/prisma';
 
 export async function userRoutes(app: FastifyInstance) {
   app.addHook('preHandler', authenticate);
@@ -29,6 +30,39 @@ export async function userRoutes(app: FastifyInstance) {
     },
     additionalProperties: false,
   };
+
+  //busca por id
+  app.get('/:id', async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+    try {
+      const { id } = request.params;
+      
+      console.log(`Buscando usuário ID: ${id}`);
+      
+      const usuario = await prisma.usuario.findUnique({
+        where: { id: Number(id) },
+        select: {
+          id: true,
+          nome: true,
+          email: true,
+          foto: true,
+          role: true,
+          contato: true,
+          bio: true
+        }
+      });
+
+      if (!usuario) {
+        console.log(`Usuário ${id} não encontrado`);
+        return reply.status(404).send({ message: 'Usuário não encontrado' });
+      }
+
+      console.log(`Usuário ${id} encontrado:`, usuario.nome);
+      return reply.send(usuario);
+    } catch (error) {
+      console.error('Erro ao buscar usuário:', error);
+      return reply.status(500).send({ message: 'Erro interno ao buscar usuário' });
+    }
+  });
 
   // Rota: Visualizar o próprio perfil
   app.get('/me', {
@@ -156,4 +190,5 @@ export async function userRoutes(app: FastifyInstance) {
       },
     },
   }, uploadProfilePhoto);
+  
 }
