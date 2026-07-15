@@ -9,9 +9,10 @@ import {
 } from '../controllers/ObraController';
 import { verifyJWT as authenticate } from '../middlewares/verifyJWT';
 
-export async function obraRoutes(app: FastifyInstance) {
+import { FastifyRequest, FastifyReply } from 'fastify';
+import { prisma } from '../prisma';
 
-    app.addHook('preHandler', authenticate);
+export async function obraRoutes(app: FastifyInstance) {
 
   // Schema base da obra
   const obraSchema = {
@@ -24,8 +25,9 @@ export async function obraRoutes(app: FastifyInstance) {
       categoria_obra: { type: 'string', example: 'Pintura' },
       data_exposicao: { type: 'string', format: 'date-time', example: '2025-05-10T14:00:00Z' },
       data_fim_exposicao: { type: 'string', format: 'date-time', example: '2025-06-10T14:00:00Z' },
-      status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada'], example: 'pendente' },
+      status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada', 'exposta'], example: 'pendente' },
       artista_id: { type: 'number', example: 3 },
+      edital_id: { type: 'number', example: 1 },
     },
   };
 
@@ -40,6 +42,7 @@ export async function obraRoutes(app: FastifyInstance) {
       categoria_obra: { type: 'string' },
       data_exposicao: { type: 'string', format: 'date-time' },
       data_fim_exposicao: { type: 'string', format: 'date-time' },
+      edital_id: { type: 'number' },
     },
   };
 
@@ -47,14 +50,65 @@ export async function obraRoutes(app: FastifyInstance) {
     type: 'object',
     required: ['status'],
     properties: {
-      status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada'] },
+      status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada', 'exposta'] },  // ← ATUALIZADO
     },
   };
 
-  // Criar Obra (ARTISTA)
+
+  app.get('/teste-obra', {
+    preHandler: authenticate,
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const { id: artistaId } = request.user as { id: number };
+
+      // Query direta
+      const result = await prisma.$queryRaw`
+      SELECT id_obra, titulo_obra, data_envio 
+      FROM obras 
+      WHERE artista_id = ${artistaId}
+      LIMIT 1
+    `;
+
+      console.log('🔍 Teste query:', result);
+      return reply.send(result);
+    } catch (error) {
+      console.error('Erro no teste:', error);
+      return reply.status(500).send({ error: 'Erro no teste' });
+    }
+  });
+
+  app.get('/teste-data-envio', {
+    preHandler: authenticate,
+    schema: {
+      summary: 'Teste data_envio',
+      description: 'Rota de teste para verificar data_envio',
+      tags: ['Teste'],
+      security: [{ bearerAuth: [] }],
+    },
+  }, async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const { id: artistaId } = request.user as { id: number };
+
+      // Query direta no banco
+      const result = await prisma.$queryRaw`
+      SELECT id_obra, titulo_obra, data_envio 
+      FROM obras 
+      WHERE artista_id = ${artistaId}
+    `;
+
+      console.log('🔍 Resultado do teste:', result);
+      return reply.send(result);
+    } catch (error) {
+      console.error('Erro no teste:', error);
+      return reply.status(500).send({ error: 'Erro no teste' });
+    }
+  });
+
+  // ==================== CRIAR OBRA (ARTISTA) ====================
   app.post(
     '/',
     {
+      preHandler: authenticate,
       schema: {
         tags: ['Obras'],
         summary: 'Criar nova obra (Artista)',
@@ -88,10 +142,11 @@ export async function obraRoutes(app: FastifyInstance) {
     createObra
   );
 
-  // Listar obras do próprio artista
+  // ==================== LISTAR OBRAS DO PRÓPRIO ARTISTA ====================
   app.get(
     '/minhas',
     {
+      preHandler: authenticate,
       schema: {
         tags: ['Obras'],
         summary: 'Listar minhas obras',
@@ -116,10 +171,11 @@ export async function obraRoutes(app: FastifyInstance) {
     getMyObras
   );
 
-  // Excluir obra (ARTISTA)
+  // ==================== EXCLUIR OBRA (ARTISTA) ====================
   app.delete(
     '/:id_obra',
     {
+      preHandler: authenticate,
       schema: {
         tags: ['Obras'],
         summary: 'Excluir obra',
@@ -161,10 +217,11 @@ export async function obraRoutes(app: FastifyInstance) {
     deleteObra
   );
 
-  // Listar todas as obras (ADMIN)
+  // ==================== LISTAR TODAS AS OBRAS (ADMIN) ====================
   app.get(
     '/admin',
     {
+      preHandler: authenticate,
       schema: {
         tags: ['Obras'],
         summary: 'Listar todas as obras (Admin)',
@@ -189,14 +246,15 @@ export async function obraRoutes(app: FastifyInstance) {
     getAllObras
   );
 
-  // Atualizar status da obra (ADMIN)
+  // ==================== ATUALIZAR STATUS DA OBRA (ADMIN) ====================
   app.patch(
     '/admin/:id_obra/status',
     {
+      preHandler: authenticate,
       schema: {
         tags: ['Obras'],
         summary: 'Atualizar status da obra',
-        description: 'Permite ao administrador alterar o status de uma obra (pendente, aprovada ou rejeitada).',
+        description: 'Permite ao administrador alterar o status de uma obra (pendente, aprovada, rejeitada ou exposta).',
         security: [{ bearerAuth: [] }],
         params: {
           type: 'object',
@@ -231,10 +289,11 @@ export async function obraRoutes(app: FastifyInstance) {
     updateObraStatus
   );
 
-  // Listar obras de um artista específico (ADMIN)
+  // ==================== LISTAR OBRAS DE UM ARTISTA ESPECÍFICO (ADMIN) ====================
   app.get(
     '/admin/artista/:artistaId',
     {
+      preHandler: authenticate,
       schema: {
         tags: ['Obras'],
         summary: 'Listar obras de um artista (Admin)',
@@ -248,7 +307,7 @@ export async function obraRoutes(app: FastifyInstance) {
         },
         querystring: {
           type: 'object',
-          properties: { status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada'] } },
+          properties: { status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada', 'exposta'] } },  // ← ATUALIZADO
         },
         response: {
           200: {

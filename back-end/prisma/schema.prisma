@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,28 +12,34 @@ enum Role {
   ARTISTA
 }
 
-model Usuario {
-  id      Int     @id @default(autoincrement())
-  nome    String
-  email   String  @unique
-  senha   String
-  contato String
-  foto    String?
-  bio     String?
-  role    Role    @default(ARTISTA)
-
-  // Relacionamentos
-  obras   Obra[] // Obras criadas pelo artista
-  eventos Evento[] // Eventos criados pelo admin
-
-  @@map("usuarios")
-}
-
 enum StatusObra {
   pendente
   aprovada
   rejeitada
   exposta
+}
+
+enum TipoEvento {
+  EXPOSICAO
+  OFICINA
+  PALESTRA
+  LANCAMENTO
+  OUTRO
+}
+
+model Usuario {
+  id      Int      @id @default(autoincrement())
+  nome    String
+  email   String   @unique
+  senha   String
+  contato String
+  foto    String?
+  bio     String?
+  role    Role     @default(ARTISTA)
+  eventos Evento[]
+  obras   Obra[]
+
+  @@map("usuarios")
 }
 
 model Obra {
@@ -49,30 +52,30 @@ model Obra {
   data_envio         DateTime   @default(now())
   data_exposicao     DateTime?
   data_fim_exposicao DateTime?
+  artista_id         Int
+  edital_id          Int?
+  artista            Usuario    @relation(fields: [artista_id], references: [id], onDelete: Cascade)
+  edital             Evento?    @relation("EditalObras", fields: [edital_id], references: [id_evento])
 
-  artista_id Int
-  artista    Usuario @relation(fields: [artista_id], references: [id], onDelete: Cascade)
-
+  @@index([artista_id])
+  @@index([edital_id])
   @@map("obras")
-}
-
-enum TipoEvento {
-  EXPOSICAO
-  OFICINA
-  PALESTRA
-  LANCAMENTO
-  OUTRO
 }
 
 model Evento {
   id_evento        Int        @id @default(autoincrement())
   titulo_evento    String
   descricao_evento String
-  local_evento     String
+  local_evento     String     @default("Museu") //Padrão no museu
   imagem_evento    String?
   data_hora_inicio DateTime
   data_hora_fim    DateTime
   tipo_evento      TipoEvento
+
+  // CAMPOS PARA EDITAL
+  eh_edital        Boolean   @default(false)
+  inicio_submissao DateTime? // Só se eh_edital = true
+  fim_submissao    DateTime? // Só se eh_edital = true
 
   criado_por_id Int
   criado_por    Usuario @relation(fields: [criado_por_id], references: [id], onDelete: Cascade)
@@ -80,5 +83,8 @@ model Evento {
   criado_em     DateTime @default(now())
   atualizado_em DateTime @updatedAt
 
+  obras_editais Obra[] @relation("EditalObras")
+
+  @@index([criado_por_id])
   @@map("eventos")
 }
