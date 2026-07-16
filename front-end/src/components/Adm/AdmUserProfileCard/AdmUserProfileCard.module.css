@@ -1,130 +1,114 @@
-/* src/components/dashboard/UserProfileCard/UserProfileCard.module.css */
-.card {
-  background-color: #ffffff;
-  border-radius: 24px; /* Bordas bem arredondadas como na imagem */
-  padding: 1.5rem 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Sombra bem suave */
+.container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
   width: 100%;
-  margin-bottom: 2rem;
+  box-sizing: border-box;
+  background: transparent;
 }
 
-.leftSection {
+.topSection {
+  margin-bottom: 24px;
+}
+
+.profileType {
+  font-size: 24px;
+  color: #6c757d; 
+  display: block;
+  margin-bottom: 8px;
+}
+
+.greeting {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.infoAndActionArea {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
+  padding: 0; 
 }
 
-.avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #f3f4f6; /* Borda sutil */
+.infoFields {
+  display: flex;
+  gap: 64px; 
 }
 
-.info {
+.infoItem {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 6px;
 }
 
-.input,
-.textarea,
-.select {
-  padding: 10px 12px;
-  border: 1px solid rgba(209, 213, 219, 0.6);
-  border-radius: 8px;
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #212529;
+  letter-spacing: 0.5px;
+}
+
+.value {
   font-size: 14px;
-  color: #111827;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  font-family: inherit;
-  background-color: rgba(255, 255, 255, 0.95);
+  color: #333333;
 }
 
-.name {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #111827; /* Preto suave */
-  margin: 0;
-  line-height: 1.2;
-}
-
-.email {
-  color: #6B7280; /* Cinza médio */
-  font-size: 1rem;
-  margin: 0;
-}
-
-.bio {
-  color: #888888; /* Cinza um pouco mais claro */
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  max-width: 400px;
-}
-
+/* Alinhamento dos botões */
 .buttonGroup {
   display: flex;
-  gap: 1rem;
   align-items: center;
+  gap: 12px;
 }
 
+/* Botão de Editar Perfil (Retângulo Menor) */
 .editButton {
-  background-color: #FDF0A5;
-  color: #4B3F05;
-  border: none;
-  padding: 0.8rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid #dcdcdc;
   border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  padding: 10px 20px;
+  font-size: 13px;
+  color: #a38f8f; 
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .editButton:hover {
-  background-color: #fce982;
-  transform: translateY(-1px);
+  background-color: #f5f5f5;
+  color: #7a6868;
 }
 
+/* Botão Novo Admin (Preto, combinando com os botões das tabelas) */
 .newAdminButton {
-  background-color: #010210;
-  color: #f9ebeb;
-  border: none;
-  padding: 0.8rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #000000;
+  border: 1px solid #000000;
   border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 13px;
   font-weight: 600;
-  font-size: 0.95rem;
+  color: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .newAdminButton:hover {
-  background-color: #393c3b;
-  transform: translateY(-1px);
+  background-color: #222222;
 }
 
-/* Responsividade para celular */
-@media (max-width: 768px) {
-  .card {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
-    padding: 1.5rem;
-  }
+.icon {
+  width: 16px;
+  height: 16px;
+}
 
-  .leftSection {
-    flex-direction: column;
-  }
-  
-  .buttonGroup {
-    width: 100%;
-    flex-direction: column;
-  }
-  
-  .editButton,
-  .newAdminButton {
-    width: 100%;
-  }
+.loadingContainer {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+  font-size: 16px;
 }

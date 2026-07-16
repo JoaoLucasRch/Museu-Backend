@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, X, Upload, Edit2, Trash2 } from "lucide-react";
+import { Plus, X, Upload, Edit2, Trash2, Search } from "lucide-react";
 import styles from "./styles.module.css";
 
 export interface Evento {
@@ -26,6 +26,11 @@ export default function AdmEventos() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Estados de Filtro e Busca
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showHistoryOnly, setShowHistoryOnly] = useState(false);
+
+  // Estados dos Modais
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedEvento, setSelectedEvento] = useState<Evento | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -36,7 +41,7 @@ export default function AdmEventos() {
     local_evento: "",
     data_hora_inicio: "",
     data_hora_fim: "",
-    tipo_evento: "" as Evento["tipo_evento"],
+    tipo_evento: "" as any,
     imagemPreview: "",
   });
 
@@ -202,7 +207,6 @@ export default function AdmEventos() {
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem("token");
-
       const imagemUrl = await uploadImagem(selectedEvento.imagem_evento);
 
       const body: Partial<Evento> = {
@@ -235,6 +239,7 @@ export default function AdmEventos() {
       if (response.ok) {
         const updated = await response.json();
 
+        // CORREÇÃO: Mantemos o criado_por do evento original
         const eventoAtualizadoCompleto: Evento = {
           ...updated,
           criado_por: selectedEvento.criado_por,
@@ -300,24 +305,6 @@ export default function AdmEventos() {
     setSelectedFile(null);
   };
 
-  const startEdit = () => setIsEditMode(true);
-
-  const cancelEdit = () => {
-    if (selectedEvento) {
-      setFormData({
-        titulo_evento: selectedEvento.titulo_evento,
-        descricao_evento: selectedEvento.descricao_evento,
-        local_evento: selectedEvento.local_evento,
-        data_hora_inicio: selectedEvento.data_hora_inicio.slice(0, 16),
-        data_hora_fim: selectedEvento.data_hora_fim.slice(0, 16),
-        tipo_evento: selectedEvento.tipo_evento,
-        imagemPreview: selectedEvento.imagem_evento,
-      });
-      setSelectedFile(null);
-    }
-    setIsEditMode(false);
-  };
-
   const closeAllModals = () => {
     setIsCreateModalOpen(false);
     setSelectedEvento(null);
@@ -347,23 +334,29 @@ export default function AdmEventos() {
     setSelectedFile(null);
   };
 
-  const formatDate = (iso: string) => {
-    return new Date(iso).toLocaleString("pt-BR", {
+  const formatDateDisplay = (iso: string) => {
+    if (!iso) return "Não informada";
+    const d = new Date(iso);
+    return d.toLocaleDateString("pt-BR", {
       day: "2-digit",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+      month: "short",
+      year: "numeric"
+    }).replace(".", "");
   };
+
+  // Filtragem combinada por busca textual + histórico vencido
+  const filteredEventos = eventos.filter((evento) => {
+    const matchesSearch = evento.titulo_evento.toLowerCase().includes(searchTerm.toLowerCase());
+    const now = new Date();
+    const isPastEvent = new Date(evento.data_hora_fim) < now;
+    return matchesSearch && (showHistoryOnly ? isPastEvent : !isPastEvent);
+  });
 
   if (isLoading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loading}>
-          <div className={styles.spinner}></div>
-          <p>Carregando eventos...</p>
-        </div>
+      <div className={styles.loading}>
+        <div className={styles.spinner}></div>
+        <p>Carregando eventos...</p>
       </div>
     );
   }
@@ -385,38 +378,103 @@ export default function AdmEventos() {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.cardsGrid}>
-          <div className={styles.addCard} onClick={() => setIsCreateModalOpen(true)}>
-            <Plus size={48} className={styles.plusIcon} />
+        {/* Painel Superior: Busca, Histórico e Botão Novo Evento Oval */}
+        <div className={styles.topControlSection}>
+          <div className={styles.searchContainer}>
+            <Search size={18} className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Buscar por título ou evento..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={styles.searchInput}
+            />
           </div>
 
-          {eventos.map((evento) => (
-            <div key={evento.id_evento} className={styles.eventoCard} onClick={() => openViewModal(evento)}>
-              <div className={styles.cardImage}>
-                {evento.imagem_evento ? (
-                  <img
-                    src={evento.imagem_evento}
-                    alt={evento.titulo_evento}
-                    onError={(e) => (e.currentTarget.src = "https://placehold.co/400x300?text=Sem+Imagem")}
-                  />
-                ) : (
-                  <div className={styles.noImage}><span>Sem Imagem</span></div>
-                )}
-              </div>
-              <div className={styles.cardInfo}>
-                <h3 className={styles.cardTitle}>{evento.titulo_evento}</h3>
-                <p className={styles.cardType}>{evento.tipo_evento.toLowerCase()}</p>
-              </div>
-            </div>
-          ))}
+          <div className={styles.actionButtonsGroup}>
+            <button
+              type="button"
+              className={`${styles.historyButton} ${showHistoryOnly ? styles.historyActive : ""}`}
+              onClick={() => setShowHistoryOnly(!showHistoryOnly)}
+            >
+              Histórico
+            </button>
+            <button
+              type="button"
+              className={styles.newEventButton}
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              + Novo Evento
+            </button>
+          </div>
         </div>
 
-        {eventos.length === 0 && (
-          <div className={styles.emptyState}>
-            <h3>Nenhum evento cadastrado</h3>
-            <p>Clique no card "+" para adicionar um novo evento.</p>
-          </div>
-        )}
+        {/* Tabela de Eventos */}
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th className={styles.thLeft}>EVENTO</th>
+                <th>CATEGORIA</th>
+                <th>CRIADO EM</th>
+                <th className={styles.thRight}>DATA</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredEventos.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className={styles.emptyRow}>
+                    Nenhum evento encontrado {showHistoryOnly ? "no histórico" : "ativo"}.
+                  </td>
+                </tr>
+              ) : (
+                filteredEventos.map((evento) => (
+                  <tr key={evento.id_evento} className={styles.row} onClick={() => openViewModal(evento)}>
+                    <td className={styles.eventoCell}>
+                      <div className={styles.eventoContentWrapper}>
+                        {/* Quadrado da Imagem ao lado do texto */}
+                        <div className={styles.tableImageContainer}>
+                          {evento.imagem_evento ? (
+                            <img
+                              src={evento.imagem_evento}
+                              alt={evento.titulo_evento}
+                              className={styles.tableImage}
+                              onError={(e) => (e.currentTarget.src = "https://placehold.co/150?text=Sem+Imagem")}
+                            />
+                          ) : (
+                            <div className={styles.tableNoImage} />
+                          )}
+                        </div>
+
+                        {/* Textos da Coluna */}
+                        <div className={styles.eventoTextGroup}>
+                          <span className={styles.eventoTitle}>{evento.titulo_evento}</span>
+                          <span className={styles.eventoAuthor}>
+                            criado por: {evento.criado_por?.nome || "Administrador"}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className={styles.centerCell}>
+                      <span className={styles.categoryText}>Exponha</span>
+                    </td>
+                    <td className={styles.centerCell}>
+                      <span className={styles.dateText}>{formatDateDisplay(evento.data_hora_inicio)}</span>
+                    </td>
+                    <td className={styles.dateRightCell}>
+                      <div className={styles.dateWithIcon}>
+                        <span className={styles.dateText}>{formatDateDisplay(evento.data_hora_fim)}</span>
+                        <svg className={styles.inlineEditIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                        </svg>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* MODAL DE CRIAÇÃO DE EVENTO */}
@@ -534,141 +592,124 @@ export default function AdmEventos() {
         </div>
       )}
 
-      {/* MODAL DE VISUALIZAÇÃO / EDIÇÃO */}
-      {selectedEvento && (
+      {/* CONDICIONAL UNIFICADA DOS MODAIS (Criação e Detalhes) */}
+      {(isCreateModalOpen || selectedEvento) && (
         <div className={styles.modalOverlay} onClick={closeAllModals}>
           <div className={styles.modalWide} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
-              <h2>{isEditMode ? "Editar Evento" : selectedEvento.titulo_evento}</h2>
+              <h2>
+                {isCreateModalOpen 
+                  ? "Criar Novo Evento" 
+                  : isEditMode ? "Editar Evento" : "Detalhes do Evento"}
+              </h2>
               <button onClick={closeAllModals} className={styles.closeBtn}>
                 <X size={24} />
               </button>
             </div>
 
-            {!isEditMode ? (
-              <>
-                <div className={styles.viewBody}>
-                  <img
-                    src={selectedEvento.imagem_evento || "https://placehold.co/800x400?text=Sem+Imagem"}
-                    alt={selectedEvento.titulo_evento}
-                    className={styles.viewImage}
-                    onError={(e) => (e.currentTarget.src = "https://placehold.co/800x400?text=Sem+Imagem")}
-                  />
-                  <div className={styles.viewInfo}>
-                    <p><strong>Descrição:</strong> {selectedEvento.descricao_evento}</p>
-                    <p><strong>Local:</strong> {selectedEvento.local_evento}</p>
-                    <p><strong>Início:</strong> {formatDate(selectedEvento.data_hora_inicio)}</p>
-                    <p><strong>Fim:</strong> {formatDate(selectedEvento.data_hora_fim)}</p>
-                    <p><strong>Tipo:</strong> <span className={styles.typeBadge}>{selectedEvento.tipo_evento}</span></p>
-                    <p>
-                      <strong>Criado por:</strong>{" "}
-                      {selectedEvento.criado_por?.nome || "Administrador"}
-                    </p>
-                  </div>
+            {!isCreateModalOpen && !isEditMode && selectedEvento ? (
+              <div className={styles.viewBody}>
+                <div className={styles.viewInfo}>
+                  <p><strong>Título:</strong> {selectedEvento.titulo_evento}</p>
+                  <p><strong>Descrição:</strong> {selectedEvento.descricao_evento}</p>
+                  <p><strong>Local:</strong> {selectedEvento.local_evento}</p>
+                  <p><strong>Tipo:</strong> {selectedEvento.tipo_evento}</p>
                 </div>
-
                 <div className={styles.modalFooter}>
                   <button onClick={handleDelete} className={styles.deleteBtn}>
-                    <Trash2 size={18} /> Excluir Evento
+                    <Trash2 size={16} /> Excluir
                   </button>
-                  <button onClick={startEdit} className={styles.editBtn}>
-                    <Edit2 size={18} /> Editar Evento
+                  <button onClick={() => setIsEditMode(true)} className={styles.editBtn}>
+                    <Edit2 size={16} /> Editar
                   </button>
                 </div>
-              </>
+              </div>
             ) : (
-              <>
-                <div className={styles.modalBody}>
+              <div className={styles.modalBody}>
+                <div className={styles.formGroup}>
+                  <label>Nome do Evento</label>
+                  <input 
+                    type="text" 
+                    value={formData.titulo_evento} 
+                    onChange={(e) => setFormData(prev => ({ ...prev, titulo_evento: e.target.value }))} 
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Descrição</label>
+                  <textarea 
+                    rows={3} 
+                    value={formData.descricao_evento} 
+                    onChange={(e) => setFormData(prev => ({ ...prev, descricao_evento: e.target.value }))} 
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Local do Evento</label>
+                  <input 
+                    type="text" 
+                    value={formData.local_evento} 
+                    onChange={(e) => setFormData(prev => ({ ...prev, local_evento: e.target.value }))} 
+                  />
+                </div>
+                <div className={styles.formRow}>
                   <div className={styles.formGroup}>
-                    <label>Nome do Evento</label>
-                    <input
-                      type="text"
-                      value={formData.titulo_evento}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, titulo_evento: e.target.value }))}
+                    <label>Data Início</label>
+                    <input 
+                      type="datetime-local" 
+                      value={formData.data_hora_inicio} 
+                      onChange={(e) => setFormData(prev => ({ ...prev, data_hora_inicio: e.target.value }))} 
                     />
                   </div>
-
                   <div className={styles.formGroup}>
-                    <label>Descrição</label>
-                    <textarea
-                      rows={4}
-                      value={formData.descricao_evento}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, descricao_evento: e.target.value }))}
+                    <label>Data Fim</label>
+                    <input 
+                      type="datetime-local" 
+                      value={formData.data_hora_fim} 
+                      onChange={(e) => setFormData(prev => ({ ...prev, data_hora_fim: e.target.value }))} 
                     />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Local do Evento</label>
-                    <input
-                      type="text"
-                      value={formData.local_evento}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, local_evento: e.target.value }))}
-                    />
-                  </div>
-
-                  <div className={styles.formRow}>
-                    <div className={styles.formGroup}>
-                      <label>Data e Hora Início</label>
-                      <input
-                        type="datetime-local"
-                        value={formData.data_hora_inicio}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, data_hora_inicio: e.target.value }))}
-                      />
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label>Data e Hora Fim</label>
-                      <input
-                        type="datetime-local"
-                        value={formData.data_hora_fim}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, data_hora_fim: e.target.value }))}
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Categoria</label>
-                    <select
-                      value={formData.tipo_evento}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, tipo_evento: e.target.value as any }))}
-                    >
-                      <option value="EXPOSICAO">Exposição</option>
-                      <option value="OFICINA">Oficina</option>
-                      <option value="PALESTRA">Palestra</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Imagem do Evento (deixe em branco para manter a atual)</label>
-                    <label className={styles.uploadArea}>
-                      <input type="file" accept="image/*" onChange={handleFileChange} hidden />
-                      {formData.imagemPreview ? (
-                        <div className={styles.previewContainer}>
-                          <img src={formData.imagemPreview} alt="Preview" className={styles.previewImage} />
-                          <p className={styles.fileName}>{selectedFile?.name || "Imagem atual"}</p>
-                        </div>
-                      ) : (
-                        <div className={styles.uploadPlaceholder}>
-                          <Upload size={32} />
-                          <span>Clique para alterar imagem</span>
-                        </div>
-                      )}
-                    </label>
                   </div>
                 </div>
-
+                <div className={styles.formGroup}>
+                  <label>Categoria</label>
+                  <select
+                    value={formData.tipo_evento}
+                    onChange={(e) => setFormData(prev => ({ ...prev, tipo_evento: e.target.value as any }))}
+                  >
+                    <option value="" disabled>Selecione uma categoria...</option>
+                    <option value="EXPOSICAO">Exposição</option>
+                    <option value="OFICINA">Oficina</option>
+                    <option value="PALESTRA">Palestra</option>
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Imagem do Evento</label>
+                  <label className={styles.uploadArea}>
+                    <input type="file" accept="image/*" onChange={handleFileChange} hidden />
+                    {formData.imagemPreview ? (
+                      <div className={styles.previewContainer}>
+                        <img src={formData.imagemPreview} alt="Preview" className={styles.previewImage} />
+                      </div>
+                    ) : (
+                      <div className={styles.uploadPlaceholder}>
+                        <Upload size={32} />
+                        <span>Clique para alterar imagem</span>
+                      </div>
+                    )}
+                  </label>
+                </div>
                 <div className={styles.modalFooter}>
-                  <button onClick={cancelEdit} className={styles.cancelBtn}>
+                  <button type="button" onClick={closeAllModals} className={styles.cancelBtn}>
                     Cancelar
                   </button>
                   <button
-                    onClick={handleEditSubmit}
+                    type="button"
+                    onClick={isCreateModalOpen ? handleCreateSubmit : handleEditSubmit}
                     disabled={isSubmitting || uploadProgress}
                     className={styles.submitBtn}
                   >
-                    {isSubmitting || uploadProgress ? "Salvando..." : "Salvar Alterações"}
+                    {isSubmitting ? "Salvando..." : "Salvar"}
                   </button>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>

@@ -5,12 +5,17 @@ import styles from "./DashboardAdmin.module.css";
 // Componentes existentes
 import AdmUserProfileCard from "../../components/Adm/AdmUserProfileCard";
 import AdmEditProfileModal from "../../components/Adm/AdmEditProfileModal";
-import AdmRegisterForm from "../../components/Adm/AdmRegisterForm"; // Importar o novo componente
+import AdmRegisterForm from "../../components/Adm/AdmRegisterForm";
 import { UserService } from "../../components/Profile/types/UserService";
 import type { UserProfile } from "../../components/Profile/types/User";
 
-// Importando o novo componente de gerenciamento de obras
+
+// Importando o componente de gerenciamento de obras
 import AdmObras from "../../components/Adm/AdmObras";
+import AdmEventos from "../../components/Adm/AdmEventos";
+
+// Definindo os tipos aceitos pela nossa navegação deslizante
+type TabType = "insights" | "obras" | "eventos";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -18,8 +23,11 @@ export default function AdminDashboard() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [showNewAdminModal, setShowNewAdminModal] = useState(false); // Mudado para modal
+  const [showNewAdminModal, setShowNewAdminModal] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+
+  // NOVO: Estado para controlar qual aba/página está ativa (iniciando em 'obras')
+  const [activeTab, setActiveTab] = useState<TabType>("obras");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -59,17 +67,14 @@ export default function AdminDashboard() {
     setUser(updatedUser);
   }
 
-  // Função para abrir o modal de novo admin
   function handleNewAdmin() {
     setShowNewAdminModal(true);
   }
 
-  // Função para fechar o modal de novo admin
   function handleCloseNewAdminModal() {
     setShowNewAdminModal(false);
   }
 
-  // Função para enviar o formulário de novo admin
   async function handleRegisterAdmin(formData: any) {
     setIsRegistering(true);
     try {
@@ -87,7 +92,7 @@ export default function AdminDashboard() {
       if (response.ok) {
         const data = await response.json();
         alert(`Administrador ${data.nome} cadastrado com sucesso!`);
-        handleCloseNewAdminModal(); // Fecha o modal após sucesso
+        handleCloseNewAdminModal();
       } else {
         const error = await response.json();
         alert(`Erro: ${error.message}`);
@@ -100,9 +105,17 @@ export default function AdminDashboard() {
     }
   }
 
+  // Mapeamento das abas para cálculo do indicador deslizante
+  const tabs: { id: TabType; label: string }[] = [
+    { id: "insights", label: "insights" },
+    { id: "obras", label: "Obras" },
+    { id: "eventos", label: "Eventos" },
+  ];
+  const activeIndex = tabs.findIndex((tab) => tab.id === activeTab);
+
   return (
     <div className={styles.container}>
-      {/* Cabeçalho com título e botão Sair no canto superior direito */}
+      {/* Cabeçalho com o botão Sair */}
       <div className={styles.header}>
         <h1 className={styles.title}></h1>
         <button className={styles.logoutButton} onClick={handleLogout}>
@@ -112,20 +125,54 @@ export default function AdminDashboard() {
 
       {/* Conteúdo Principal */}
       <div className={styles.main}>
-        {/* Seção do Perfil */}
+        {/* Seção do Perfil administrativo fixa */}
         <section className={styles.profileSection}>
           <AdmUserProfileCard
             user={user}
             isLoading={isLoading}
             onEdit={() => setIsEditModalOpen(true)}
-            onNewAdmin={handleNewAdmin} // Passa a função para abrir modal
+            onNewAdmin={handleNewAdmin}
           />
         </section>
 
-        {/* Seção das Obras */}
-        <section className={styles.obrasSection}>
-          <AdmObras />
-        </section>
+        {/* COMPONENTE DE NAVEGAÇÃO INTERNA DESLIZANTE */}
+        <div className={styles.navTabsWrapper}>
+          <div className={styles.navTabsContainer}>
+            <div
+              className={styles.slidingIndicator}
+              style={{ transform: `translateX(${activeIndex * 100}%)` }}
+            />
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                className={`${styles.tabButton} ${activeTab === tab.id ? styles.activeText : ""}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* SEÇÕES CONDICIONAIS - Muda de acordo com a aba clicada */}
+        {activeTab === "insights" && (
+          <section className={styles.viewSection}>
+            <div>Conteúdo de Insights (Em breve)</div>
+          </section>
+        )}
+
+        {activeTab === "obras" && (
+          <section className={styles.viewSection}>
+            <AdmObras />
+          </section>
+        )}
+
+        {activeTab === "eventos" && (
+          <section className={styles.viewSection}>
+            <AdmEventos />
+          </section>
+        )}
       </div>
 
       {/* Modal de Edição do Perfil */}

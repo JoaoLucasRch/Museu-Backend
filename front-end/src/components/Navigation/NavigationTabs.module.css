@@ -1,0 +1,53 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  background-color: #f1f1f1; /* Fundo cinza claro do container */
+  border: 1px solid #000000;  /* Borda fina preta externa */
+  border-radius: 9999px;      /* Deixa as extremidades completamente redondas */
+  padding: 2px;
+  width: 100%;
+  max-width: 500px;           /* Limite de largura máxima regulável */
+  overflow: hidden;
+  user-select: none;
+}
+
+.slidingIndicator {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  /* Divide igualmente o espaço pelo número de abas (3 abas = 33.333%) */
+  width: calc(33.333% - 2px); 
+  background-color: #000000;  /* Pílula preta */
+  border-radius: 9999px;
+  /* Transição suave que cria o efeito de "andar" */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.tabButton {
+  position: relative;
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;             /* Cor do texto quando não selecionado */
+  cursor: pointer;
+  outline: none;
+  z-index: 2;                 /* Fica por cima da pílula preta para o clique funcionar */
+  transition: color 0.3s ease;
+  text-align: center;
+}
+
+/* Quando o botão está ativo, o texto muda para branco de forma suave */
+.activeText {
+  color: #ffffff;
+}

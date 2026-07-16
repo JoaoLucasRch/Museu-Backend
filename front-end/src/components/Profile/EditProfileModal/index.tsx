@@ -179,71 +179,6 @@ export default function EditProfileModal({
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.content}>
-            {/* Coluna da Esquerda: Foto */}
-            <div className={styles.photoSection}>
-              <div className={styles.avatarWrapper}>
-                <img
-                  src={
-                    previewUrl || 
-                    currentUser?.foto || 
-                    "https://via.placeholder.com/150"
-                  }
-                  alt="Avatar do usuário"
-                  className={styles.avatar}
-                />
-                
-                {/* Botão de upload */}
-                <label 
-                  htmlFor="file-upload" 
-                  className={styles.editIconWrapper}
-                  title="Alterar foto"
-                >
-                  <Pencil size={18} />
-                  <input
-                    id="file-upload"
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
-                    onChange={handleFileChange}
-                    className={styles.fileInput}
-                    disabled={isSaving}
-                  />
-                </label>
-              </div>
-              
-              {/* Informações do arquivo */}
-              {selectedFile && (
-                <div className={styles.fileInfo}>
-                  <p className={styles.fileName}>
-                    <Upload size={12} /> {selectedFile.name}
-                  </p>
-                  <p className={styles.fileSize}>
-                    {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
-                  </p>
-                  
-                  {/* Barra de progresso */}
-                  {uploadProgress > 0 && uploadProgress < 100 && (
-                    <div className={styles.progressBar}>
-                      <div 
-                        className={styles.progressFill}
-                        style={{ width: `${uploadProgress}%` }}
-                      />
-                      <span className={styles.progressText}>
-                        {uploadProgress}%
-                      </span>
-                    </div>
-                  )}
-                </div>
-              )}
-              
-              {/* Mensagem de erro do arquivo */}
-              {fileError && (
-                <p className={styles.fileError}>{fileError}</p>
-              )}
-              
-              <p className={styles.photoHint}>
-                Clique no ícone para alterar sua foto
-              </p>
-            </div>
 
             {/* Coluna da Direita: Inputs */}
             <div className={styles.formSection}>
@@ -326,20 +261,6 @@ export default function EditProfileModal({
                 {errors.email && (
                   <span className={styles.errorText}>{errors.email.message}</span>
                 )}
-              </div>
-
-              {/* Bio */}
-              <div className={styles.inputGroup}>
-                <label className={styles.label}>
-                  Bio
-                </label>
-                <textarea
-                  placeholder="Fale um pouco sobre você..."
-                  {...register("bio")}
-                  className={styles.textarea}
-                  disabled={isSaving}
-                  rows={4}
-                />
               </div>
             </div>
           </div>

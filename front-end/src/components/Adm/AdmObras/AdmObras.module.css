@@ -1,54 +1,21 @@
 .container {
-  padding: 1rem;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #e5e7eb;
-  gap: 1rem;
-}
-
-.title {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #000000;
-  margin: 0;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.subtitle {
-  font-size: 2rem;
-  color: #000000;
-  margin: 0;
-  font-weight: 500;
-  text-align: center;
-  flex: 1;
-}
-
-p{
-  font-size: rem;
-  color: #4b5563;
-  margin: 0;
-}
-
-/* Barra de busca COM filtros */
+/* Barra de Busca e Filtros */
 .searchFilterSection {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
 
 .searchContainer {
   flex: 1;
-  min-width: 300px;
+  min-width: 280px;
   max-width: 400px;
   position: relative;
 }
@@ -63,95 +30,69 @@ p{
 
 .searchInput {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border: 1px solid #c6c8c1;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  background-color: #fbf9fb;
-  transition: all 0.2s;
+  padding: 0.65rem 1rem 0.65rem 2.5rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  background-color: #ffffff;
 }
 
 .searchInput:focus {
   outline: none;
-  border-color: #6b7280;
-  background-color: white;
-  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+  border-color: #a0a0a0;
+  background-color: #fff;
 }
 
-/* Filtros */
 .filtersContainer {
   display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .filterButton {
-  padding: 0.6rem 1.2rem;
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
+  padding: 0.5rem 1rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: #4b5563;
   cursor: pointer;
   transition: all 0.2s;
-  white-space: nowrap;
-}
-
-.filterButton:hover {
-  background-color: #e5e7eb;
-  border-color: #9ca3af;
 }
 
 .filterButtonActive {
-  background-color: #ffb730;
-  border-color: #cfc7d3;
-  color: rgb(0, 0, 0);
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
 }
 
-.filterButtonActive:hover {
-  background-color: #ffa600;
-  border-color: #3a71ca;
+/* ==========================================================================
+   TABELA NO ESTILO EXATO DA IMAGEM
+   ========================================================================== */
+.tableWrapper {
+  border: 1px solid #dcdcdc;
+  border-radius: 24px; /* Bordas externas arredondadas */
+  overflow: hidden;
+  background-color: #ffffff;
 }
 
-/* Grid de Cards Quadrados */
-.cardsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 2rem;
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
 }
 
-.squareCard {
-  position: relative;
-  background: linear-gradient(to bottom, #FFDAC9, #FFF6DB);
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 1.2rem;
-  min-height: 270px;
-  min-width: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-  border-top: 4px solid;
-}
-.squareCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+/* Cabeçalho da Tabela */
+.table thead tr {
+  border-bottom: 1px solid #dcdcdc;
 }
 
-/* Status no canto superior direito */
-.cardStatus {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 0.35rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  justify-content: flex-end; 
-  color: white;
+.table th {
+  padding: 20px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #b5a4a4; /* Tom marrom/pastel desbotado dos rótulos superiores */
+  letter-spacing: 1px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -159,8 +100,8 @@ p{
 
 /* Conteúdo no canto inferior esquerdo */
 .cardContent {
-  align-self: flex-start; 
-  text-align: left; 
+  align-self: flex-start; /* Alinha à esquerda */
+  text-align: left; /* Texto alinhado à esquerda */
   width: 100%;
 }
 
@@ -169,245 +110,241 @@ p{
   font-size: 1rem;
   font-weight: 500;
   color: #030508d4;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem 0; /* Espaço abaixo do título */
   line-height: 1.3;
   text-align: left;
-  /* O título já estará na parte inferior por causa do justify-content: flex-end */
 }
 
-
-/* Descrição - também no canto inferior esquerdo */
-.cardDescription {
-  font-size: 0.85rem;
-  color: #121313e4;
-  line-height: 1.4;
-  margin: 0;
-  text-align: left;
-  font-style: italic;
+.table th.thRight {
+  text-align: right;
+  padding-right: 48px;
 }
 
+/* Corpo da tabela */
+.row {
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
 
-/* Estados */
-.loading,
-.error,
-.emptyState,
-.emptyDashboard {
+.row:last-child {
+  border-bottom: none; /* Evita que quebre o border-radius do container inferior */
+}
+
+.row:hover {
+  background-color: #f3f9fc;
+}
+
+.table td {
+  padding: 24px;
+  vertical-align: middle;
+}
+
+/* Coluna Obra */
+.obraCell {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  padding-left: 32px !important;
+}
+
+.obraTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.obraMeta {
+  display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #333333;
+}
+
+.bullet {
+  color: #000000;
+  font-size: 10px;
+}
+
+/* Alinhamento centralizado para colunas do meio */
+.centerCell {
   text-align: center;
-  padding: 2rem;
 }
 
-.loading,
-.error,
-.emptyDashboard {
-  min-height: 300px;
+.eventText {
+  font-size: 13px;
+  color: #777777;
 }
 
-.emptyState {
-  grid-column: 1 / -1;
-  min-height: 150px;
+.dateText {
+  font-size: 13px;
+  color: #777777;
+}
+
+/* Coluna Status */
+.statusCell {
+  text-align: right;
+  padding-right: 32px !important;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 8px 32px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  min-width: 120px;
+}
+
+/* Cores variantes adaptadas ao estilo bege claro da imagem */
+.pendente {
+  background-color: #f1ebd9; /* Amarelo/bege suave da imagem */
+  color: #8c7b50;
+}
+
+.aprovada {
+  background-color: #e2ede9;
+  color: #2d6a4f;
+}
+
+.rejeitada {
+  background-color: #fbebeb;
+  color: #a83232;
+}
+
+/* Estados Extras */
+.emptyRow {
+  text-align: center;
+  padding: 40px !important;
+  color: #888;
+  font-size: 14px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 3px solid #e5e7eb;
-  border-top-color: #1f2937;
+  border-top-color: #000;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
 }
 
-.error h3 {
-  color: #dc2626;
-  margin-bottom: 0.5rem;
-}
-
-.emptyDashboard h3 {
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-}
-
-.retryButton,
-.clearButton {
-  margin-top: 1rem;
+.retryButton {
+  margin-top: 12px;
   padding: 0.5rem 1.5rem;
-  background-color: #1f2937;
-  color: white;
+  background-color: #000;
+  color: #fff;
   border: none;
   border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.retryButton:hover,
-.clearButton:hover {
-  background-color: #374151;
-}
-
-.clearButton {
-  background-color: #6b7280;
-}
-
-.clearButton:hover {
-  background-color: #4b5563;
-}
-
-
-/* Header com Tabs */
-.header {
-  margin-bottom: 24px;
-}
-
-.tabsContainer {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.tabButton {
-  padding: 10px 24px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  background: transparent;
-  color: #6B7280;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s;
-  position: relative;
-}
-
-.tabButton:hover {
-  background-color: #F3F4F6;
-  color: #374151;
-}
-
-.tabButtonActive {
-  background-color: #111827;
-  color: white;
-}
-
-.tabButtonActive:hover {
-  background-color: #1F2937;
-  color: white;
-}
-
-.subtitle {
-  font-size: 1.8rem;
-  color: #000000;
-  margin: 0;
-  font-weight: 400;
-}
-
-/* Ajustes para o título original (caso ainda exista) */
-.title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 8px 0;
-}
-
-/* Responsive para tabs */
-@media (max-width: 640px) {
-  .tabButton {
-    padding: 8px 16px;
-    font-size: 14px;
-  }
-  
-  .subtitle {
-    font-size: 13px;
-  }
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .container {
-    padding: 0.5rem;
-  }
-  
-  .searchFilterSection {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-  
-  .searchContainer {
-    min-width: 100%;
-    max-width: 100%;
-  }
-  
-  .filtersContainer {
-    justify-content: center;
-  }
-  
-  .cardsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-  
-  .squareCard {
-    min-height: 180px;
-    padding: 1.25rem;
-  }
+/* Adicione ou modifique no seu AdmObras.module.css */
+
+.dropdownContainer {
+  position: relative;
+  display: inline-block;
+  user-select: none;
 }
 
-@media (max-width: 480px) {
-  .cardsGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .header {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
-  }
-  
-  .title, .subtitle {
-    width: 100%;
-  }
-}
-
-/* Adicione essas regras ao seu AdmObras.module.css existente */
-
-/* Tornar os cards clicáveis */
-.squareCard {
+/* O Botão Principal Preto e Oval da Imagem */
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 9999px; /* Formato pílula idêntico à imagem */
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  min-width: 160px;
 }
 
-.squareCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+.dropdownButton:hover {
+  background-color: #1a1a1a;
 }
 
-.squareCard:active {
-  transform: translateY(-2px);
+.dropdownButton:active {
+  transform: scale(0.98);
 }
 
-/* Garantir que o card tenha uma interação visual clara */
-.squareCard::before {
-  content: '';
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevronRotation {
+  transform: rotate(180deg);
+}
+
+/* Menu Suspenso de Opções */
+.dropdownMenu {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: calc(100% + 8px);
   right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0);
-  transition: background 0.2s ease;
-  border-radius: inherit;
-  pointer-events: none;
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  min-width: 180px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: dropdownFadeIn 0.2s ease;
 }
 
-.squareCard:hover::before {
-  background: rgba(0, 0, 0, 0.02);
+.dropdownItem {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dropdownItem:hover {
+  background-color: #f5f5f5;
+  color: #000000;
+}
+
+.dropdownItemActive {
+  background-color: #f1f1f1;
+  color: #000000;
+  font-weight: 700;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

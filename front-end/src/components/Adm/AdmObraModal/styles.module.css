@@ -203,7 +203,7 @@
 }
 
 .rejectButton {
-  background-color: #EF4444;
+  background-color: #b50808ca;
   color: white;
 }
 
@@ -214,7 +214,7 @@
 }
 
 .approveButton {
-  background-color: #10B981;
+  background-color: #01543ab3;
   color: white;
 }
 

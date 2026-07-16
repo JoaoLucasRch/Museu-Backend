@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./AdmObras.module.css";
-import { Search } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react"; // Adicionado ChevronDown
 import AdmObraModal from "../AdmObraModal";
-import AdmEventos from "../AdmEventos";
 
-// Tipos
 export interface Obra {
   id_obra: number;
   titulo_obra: string;
@@ -31,26 +29,33 @@ export default function AdmObras() {
   const [error, setError] = useState<string | null>(null);
   
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("todos");
+  const [statusFilter, setStatusFilter] = useState<string>("pendente"); // Iniciando como Pendente padrão da imagem
   
-  // Estados do Modal
+  // NOVO: Estados para o Dropdown de Status estilizado
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const [selectedObra, setSelectedObra] = useState<Obra | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Estado da Tab ativa
-  const [activeTab, setActiveTab] = useState<"obras" | "eventos">("obras");
-
   useEffect(() => {
     fetchObras();
+
+    // Fecha o dropdown se clicar fora dele
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const fetchObras = async () => {
     setIsLoading(true);
     setError(null);
-    
     try {
       const token = localStorage.getItem("token");
-      
       if (!token) {
         navigate("/login");
         return;
@@ -124,22 +129,15 @@ export default function AdmObras() {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
-      console.error("Erro ao buscar obras:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Atualizar status da obra
   const handleStatusUpdate = async (id_obra: number, status: "aprovada" | "rejeitada") => {
     try {
       const token = localStorage.getItem("token");
-      
-      if (!token) {
-        throw new Error("Token não encontrado. Faça login novamente.");
-      }
-
-      console.log(`Atualizando obra ${id_obra} para status: ${status}`);
+      if (!token) throw new Error("Token não encontrado.");
 
       const response = await fetch(`http://localhost:3333/obra/admin/${id_obra}/status`, {
         method: "PATCH",
@@ -152,6 +150,7 @@ export default function AdmObras() {
 
       console.log("Status da resposta:", response.status);
 
+      // Verificar se a resposta não é ok
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         console.error("Erro na resposta:", errorData);
@@ -163,31 +162,30 @@ export default function AdmObras() {
         throw new Error(errorData?.message || `Erro HTTP: ${response.status}`);
       }
 
+      // Tentar ler a resposta JSON
       const data = await response.json().catch(() => ({}));
       console.log("Resposta da API:", data);
 
       // Atualizar a lista de obras
       await fetchObras();
-      
-      console.log("Status atualizado com sucesso!");
     } catch (err) {
-      console.error("Erro ao atualizar status:", err);
-      throw err;
+      console.error(err);
     }
   };
 
+  // Abrir modal com obra selecionada
   const handleCardClick = (obra: Obra) => {
-    console.log("Clicou na obra:", obra.titulo_obra);
     setSelectedObra(obra);
     setIsModalOpen(true);
   };
 
+  // Fechar modal
   const handleCloseModal = () => {
-    console.log("🔚 Fechando modal");
     setIsModalOpen(false);
     setSelectedObra(null);
   };
 
+  // Formatar texto para exibição
   const formatText = (text: string, maxLength: number = 60) => {
     if (!text) return "";
     return text.length > maxLength 
@@ -199,16 +197,13 @@ export default function AdmObras() {
   const filteredObras = obras.filter(obra => {
     const matchesSearch = 
       obra.titulo_obra.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      obra.descricao_obra.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (obra.artista?.nome || "").toLowerCase().includes(searchTerm.toLowerCase());
+      obra.descricao_obra.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesStatus = 
-      statusFilter === "todos" || 
-      obra.status === statusFilter;
-    
+    const matchesStatus = statusFilter === "todos" || obra.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
+  // Status colors
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pendente": return "#da9f408d";
@@ -220,28 +215,9 @@ export default function AdmObras() {
 
   if (isLoading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loading}>
-          <div className={styles.spinner}></div>
-          <p>Carregando obras...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.error}>
-          <h3>Erro ao carregar obras</h3>
-          <p>{error}</p>
-          <button 
-            onClick={fetchObras}
-            className={styles.retryButton}
-          >
-            Tentar novamente
-          </button>
-        </div>
+      <div className={styles.loading}>
+        <div className={styles.spinner}></div>
+        <p>Carregando obras...</p>
       </div>
     );
   }
@@ -281,7 +257,7 @@ export default function AdmObras() {
               <Search size={18} className={styles.searchIcon} />
               <input
                 type="text"
-                placeholder="Buscar obras ou artistas..."
+                placeholder="Buscar obras..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={styles.searchInput}
@@ -317,82 +293,63 @@ export default function AdmObras() {
             </div>
           </div>
 
-          {/* Grid de Cards de Obras */}
-          <div className={styles.cardsGrid}>
+      {/* Tabela de Obras */}
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th className={styles.thLeft}>OBRA</th>
+              <th>EVENTO</th>
+              <th>ENVIADO</th>
+              <th className={styles.thRight}>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
             {filteredObras.length === 0 ? (
-              <div className={styles.emptyState}>
-                <p>
-                  {searchTerm || statusFilter !== "todos" 
-                    ? `Nenhuma obra encontrada${searchTerm ? ` para "${searchTerm}"` : ""}${statusFilter !== "todos" ? ` com status "${statusFilter}"` : ""}`
-                    : "Nenhuma obra cadastrada no sistema"}
-                </p>
-                {(searchTerm || statusFilter !== "todos") && (
-                  <button 
-                    onClick={() => {
-                      setSearchTerm("");
-                      setStatusFilter("todos");
-                    }}
-                    className={styles.clearButton}
-                  >
-                    Limpar filtros
-                  </button>
-                )}
-              </div>
+              <tr>
+                <td colSpan={4} className={styles.emptyRow}>
+                  Nenhuma obra encontrada para os filtros aplicados.
+                </td>
+              </tr>
             ) : (
-              filteredObras.map(obra => (
-                <div 
+              filteredObras.map((obra) => (
+                <tr 
                   key={obra.id_obra} 
-                  className={styles.squareCard}
-                  style={{ borderTopColor: getStatusColor(obra.status) }}
-                  onClick={() => handleCardClick(obra)}
+                  className={styles.row}
+                  onClick={() => handleRowClick(obra)}
                 >
-                  {/* Status no canto superior direito */}
-                  <div className={styles.cardStatus} style={{ backgroundColor: getStatusColor(obra.status) }}>
-                    {obra.status.toUpperCase()}
-                  </div>
-                  
-                  {/* Nome da obra */}
-                  <h3 className={styles.cardTitle}>
-                    {obra.titulo_obra}
-                  </h3>
-                  
-                  {/* Descrição no canto inferior */}
-                  <div className={styles.cardFooter}>
-                    <p className={styles.cardDescription}>
-                      {formatText(obra.descricao_obra)}
-                    </p>
-                  </div>
-                </div>
+                  <td className={styles.obraCell}>
+                    <span className={styles.obraTitle}>{obra.titulo_obra}</span>
+                    <div className={styles.obraMeta}>
+                      <span>{obra.categoria_obra}</span>
+                      <span className={styles.bullet}>•</span>
+                      <span>autor: {obra.artista?.nome || "Desconhecido"}</span>
+                    </div>
+                  </td>
+                  <td className={styles.centerCell}>
+                    <span className={styles.eventText}>Exponha</span>
+                  </td>
+                  <td className={styles.centerCell}>
+                    <span className={styles.dateText}>{formatDate(obra.data_fim_exposicao)}</span>
+                  </td>
+                  <td className={styles.statusCell}>
+                    <span className={`${styles.statusBadge} ${styles[obra.status]}`}>
+                      {obra.status.toUpperCase()}
+                    </span>
+                  </td>
+                </tr>
               ))
             )}
-          </div>
+          </tbody>
+        </table>
+      </div>
 
-          {/* Se não houver obras no sistema */}
-          {obras.length === 0 && !isLoading && !error && (
-            <div className={styles.emptyDashboard}>
-              <h3>Nenhuma obra cadastrada</h3>
-              <p>Ainda não há obras para gerenciar no sistema.</p>
-              <button 
-                onClick={fetchObras}
-                className={styles.retryButton}
-              >
-                Atualizar
-              </button>
-            </div>
-          )}
-
-          {/* Modal de Visualização e Avaliação */}
-          <AdmObraModal
-            isOpen={isModalOpen}
-            onClose={handleCloseModal}
-            obra={selectedObra}
-            onStatusUpdate={handleStatusUpdate}
-          />
-        </>
-      ) : (
-        /* Componente de Eventos */
-        <AdmEventos />
-      )}
+      <AdmObraModal
+        isOpen={isModalOpen}
+        onClose={() => { setIsModalOpen(false); setSelectedObra(null); }}
+        obra={selectedObra}
+        onStatusUpdate={handleStatusUpdate}
+      />
     </div>
   );
 }
