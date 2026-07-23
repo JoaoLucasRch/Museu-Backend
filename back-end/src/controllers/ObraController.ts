@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../prisma';
+import { EmailService } from '../services/emailService.js';
 
 interface UserPayload {
   id: number;
@@ -105,6 +106,30 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
     });
 
     console.log(`Obra criada com sucesso: ${novaObra.id_obra}`);
+
+    // ==================== NOTIFICAR ADMINISTRADORES ====================
+    try {
+      const administradores = await prisma.usuario.findMany({
+        where: { role: 'ADMIN' },
+        select: { email: true },
+      });
+
+      for (const admin of administradores) {
+        if (admin.email) {
+          await EmailService.notificarNovaSubmissao(
+            admin.email,
+            novaObra.artista.nome,
+            novaObra.titulo_obra,
+            novaObra.id_obra,
+            novaObra.edital?.titulo_evento
+          );
+        }
+      }
+      console.log(`📧 Notificações enviadas para ${administradores.length} administradores`);
+    } catch (emailError) {
+      console.error('Erro ao notificar administradores:', emailError);
+    }
+
     return reply.status(201).send(novaObra);
   } catch (error) {
     console.error('[createObra] Erro:', error);
@@ -389,7 +414,7 @@ export async function getObrasArtista(request: FastifyRequest, reply: FastifyRep
 export async function updateObraStatus(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
   const { id_obra } = request.params as any;
-  const { status } = request.body as any;
+  const { status, parecer } = request.body as any;
 
   if (role !== 'ADMIN') {
     return reply.status(403).send({ message: 'Apenas administradores podem alterar o status de uma obra.' });
@@ -403,6 +428,36 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
   }
 
   try {
+    // Buscar a obra com os dados do artista (antes de atualizar)
+    const obraExistente = await prisma.obra.findUnique({
+      where: { id_obra: Number(id_obra) },
+      include: {
+        artista: {
+          select: {
+            id: true,
+            nome: true,
+            email: true,
+          }
+        },
+        edital: {
+          select: {
+            titulo_evento: true,
+          }
+        }
+      }
+    });
+
+    if (!obraExistente) {
+      return reply.status(404).send({ message: 'Obra não encontrada.' });
+    }
+
+    // Se o status não mudou, não faz nada
+    if (obraExistente.status === status) {
+      return reply.status(400).send({ 
+        message: `A obra já está com o status "${status}".` 
+      });
+    }
+
     const obra = await prisma.obra.update({
       where: { id_obra: Number(id_obra) },
       data: { status },
@@ -440,9 +495,35 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
     });
 
     console.log(`Status da obra ${id_obra} atualizado para ${status}`);
+
+    // ==================== ENVIAR NOTIFICAÇÃO POR EMAIL ====================
+    let notificacaoEnviada = false;
+    
+    // Enviar notificação apenas se o status NÃO for 'pendente'
+    if (status !== 'pendente' && obra.artista?.email) {
+      try {
+        notificacaoEnviada = await EmailService.notificarStatusObra(
+          obra.artista.email,
+          obra.artista.nome,
+          obra.titulo_obra,
+          status,
+          parecer
+        );
+
+        if (notificacaoEnviada) {
+          console.log(`📧 Notificação enviada para ${obra.artista.email}`);
+        } else {
+          console.warn(`Falha ao enviar notificação para ${obra.artista.email}`);
+        }
+      } catch (emailError) {
+        console.error('Erro ao enviar email de notificação:', emailError);
+      }
+    }
+
     return reply.send({
       message: 'Status atualizado com sucesso.',
-      obra
+      obra,
+      notificacao_enviada: notificacaoEnviada,
     });
   } catch (error) {
     console.error('[updateObraStatus] Erro:', error);
