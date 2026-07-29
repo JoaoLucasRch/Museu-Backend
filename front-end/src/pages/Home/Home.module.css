@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+.homeContainer {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.fixedCover {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+}
+
+.scrollingContent {
+  margin-top: 100vh;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: #F5F3EE;
+  overflow-x: hidden;
+}

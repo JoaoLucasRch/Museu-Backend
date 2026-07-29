@@ -23,11 +23,17 @@ export async function obraRoutes(app: FastifyInstance) {
       descricao_obra: { type: 'string', example: 'Uma pintura inspirada em Van Gogh.' },
       imagens_obras: { type: 'string', example: 'https://exemplo.com/imagem.jpg' },
       categoria_obra: { type: 'string', example: 'Pintura' },
-      data_exposicao: { type: 'string', format: 'date-time', example: '2025-05-10T14:00:00Z' },
-      data_fim_exposicao: { type: 'string', format: 'date-time', example: '2025-06-10T14:00:00Z' },
+
+       data_envio: {
+      type: "string",
+      format: "date-time",
+    },
+
+      data_exposicao: { type: 'string', format: 'date-time', nullable: true, example: '2025-05-10T14:00:00Z' },
+      data_fim_exposicao: { type: 'string', format: 'date-time', nullable: true, example: '2025-06-10T14:00:00Z' },
       status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada', 'exposta'], example: 'pendente' },
       artista_id: { type: 'number', example: 3 },
-      edital_id: { type: 'number', example: 1 },
+      edital_id: { type: 'number', nullable: true, example: 1 },
     },
   };
 

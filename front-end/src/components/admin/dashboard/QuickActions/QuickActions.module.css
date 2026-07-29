@@ -1,0 +1,134 @@
+.actionsSection {
+
+
+  background:#fff;
+
+
+  border:1px solid #ECE3DD;
+
+
+  border-radius:20px;
+
+
+  padding:1.5rem;
+
+
+}
+
+
+
+.header h2 {
+
+
+  margin:0;
+
+
+  font-size:1.2rem;
+
+  color:#2B2624;
+
+
+}
+
+
+
+.header p {
+
+
+  margin:.35rem 0 0;
+
+
+  color:#91867E;
+
+
+  font-size:.85rem;
+
+
+}
+
+
+
+.actions {
+
+
+  display:flex;
+
+
+  flex-direction:column;
+
+
+  gap:.75rem;
+
+
+  margin-top:1.5rem;
+
+
+}
+
+
+
+.actionButton {
+
+
+  height:44px;
+
+
+  display:flex;
+
+
+  align-items:center;
+
+
+  gap:.7rem;
+
+
+  padding:0 1rem;
+
+
+  border-radius:14px;
+
+
+  border:1px solid #ECE3DD;
+
+
+  background:#fff;
+
+
+  color:#5F554F;
+
+
+  font-size:.9rem;
+
+
+  font-weight:500;
+
+
+  cursor:pointer;
+
+
+  transition:.2s;
+
+
+}
+
+
+
+.actionButton:hover {
+
+
+  background:#F8F6F5;
+
+
+  color:#2B2624;
+
+
+}
+
+
+
+.actionButton svg {
+
+
+  color:#B27A35;
+
+}

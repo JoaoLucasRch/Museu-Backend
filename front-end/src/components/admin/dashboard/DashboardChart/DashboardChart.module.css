@@ -1,0 +1,152 @@
+.chart {
+
+
+  background:#fff;
+
+  border:1px solid #ECE3DD;
+
+  border-radius:20px;
+
+
+  padding:1.5rem;
+
+
+}
+
+
+
+.header {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+}
+
+
+
+.header h2 {
+
+  margin:0;
+
+
+  font-size:1.2rem;
+
+  color:#2B2624;
+
+}
+
+
+
+.header span {
+
+  display:block;
+
+  margin-top:.3rem;
+
+
+  font-size:.85rem;
+
+  color:#91867E;
+
+}
+
+
+
+.summary {
+
+  text-align:right;
+
+}
+
+
+
+.summary strong {
+
+  display:block;
+
+
+  font-size:1.7rem;
+
+  color:#2B2624;
+
+}
+
+
+
+.summary small {
+
+  color:#91867E;
+
+}
+
+
+
+.fakeChart {
+
+
+  height:220px;
+
+
+  margin-top:2rem;
+
+
+  display:flex;
+
+  align-items:flex-end;
+
+  justify-content:space-around;
+
+
+  gap:1rem;
+
+
+}
+
+
+
+.barGroup {
+
+  height:100%;
+
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:flex-end;
+
+  align-items:center;
+
+
+  gap:.5rem;
+
+}
+
+
+
+.bar {
+
+
+  width:28px;
+
+
+  background:#D9B27C;
+
+
+  border-radius:10px 10px 4px 4px;
+
+
+}
+
+
+
+.barGroup span {
+
+  color:#91867E;
+
+  font-size:.75rem;
+
+}

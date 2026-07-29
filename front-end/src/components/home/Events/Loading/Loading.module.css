@@ -1,0 +1,31 @@
+.loadingSection {
+
+  padding:5rem 0;
+
+  background-color:#F5F3EE;
+
+}
+
+
+.container {
+
+  max-width:1400px;
+
+  margin:0 auto;
+
+  padding:0 2rem;
+
+}
+
+
+.loadingContainer {
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  min-height:400px;
+
+}

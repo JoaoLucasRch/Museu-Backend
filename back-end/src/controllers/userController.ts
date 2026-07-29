@@ -183,3 +183,31 @@ export async function uploadProfilePhoto(request: MultipartRequest, reply: Fasti
     return reply.status(500).send({ message: 'Erro ao fazer upload da foto.' });
   }
 }
+
+export async function getAllUsers(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  try {
+    const usuarios = await prisma.usuario.findMany({
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        contato: true,
+        role: true,
+      },
+      orderBy: {
+        nome: "asc",
+      },
+    });
+
+    return reply.send(usuarios);
+  } catch (error) {
+    console.error(error);
+
+    return reply.status(500).send({
+      message: "Erro ao carregar usuários.",
+    });
+  }
+}

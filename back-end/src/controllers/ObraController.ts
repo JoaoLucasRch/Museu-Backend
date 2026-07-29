@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../prisma';
+import { EmailService } from '../services/emailService.js';
 
 interface UserPayload {
   id: number;
@@ -105,6 +106,30 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
     });
 
     console.log(`Obra criada com sucesso: ${novaObra.id_obra}`);
+
+    // ==================== NOTIFICAR ADMINISTRADORES ====================
+    try {
+      const administradores = await prisma.usuario.findMany({
+        where: { role: 'ADMIN' },
+        select: { email: true },
+      });
+
+      for (const admin of administradores) {
+        if (admin.email) {
+          await EmailService.notificarNovaSubmissao(
+            admin.email,
+            novaObra.artista.nome,
+            novaObra.titulo_obra,
+            novaObra.id_obra,
+            novaObra.edital?.titulo_evento
+          );
+        }
+      }
+      console.log(`📧 Notificações enviadas para ${administradores.length} administradores`);
+    } catch (emailError) {
+      console.error('Erro ao notificar administradores:', emailError);
+    }
+
     return reply.status(201).send(novaObra);
   } catch (error) {
     console.error('[createObra] Erro:', error);
@@ -113,86 +138,52 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
 }
 
 // ==================== LISTAR OBRAS DO ARTISTA ====================
-export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
-  const { id: artistaId, role } = request.user as { id: number; role: string };
+export async function getMyObras(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  const { id: artistaId, role } = request.user;
 
-  if (role !== 'ARTISTA') {
-    return reply.status(403).send({ message: 'Apenas artistas podem visualizar suas obras.' });
+  if (role !== "ARTISTA") {
+    return reply.status(403).send({
+      message: "Apenas artistas podem visualizar suas obras.",
+    });
   }
 
   try {
-    const rawResults = await prisma.$queryRaw`
-      SELECT 
-        o.id_obra,
-        o.titulo_obra,
-        o.descricao_obra,
-        o.imagens_obras,
-        o.categoria_obra,
-        o.status,
-        o.data_envio,
-        o.data_exposicao,
-        o.data_fim_exposicao,
-        o.artista_id,
-        o.edital_id,
-        u.id as artista_id_join,
-        u.nome as artista_nome,
-        u.email as artista_email,
-        e.id_evento as edital_id_evento,
-        e.titulo_evento as edital_titulo
-      FROM obras o
-      LEFT JOIN usuarios u ON o.artista_id = u.id
-      LEFT JOIN eventos e ON o.edital_id = e.id_evento
-      WHERE o.artista_id = ${artistaId}
-      ORDER BY o.data_envio DESC
-    `;
-
-    const obras = (rawResults as any[]).map(row => {
-      let dataEnvio = '';
-      if (row.data_envio) {
-        if (row.data_envio instanceof Date) {
-          dataEnvio = row.data_envio.toISOString();
-        } else if (typeof row.data_envio === 'string') {
-          dataEnvio = row.data_envio;
-        } else {
-          dataEnvio = String(row.data_envio);
-        }
-      }
-
-      return {
-        id_obra: Number(row.id_obra),
-        titulo_obra: String(row.titulo_obra || ''),
-        descricao_obra: String(row.descricao_obra || ''),
-        imagens_obras: String(row.imagens_obras || ''),
-        categoria_obra: String(row.categoria_obra || ''),
-        status: String(row.status || 'pendente'),
-        data_envio: dataEnvio,
-        data_exposicao: String(row.data_exposicao || ''),
-        data_fim_exposicao: String(row.data_fim_exposicao || ''),
-        artista_id: Number(row.artista_id),
-        edital_id: row.edital_id ? Number(row.edital_id) : 0,
-        artista: row.artista_id_join ? {
-          id: Number(row.artista_id_join),
-          nome: String(row.artista_nome || ''),
-          email: String(row.artista_email || ''),
-        } : { id: 0, nome: '', email: '' },
-        edital: row.edital_id_evento ? {
-          id_evento: Number(row.edital_id_evento),
-          titulo_evento: String(row.edital_titulo || ''),
-        } : { id_evento: 0, titulo_evento: '' },
-      };
+    const obras = await prisma.obra.findMany({
+      where: {
+        artista_id: artistaId,
+      },
+      orderBy: {
+        data_envio: "desc",
+      },
+      include: {
+        artista: {
+          select: {
+            id: true,
+            nome: true,
+            email: true,
+          },
+        },
+        edital: {
+          select: {
+            id_evento: true,
+            titulo_evento: true,
+          },
+        },
+      },
     });
 
-    // FORÇAR A RESPOSTA COMO JSON MANUAL
-    const jsonResponse = JSON.stringify(obras);
-    
-    console.log('📦 Resposta JSON:', jsonResponse.substring(0, 200) + '...');
-    
-    return reply
-      .header('Content-Type', 'application/json')
-      .send(jsonResponse);
+    console.log("OBRAS DO ARTISTA:", obras);
+
+    return reply.send(obras);
   } catch (error) {
-    console.error('[getMyObras] Erro:', error);
-    return reply.status(500).send({ message: 'Erro ao buscar obras.' });
+    console.error("[getMyObras]", error);
+
+    return reply.status(500).send({
+      message: "Erro ao buscar obras.",
+    });
   }
 }
 
@@ -302,12 +293,12 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
           nome: String(row.artista_nome || ''),
           email: String(row.artista_email || ''),
         } : null,
-        edital: row.edital_id_evento ? {
-          id_evento: Number(row.edital_id_evento),
-          titulo_evento: String(row.edital_titulo || ''),
-          data_hora_inicio: String(row.edital_data_inicio || ''),
-          data_hora_fim: String(row.edital_data_fim || ''),
-        } : null,
+        edital: row.edital_id_evento
+          ? {
+            id_evento: Number(row.edital_id_evento),
+            titulo_evento: String(row.edital_titulo),
+          }
+          : null,
       };
     });
 
@@ -389,7 +380,7 @@ export async function getObrasArtista(request: FastifyRequest, reply: FastifyRep
 export async function updateObraStatus(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
   const { id_obra } = request.params as any;
-  const { status } = request.body as any;
+  const { status, parecer } = request.body as any;
 
   if (role !== 'ADMIN') {
     return reply.status(403).send({ message: 'Apenas administradores podem alterar o status de uma obra.' });
@@ -403,6 +394,37 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
   }
 
   try {
+
+    // Buscar a obra com os dados do artista (antes de atualizar)
+    const obraExistente = await prisma.obra.findUnique({
+      where: { id_obra: Number(id_obra) },
+      include: {
+        artista: {
+          select: {
+            id: true,
+            nome: true,
+            email: true,
+          }
+        },
+        edital: {
+          select: {
+            titulo_evento: true,
+          }
+        }
+      }
+    });
+
+    if (!obraExistente) {
+      return reply.status(404).send({ message: 'Obra não encontrada.' });
+    }
+
+    // Se o status não mudou, não faz nada
+    if (obraExistente.status === status) {
+      return reply.status(400).send({
+        message: `A obra já está com o status "${status}".`
+      });
+    }
+
     const obra = await prisma.obra.update({
       where: { id_obra: Number(id_obra) },
       data: { status },
@@ -440,9 +462,35 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
     });
 
     console.log(`Status da obra ${id_obra} atualizado para ${status}`);
+
+    // ==================== ENVIAR NOTIFICAÇÃO POR EMAIL ====================
+    let notificacaoEnviada = false;
+
+    // Enviar notificação apenas se o status NÃO for 'pendente'
+    if (status !== 'pendente' && obra.artista?.email) {
+      try {
+        notificacaoEnviada = await EmailService.notificarStatusObra(
+          obra.artista.email,
+          obra.artista.nome,
+          obra.titulo_obra,
+          status,
+          parecer
+        );
+
+        if (notificacaoEnviada) {
+          console.log(`📧 Notificação enviada para ${obra.artista.email}`);
+        } else {
+          console.warn(`Falha ao enviar notificação para ${obra.artista.email}`);
+        }
+      } catch (emailError) {
+        console.error('Erro ao enviar email de notificação:', emailError);
+      }
+    }
+
     return reply.send({
       message: 'Status atualizado com sucesso.',
-      obra
+      obra,
+      notificacao_enviada: notificacaoEnviada,
     });
   } catch (error) {
     console.error('[updateObraStatus] Erro:', error);

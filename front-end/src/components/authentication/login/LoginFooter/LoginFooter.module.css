@@ -1,0 +1,23 @@
+.loginLink {
+    text-align: center;
+
+    font-size: .92rem;
+
+    color: #8A7F77;
+}
+
+.loginLink a {
+    margin-left: .3rem;
+
+    text-decoration: none;
+
+    color: #2B2624;
+
+    font-weight: 600;
+
+    transition: .2s;
+}
+
+.loginLink a:hover {
+    color: #000;
+}

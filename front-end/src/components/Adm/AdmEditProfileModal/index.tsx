@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import styles from "./style.module.css";
 
 import type { UserProfile } from "../../Profile/types/User";
-import { UserService } from "../../Profile/types/UserService";
+import { UserService } from "/../Profile/types/UserService";
 
 interface EditProfileModalProps {
   isOpen: boolean;

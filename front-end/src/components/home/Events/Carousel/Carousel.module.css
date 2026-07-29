@@ -1,0 +1,161 @@
+.carouselWrapper {
+
+  width:100%;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:1rem;
+
+}
+
+
+
+/* CONTEÚDO */
+
+.carouselContent {
+
+  flex:1;
+
+  overflow:hidden;
+
+}
+
+
+
+.carouselTrack {
+
+  display:flex;
+
+  transition:
+    transform .45s ease;
+
+}
+
+
+
+/* BOTÕES */
+
+.carouselButton {
+
+  flex-shrink:0;
+
+
+  width:46px;
+
+  height:46px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+
+  border:none;
+
+  border-radius:12px;
+
+
+  background:#FCFBFA;
+
+
+  color:#2C2927;
+
+
+  font-size:2rem;
+
+  line-height:1;
+
+
+  cursor:pointer;
+
+
+  border:1px solid #ECE3DD;
+
+
+  box-shadow:
+    0 6px 18px rgba(44,41,39,.12);
+
+
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+
+}
+
+
+
+.carouselButton:hover {
+
+  background:#F3EFEC;
+
+
+  box-shadow:
+    0 10px 25px rgba(44,41,39,.16);
+
+}
+
+
+
+.prevButton:hover {
+
+  transform:translateX(-3px);
+
+}
+
+
+
+.nextButton:hover {
+
+  transform:translateX(3px);
+
+}
+
+
+
+/* Ajuste visual da seta */
+
+.prevButton {
+
+  padding-bottom:4px;
+
+}
+
+
+
+.nextButton {
+
+  padding-bottom:4px;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .carouselWrapper {
+
+    gap:.5rem;
+
+  }
+
+
+  .carouselButton {
+
+    width:38px;
+
+    height:38px;
+
+    border-radius:10px;
+
+    font-size:1.6rem;
+
+  }
+
+}

@@ -74,9 +74,13 @@ export async function buscarPorId(req: FastifyRequest, reply: FastifyReply) {
 }
 
 // ==================== CRIAR EVENTO ====================
-export async function criar(req: FastifyRequest, reply: FastifyReply) {
+export async function criar(
+  req: FastifyRequest,
+  reply: FastifyReply
+) {
   try {
     const body = req.body as any;
+
     const {
       titulo_evento,
       descricao_evento,
@@ -85,37 +89,60 @@ export async function criar(req: FastifyRequest, reply: FastifyReply) {
       data_hora_inicio,
       data_hora_fim,
       tipo_evento,
-      criado_por_id,
       eh_edital,
       inicio_submissao,
       fim_submissao,
     } = body;
 
-    // Validação do tipo_evento
-    const tipoUpper = String(tipo_evento ?? '').toUpperCase() as TipoEvento;
+    // Usuário autenticado pelo JWT
+    const criado_por_id = req.user.id;
+
+    // Validação do tipo do evento
+    const tipoUpper = String(
+      tipo_evento ?? ""
+    ).toUpperCase() as TipoEvento;
+
     if (!Object.values(TipoEvento).includes(tipoUpper)) {
       return reply.code(400).send({
-        erro: `tipo_evento inválido. Use: ${Object.values(TipoEvento).join(', ')}`
+        erro: `tipo_evento inválido. Use: ${Object.values(TipoEvento).join(", ")}`
       });
     }
 
-    // Validação se for edital
+    // Validação das datas do evento
+    const dataInicio = new Date(data_hora_inicio);
+    const dataFim = new Date(data_hora_fim);
+
+    if (dataInicio >= dataFim) {
+      return reply.code(400).send({
+        erro: "A data de início do evento deve ser anterior à data de término."
+      });
+    }
+
+    // Validação dos editais
     if (eh_edital) {
       if (!inicio_submissao || !fim_submissao) {
         return reply.code(400).send({
-          erro: 'Para editais, os campos início_submissao e fim_submissao são obrigatórios'
+          erro: "Para editais, os campos início_submissao e fim_submissao são obrigatórios."
         });
       }
 
-      if (new Date(inicio_submissao) >= new Date(fim_submissao)) {
+      const inicioSubmissao = new Date(inicio_submissao);
+      const fimSubmissao = new Date(fim_submissao);
+
+      if (inicioSubmissao >= fimSubmissao) {
         return reply.code(400).send({
-          erro: 'A data de início da submissão deve ser anterior à data de fim'
+          erro: "A data de início da submissão deve ser anterior à data final."
         });
       }
 
-      if (new Date(inicio_submissao) < new Date(data_hora_inicio)) {
+      // Ajuste conforme sua regra de negócio.
+      // Se a submissão deve acontecer DURANTE o evento:
+      if (
+        inicioSubmissao < dataInicio ||
+        fimSubmissao > dataFim
+      ) {
         return reply.code(400).send({
-          erro: 'O início da submissão deve ser posterior ao início do evento'
+          erro: "O período de submissão deve estar dentro do período do evento."
         });
       }
     }
@@ -124,22 +151,41 @@ export async function criar(req: FastifyRequest, reply: FastifyReply) {
       data: {
         titulo_evento,
         descricao_evento,
-        local_evento: local_evento || 'Museu',
-        imagem_evento: imagem_evento || '',
-        data_hora_inicio: new Date(data_hora_inicio),
-        data_hora_fim: new Date(data_hora_fim),
+        local_evento: local_evento || "Museu",
+        imagem_evento: imagem_evento || null,
+
+        data_hora_inicio: dataInicio,
+        data_hora_fim: dataFim,
+
         tipo_evento: tipoUpper,
-        criado_por_id: Number(criado_por_id),
-        eh_edital: eh_edital || false,
-        inicio_submissao: eh_edital ? new Date(inicio_submissao) : null,
-        fim_submissao: eh_edital ? new Date(fim_submissao) : null,
+
+        criado_por_id,
+
+        eh_edital: Boolean(eh_edital),
+
+        inicio_submissao:
+          eh_edital
+            ? new Date(inicio_submissao)
+            : null,
+
+        fim_submissao:
+          eh_edital
+            ? new Date(fim_submissao)
+            : null,
       },
     });
 
     return reply.code(201).send(novoEvento);
+
   } catch (error) {
-    console.error('[criar] Erro:', error);
-    return reply.code(500).send({ erro: 'Erro ao criar evento', detalhes: (error as Error).message });
+
+    console.error("[criar] Erro:", error);
+
+    return reply.code(500).send({
+      erro: "Erro ao criar evento",
+      detalhes: (error as Error).message,
+    });
+
   }
 }
 

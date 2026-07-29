@@ -1,0 +1,29 @@
+.container {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 2rem;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(216,197,188,.22),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(253,240,165,.18),
+      transparent 30%
+    ),
+    #FAF8F7;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

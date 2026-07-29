@@ -1,10 +1,12 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { getMyProfile, updateMyProfile, uploadProfilePhoto } from '../controllers/userController';
+import { getMyProfile, updateMyProfile, uploadProfilePhoto, getAllUsers, } from '../controllers/userController';
 import { verifyJWT as authenticate } from '../middlewares/verifyJWT';
 import { prisma } from '@/prisma';
 
 export async function userRoutes(app: FastifyInstance) {
   app.addHook('preHandler', authenticate);
+
+  app.get("/admin", getAllUsers);
 
   const userSchema = {
     type: 'object',
@@ -190,5 +192,7 @@ export async function userRoutes(app: FastifyInstance) {
       },
     },
   }, uploadProfilePhoto);
+
+  
   
 }

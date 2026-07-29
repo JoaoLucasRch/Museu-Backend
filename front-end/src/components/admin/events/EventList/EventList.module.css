@@ -1,0 +1,61 @@
+.container{
+  background:#FFF;
+  border:1px solid #ECE3DD;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1.5rem 1.75rem;
+  border-bottom:1px solid #ECE3DD;
+  background:#FCFBFA;
+}
+
+.title{
+  margin:0;
+  font-size:1.05rem;
+  font-weight:600;
+  color:#2E2A27;
+}
+
+.subtitle{
+  margin:.35rem 0 0;
+  font-size:.9rem;
+  color:#8A7F77;
+}
+
+/* BODY */
+
+.body{
+  display:flex;
+  flex-direction:column;
+  padding:.75rem;
+  gap:.75rem;
+}
+
+/* RESPONSIVO */
+
+@media (max-width:700px){
+
+  .header{
+    padding:1.25rem;
+  }
+
+  .body{
+    padding:.6rem;
+  }
+
+  .title{
+    font-size:1rem;
+  }
+
+  .subtitle{
+    font-size:.85rem;
+  }
+
+}

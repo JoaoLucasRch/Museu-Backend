@@ -10,6 +10,9 @@ export async function verifyJWT(request: FastifyRequest, reply: FastifyReply) {
     }
 
     const [scheme, token] = authHeader.split(' ');
+
+    console.log("Authorization:", authHeader);
+    console.log("JWT_SECRET:", process.env.JWT_SECRET);
     
     if (scheme?.toLowerCase() !== 'bearer' || !token) {
       return reply.status(401).send({ 
@@ -21,6 +24,8 @@ export async function verifyJWT(request: FastifyRequest, reply: FastifyReply) {
       console.error('JWT_SECRET não definido nas variáveis de ambiente');
       return reply.status(500).send({ message: 'Erro interno de configuração.' });
     }
+
+    console.log("Token recebido:", token);
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
       id: number;
@@ -45,15 +50,19 @@ export async function verifyJWT(request: FastifyRequest, reply: FastifyReply) {
     };
 
   } catch (error: any) {
-    if (error.name === 'TokenExpiredError') {
-      return reply.status(401).send({ message: 'Token expirado.' });
-    }
-    
-    if (error.name === 'JsonWebTokenError') {
-      return reply.status(401).send({ message: 'Token inválido.' });
-    }
 
-    console.error('Erro na verificação JWT:', error);
-    return reply.status(401).send({ message: 'Erro na autenticação.' });
+  console.error(error);
+
+  if (error.name === "TokenExpiredError") {
+    return reply.status(401).send({ message: "Token expirado." });
   }
+
+  if (error.name === "JsonWebTokenError") {
+    return reply.status(401).send({ message: "Token inválido." });
+  }
+
+  return reply.status(401).send({
+    message: error.message,
+  });
+}
 }

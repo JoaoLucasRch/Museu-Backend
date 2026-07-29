@@ -7,10 +7,10 @@ import {
   criar,
   atualizar,
   deletar,
-  listarEditaisDisponiveis,
   verificarEditalDisponivel,
   listarObrasDoEdital,
-} from '../controllers/eventoController';
+  listarEditaisDisponiveis,
+} from "../controllers/eventoController";
 
 export async function eventoRoutes(app: FastifyInstance) {
   const eventoSchema = {
@@ -25,29 +25,43 @@ export async function eventoRoutes(app: FastifyInstance) {
       data_hora_fim: { type: 'string', format: 'date-time', example: '2025-11-22T22:00:00Z' },
       tipo_evento: { type: 'string', enum: ['EXPOSICAO', 'OFICINA', 'PALESTRA', 'LANCAMENTO', 'OUTRO'], example: 'EXPOSICAO' },
       eh_edital: { type: 'boolean', example: false },
-      inicio_submissao: { type: 'string', format: 'date-time', nullable: true },
-      fim_submissao: { type: 'string', format: 'date-time', nullable: true },
-      criado_por: {
-        type: 'object',
-        properties: {
-          id: { type: 'number', example: 3 },
-          nome: { type: 'string', example: 'Maria Souza' },
-          email: { type: 'string', example: 'maria@email.com' },
-        },
+      inicio_submissao: {
+        anyOf: [
+          {
+            type: "string",
+            format: "date-time",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+
+      fim_submissao: {
+        anyOf: [
+          {
+            type: "string",
+            format: "date-time",
+          },
+          {
+            type: "null",
+          },
+        ],
       },
     },
   };
 
   const bodyEvento = {
+    additionalProperties: false,
     type: 'object',
     required: [
-      'titulo_evento',
-      'descricao_evento',
-      'local_evento',
-      'data_hora_inicio',
-      'data_hora_fim',
-      'tipo_evento',
-      'criado_por_id',
+      "titulo_evento",
+      "descricao_evento",
+      "local_evento",
+      "data_hora_inicio",
+      "data_hora_fim",
+      "tipo_evento",
+      "eh_edital",
     ],
     properties: {
       titulo_evento: { type: 'string', example: 'Semana Cultural 2025' },
@@ -57,11 +71,31 @@ export async function eventoRoutes(app: FastifyInstance) {
       data_hora_inicio: { type: 'string', format: 'date-time', example: '2025-12-05T18:00:00Z' },
       data_hora_fim: { type: 'string', format: 'date-time', example: '2025-12-07T22:00:00Z' },
       tipo_evento: { type: 'string', enum: ['EXPOSICAO', 'OFICINA', 'PALESTRA', 'LANCAMENTO', 'OUTRO'], example: 'OFICINA' },
-      criado_por_id: { type: 'number', example: 1 },
       // NOVOS CAMPOS
       eh_edital: { type: 'boolean', example: true },
-      inicio_submissao: { type: 'string', format: 'date-time', example: '2025-12-01T00:00:00Z' },
-      fim_submissao: { type: 'string', format: 'date-time', example: '2025-12-20T23:59:59Z' },
+      inicio_submissao: {
+        anyOf: [
+          {
+            type: "string",
+            format: "date-time",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+
+      fim_submissao: {
+        anyOf: [
+          {
+            type: "string",
+            format: "date-time",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
     },
   };
 
@@ -82,6 +116,30 @@ export async function eventoRoutes(app: FastifyInstance) {
       },
     },
   }, listar);
+
+  app.get(
+    "/eventos/editais",
+    {
+      schema: {
+        summary: "Listar editais abertos",
+        description: "Retorna apenas editais que estão recebendo submissões.",
+        tags: ["Eventos"],
+        response: {
+          200: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                id_evento: { type: "number" },
+                titulo_evento: { type: "string" },
+              },
+            },
+          },
+        },
+      },
+    },
+    listarEditaisDisponiveis
+  );
 
   // Buscar evento por ID
   app.get('/eventos/:id', {
@@ -116,7 +174,7 @@ export async function eventoRoutes(app: FastifyInstance) {
       description: 'Cadastra um novo evento. Apenas administradores podem criar.',
       tags: ['Eventos'],
       security: [{ bearerAuth: [] }],
-      body: bodyEvento,
+      // body: bodyEvento,
       response: {
         201: eventoSchema,
         400: {

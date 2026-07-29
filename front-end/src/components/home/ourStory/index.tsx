@@ -1,55 +1,94 @@
-import "./style.css";
+import styles from "./OurStory.module.css";
 
-import Museu2020 from '../../../assets/Museu/museu2020.png';
-import Museu2022 from '../../../assets/Museu/museu2022.png';
-import Museu2025 from '../../../assets/Museu/museu2025.png';
+import Museu2020 from "../../../assets/Museum/museu2020.png";
+import Museu2022 from "../../../assets/Museum/museu2022.png";
+import Museu2025 from "../../../assets/Museum/museu2025.png";
 
-
-// import img2010 from '../../assets/img2010.jpg';
 const historyData = [
   {
     year: "2020",
-    text: "Em 2020 é inaugurado o museu municipal francisco coelho ocupando o espaço do antigo palacete Augusto Dias.",
-    image: Museu2020
+    title: "O nascimento do museu",
+    text: "O Museu Municipal Francisco Coelho é inaugurado no antigo Palacete Augusto Dias, preservando a memória e a identidade cultural de Marabá.",
+    image: Museu2020,
   },
   {
     year: "2022",
-    text: "1º Giro Cultural no Museu de Marabá,  em abril de 2022 para celebrar a cultura popular e a história local.",
-    image: Museu2022
+    title: "Cultura em movimento",
+    text: "O primeiro Giro Cultural aproxima o museu da comunidade, celebrando manifestações culturais e histórias da região.",
+    image: Museu2022,
   },
   {
     year: "2025",
-    text: "Atualmente o museu se encontra com uma bela decoração de guarda-chuvas cor-de-rosa, em homenagem ao outubro rosa.",
-    image: Museu2025
-  }
+    title: "Um espaço vivo",
+    text: "O museu continua criando conexões através de exposições, ações culturais e novas formas de valorizar a arte local.",
+    image: Museu2025,
+  },
 ];
 
+
 function OurStory() {
+
   return (
-    <div className="story-container">
-      {/* Lado Esquerdo: Textos */}
-      <div className="text-section">
-        <h1>Nossa História</h1>
-        <p>Conheça os momentos que marcaram a história do Museu e sua importância para a cultura e a memória de Marabá.</p>
+
+    <section className={styles.storyContainer}>
+
+      <div className={styles.textSection}>
+
+        <span className={styles.tag}>
+          Memória e Cultura
+        </span>
+
+        <h2>
+          Nossa História
+        </h2>
+
+        <p>
+          Mais do que um espaço de exposição, o Museu Municipal
+          Francisco Coelho guarda histórias, preserva memórias e
+          aproxima a comunidade da cultura de Marabá.
+        </p>
+
       </div>
 
-      {/* Lado Direito: Cards Expansíveis */}
-      <div className="cards-section">
-        {historyData.map((item, index) => (
-          <div 
-            key={index} 
-            className="card"
-            style={{ backgroundImage: `url(${item.image})` }}
+
+      <div className={styles.cardsSection}>
+
+        {historyData.map((item) => (
+
+          <article
+            key={item.year}
+            className={styles.card}
+            style={{
+              backgroundImage:`url(${item.image})`,
+            }}
           >
-            <div className="card-content">
-              {/* O texto aparece quando expandido */}
-              <p className="card-description">{item.text}</p>
-              <h3 className="card-year">{item.year}</h3>
+
+            <div className={styles.overlay} />
+
+            <div className={styles.cardContent}>
+
+              <span className={styles.year}>
+                {item.year}
+              </span>
+
+              <h3>
+                {item.title}
+              </h3>
+
+              <p>
+                {item.text}
+              </p>
+
             </div>
-          </div>
+
+          </article>
+
         ))}
+
       </div>
-    </div>
+
+    </section>
+
   );
 }
 

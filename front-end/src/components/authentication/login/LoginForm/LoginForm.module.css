@@ -1,0 +1,175 @@
+.formContainer {
+    width: 100%;
+    max-width: 500px;
+    min-height: 620px;
+
+    padding: 2.75rem;
+
+    border-radius: 28px;
+
+    background: #fff;
+    border: 1px solid #ECE3DD;
+
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .06);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+}
+
+.backButton {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+
+    margin-bottom: 1.6rem;
+
+    background: none;
+    border: none;
+
+    color: #2C231F;
+    font-size: .9rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.backButton:hover {
+    color: #000;
+    transform: translateX(-2px);
+}
+
+.passwordWrapper {
+    position: relative;
+}
+
+.eyeButton {
+    position: absolute;
+
+    top: 50%;
+    right: 16px;
+
+    transform: translateY(-50%);
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: none;
+    border: none;
+
+    color: #9B8F85;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.eyeButton:hover {
+    color: #2B2624;
+}
+
+.eyeButton:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* ---------------- ESQUECI SENHA ---------------- */
+
+.forgotPassword {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: -.35rem;
+}
+
+.forgotButton {
+    background: none;
+    border: none;
+    padding: 0;
+
+    cursor: pointer;
+
+    color: #2C2927;
+
+    font-size: .9rem;
+    font-weight: 500;
+
+    transition: .2s;
+}
+
+.forgotButton:hover {
+    color: #000;
+}
+
+/* ---------------- DIVISOR ---------------- */
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    margin: 2rem 0;
+
+    color: #B2A79F;
+
+    font-size: .85rem;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+
+    flex: 1;
+    height: 1px;
+
+    background: #ECE3DD;
+}
+
+/* ---------------- ALERTAS ---------------- */
+
+.errorBanner,
+.successBanner {
+    margin-bottom: 1.4rem;
+
+    padding: .9rem 1rem;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    font-size: .9rem;
+}
+
+.errorBanner {
+    background: #FFF4F4;
+    border: 1px solid #F0D6D6;
+    color: #A94D4D;
+}
+
+.successBanner {
+    background: #EEF8F2;
+    border: 1px solid #CFE8D8;
+    color: #256A48;
+}
+
+@media (max-width:600px) {
+
+    .formContainer {
+
+        padding: 2rem;
+
+        border-radius: 22px;
+    }
+
+}
