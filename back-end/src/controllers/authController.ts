@@ -51,7 +51,9 @@ export async function register(
     }
 
     if (!nome || !email || !senha || !contato) {
-      return reply.status(400).send({ message: 'Todos os campos são obrigatórios.' });
+      return reply.status(400).send({
+        message: 'Todos os campos são obrigatórios.'
+      });
     }
 
     // Validação de senha (mínimo 8 caracteres)

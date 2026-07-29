@@ -1,0 +1,276 @@
+.container {
+  min-height: 100vh;
+  background: #FAF9F7;
+}
+
+
+/* ================= MAIN ================= */
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+
+/* ================= GRID ================= */
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+
+/* ================= HEADER ================= */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+}
+
+
+.title {
+  margin: 0;
+
+  font-size: 2rem;
+  font-weight: 700;
+
+  color: #2B2624;
+}
+
+
+/* ================= LOGOUT ================= */
+
+.logoutButton {
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 40px;
+
+  padding: 0 1.2rem;
+
+  background: #fff;
+
+  border: 1px solid #ECE3DD;
+  border-radius: 999px;
+
+  color: #6B605A;
+
+  font-size: .9rem;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+
+.logoutButton:hover {
+
+  background: #F8F6F5;
+
+  color: #2B2624;
+
+}
+
+
+/* ================= CARDS GERAIS ================= */
+
+.profileSection,
+.obrasSection {
+
+  background: #fff;
+
+  border: 1px solid #ECE3DD;
+
+  border-radius: 20px;
+
+  padding: 1.5rem;
+
+  box-shadow:
+    0 4px 18px rgba(43,38,36,.04);
+}
+
+
+
+/* ================= MODAL ================= */
+
+.modalOverlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(43,38,36,.25);
+
+  backdrop-filter: blur(4px);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  z-index:1000;
+
+}
+
+
+.newAdminModal {
+
+  background:#fff;
+
+  width:90%;
+
+  max-width:480px;
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 20px 60px rgba(43,38,36,.15);
+
+  animation:slideUp .25s ease;
+
+}
+
+
+@keyframes slideUp {
+
+  from {
+
+    opacity:0;
+
+    transform:translateY(15px);
+
+  }
+
+  to {
+
+    opacity:1;
+
+    transform:translateY(0);
+
+  }
+
+}
+
+
+
+.modalHeader {
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:1.5rem 1.8rem;
+
+  border-bottom:1px solid #F0EAE5;
+
+}
+
+
+.modalTitle {
+
+  margin:0;
+
+  font-size:1.3rem;
+
+  font-weight:700;
+
+  color:#2B2624;
+
+}
+
+
+.closeButton {
+
+  width:36px;
+
+  height:36px;
+
+  border-radius:50%;
+
+  border:none;
+
+  background:transparent;
+
+  color:#8A7F77;
+
+  cursor:pointer;
+
+}
+
+
+.closeButton:hover {
+
+  background:#F8F6F5;
+
+}
+
+
+
+.modalContent {
+
+  padding:1.8rem;
+
+}
+
+
+
+/* ================= RESPONSIVO ================= */
+
+
+@media(max-width:900px){
+
+  .dashboardGrid{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
+
+
+@media(max-width:768px){
+
+  .main{
+
+    padding:1rem;
+
+  }
+
+
+  .header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:1rem;
+
+  }
+
+
+  .profileSection,
+  .obrasSection{
+
+    padding:1rem;
+
+  }
+
+}

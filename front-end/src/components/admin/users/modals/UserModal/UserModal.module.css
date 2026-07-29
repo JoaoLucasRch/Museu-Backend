@@ -1,0 +1,389 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+  background:rgba(20,18,17,.30);
+  backdrop-filter:blur(4px);
+  z-index:1000;
+}
+
+/* MODAL */
+
+.modal {
+  width:100%;
+  max-width:680px;
+  max-height:90vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+
+  background:#FCFBFA;
+  border-radius:24px;
+
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.16);
+
+  animation:show .25s ease;
+}
+
+@keyframes show {
+  from {
+    opacity:0;
+    transform:translateY(12px);
+  }
+
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+
+/* HEADER */
+
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:1.5rem 2rem;
+
+  border-bottom:1px solid #ECE8E5;
+}
+
+.header h2 {
+  margin:0;
+
+  color:#2E2A27;
+
+  font-size:1.35rem;
+  font-weight:600;
+}
+
+.subtitle {
+  margin:.35rem 0 0;
+
+  color:#8A817A;
+
+  font-size:.9rem;
+}
+
+
+.close {
+  width:38px;
+  height:38px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
+  border-radius:10px;
+
+  background:transparent;
+
+  color:#6B7280;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.close:hover {
+  background:#F3F4F6;
+}
+
+
+/* CONTENT */
+
+.content {
+
+  overflow-y:auto;
+
+  padding:2rem;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:1.25rem;
+}
+
+
+/* SECTION */
+
+.section {
+
+  display:flex;
+  flex-direction:column;
+
+  gap:1.25rem;
+
+  padding:1.5rem;
+
+  background:#FFFFFF;
+
+  border:1px solid #ECE8E5;
+
+  border-radius:18px;
+}
+
+
+.sectionTitle {
+
+  margin:0;
+
+  padding-bottom:.75rem;
+
+  border-bottom:1px solid #F1EEEB;
+
+  color:#2E2A27;
+
+  font-size:1rem;
+
+  font-weight:600;
+}
+
+
+/* INFORMAÇÕES */
+
+.infoGrid {
+
+  display:grid;
+
+  grid-template-columns:repeat(2,1fr);
+
+  gap:1rem;
+}
+
+
+.infoItem {
+
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:.85rem;
+
+  padding:1rem;
+
+  border-radius:14px;
+
+  background:#FAFAF9;
+}
+
+
+.infoItem svg {
+
+  margin-top:2px;
+
+  flex-shrink:0;
+
+  color:#8A817A;
+}
+
+
+.infoItem span {
+
+  display:block;
+
+  margin-bottom:.25rem;
+
+  color:#8A817A;
+
+  font-size:.75rem;
+
+  font-weight:600;
+
+  text-transform:uppercase;
+
+  letter-spacing:.05em;
+}
+
+
+.infoItem strong {
+
+  color:#2E2A27;
+
+  font-size:.92rem;
+
+  font-weight:500;
+
+  word-break:break-word;
+}
+
+
+/* PORTFÓLIO */
+
+.portfolioLink {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:.6rem;
+
+  width:max-content;
+
+  padding:.75rem 1rem;
+
+  border-radius:12px;
+
+  background:#F7F5F3;
+
+  color:#2E2A27;
+
+  text-decoration:none;
+
+  font-size:.9rem;
+
+  font-weight:500;
+
+  transition:.2s;
+}
+
+
+.portfolioLink:hover {
+
+  background:#ECE8E5;
+}
+
+
+/* ESTATÍSTICAS */
+
+.statsGrid {
+
+  display:grid;
+
+  grid-template-columns:repeat(3,1fr);
+
+  gap:1rem;
+}
+
+
+.statCard {
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  gap:.5rem;
+
+  padding:1.25rem;
+
+  border-radius:16px;
+
+  background:#FAFAF9;
+
+  border:1px solid #ECE8E5;
+
+}
+
+
+.statCard svg {
+
+  color:#8A817A;
+}
+
+
+.statCard span {
+
+  color:#8A817A;
+
+  font-size:.8rem;
+
+  text-align:center;
+}
+
+
+.statCard strong {
+
+  color:#2E2A27;
+
+  font-size:1.5rem;
+
+  font-weight:600;
+}
+
+
+/* FOOTER */
+
+.footer {
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  padding:1.25rem 2rem;
+
+  border-top:1px solid #ECE8E5;
+
+}
+
+
+.closeButton {
+
+  height:42px;
+
+  padding:0 1.5rem;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:#202124;
+
+  color:white;
+
+  font-size:.9rem;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+
+.closeButton:hover {
+
+  background:#111827;
+
+}
+
+
+/* RESPONSIVO */
+
+@media(max-width:700px){
+
+  .overlay{
+    padding:1rem;
+  }
+
+
+  .modal{
+    max-height:95vh;
+  }
+
+
+  .header,
+  .content,
+  .footer{
+    padding:1.25rem;
+  }
+
+
+  .infoGrid{
+    grid-template-columns:1fr;
+  }
+
+
+  .statsGrid{
+    grid-template-columns:1fr;
+  }
+
+}

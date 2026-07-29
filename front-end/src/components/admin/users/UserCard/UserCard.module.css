@@ -1,0 +1,108 @@
+.card {
+
+    background:white;
+
+    border:1px solid #ECE3DD;
+
+    border-radius:20px;
+
+    padding:1.3rem;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.card:hover {
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(44,41,39,.06);
+
+}
+
+
+.header {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+
+.header h3 {
+
+    margin:0;
+
+    color:#2C2927;
+
+    font-size:1rem;
+
+}
+
+
+.card p {
+
+    margin:.8rem 0;
+
+    color:#8F847C;
+
+    font-size:.9rem;
+
+}
+
+
+.admin,
+.artist {
+
+    padding:.3rem .8rem;
+
+    border-radius:999px;
+
+    font-size:.75rem;
+
+    font-weight:600;
+
+}
+
+
+.admin {
+
+    background:#F1ECE7;
+
+    color:#5E534D;
+
+}
+
+
+.artist {
+
+    background:#EFE8F8;
+
+    color:#70549B;
+
+}
+
+
+.status {
+
+    display:inline-block;
+
+    padding:.3rem .8rem;
+
+    background:#E8F5EC;
+
+    color:#28734A;
+
+    border-radius:999px;
+
+    font-size:.75rem;
+
+    font-weight:600;
+
+}

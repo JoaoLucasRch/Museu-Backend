@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import fastify from 'fastify';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
@@ -7,6 +9,7 @@ import fastifyStatic from '@fastify/static';
 import path from 'path';
 import fs from 'fs';
 import pump from 'pump';
+
 
 import { authRoutes } from './routes/authRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
@@ -18,9 +21,11 @@ const __dirname = process.cwd();
 const app = fastify({
   logger: true,
   ajv: {
-    customOptions: { strict: false },
+    customOptions: { strict: false,       allErrors: true,
+ },
   },
 });
+
 
 // Plugin de Upload de Arquivos
 app.register(multipart, {
@@ -122,13 +127,22 @@ app.setErrorHandler((error, request, reply) => {
   app.log.error(error);
 
   if ((error as any).validation) {
+    console.log("========== AJV ==========");
+    console.log(JSON.stringify((error as any).validation, null, 2));
+    console.log("=========================");
+
     return reply.status(400).send({
-      message: 'Erro de validação',
+      message: "Erro de validação",
       errors: (error as any).validation,
     });
   }
-  return reply.status(500).send({ message: 'Erro interno do servidor' });
+
+  return reply.status(500).send({
+    message: "Erro interno",
+  });
+
 });
+
 
 const start = async () => {
   try {

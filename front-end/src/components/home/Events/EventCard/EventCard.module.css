@@ -1,0 +1,419 @@
+.card {
+  display:flex;
+
+  width:270px;
+  height:360px;
+
+  position:relative;
+
+  cursor:pointer;
+
+  transition:
+    width .55s cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+/* expansão */
+
+.card.open {
+  width:640px;
+}
+
+
+
+/* IMAGEM */
+
+.imageContainer {
+
+  width:270px;
+  height:360px;
+
+  flex-shrink:0;
+
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:18px;
+
+}
+
+
+
+.image {
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  transition:
+    transform .6s ease;
+
+}
+
+
+
+.card:hover .image {
+
+  transform:scale(1.06);
+
+}
+
+
+
+/* degradê */
+
+.gradient {
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 35%,
+      rgba(0,0,0,.78)
+    );
+
+}
+
+
+
+/* PLACEHOLDER */
+
+.placeholder {
+
+  width:100%;
+  height:100%;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eee6df,
+      #faf7f3
+    );
+
+  color:#8a7f77;
+
+  font-size:1.2rem;
+
+  font-weight:600;
+
+}
+
+
+
+/* STATUS */
+
+.status,
+.edital {
+
+  position:absolute;
+
+  top:16px;
+  right:16px;
+
+  padding:.45rem .9rem;
+
+  border-radius:999px;
+
+  font-size:.72rem;
+
+  font-weight:600;
+
+  z-index:2;
+
+  backdrop-filter:blur(8px);
+
+}
+
+
+
+.status {
+
+  background:rgba(232,244,236,.95);
+
+  color:#28734a;
+
+}
+
+
+
+.edital {
+
+  background:rgba(245,234,213,.95);
+
+  color:#8a6116;
+
+}
+
+
+
+.breve {
+
+  background:rgba(238,233,229,.95);
+
+  color:#756b63;
+
+}
+
+
+
+/* TÍTULO SOBRE A IMAGEM */
+
+.titleOverlay {
+
+  position:absolute;
+
+  bottom:0;
+
+  left:0;
+
+  padding:1.4rem;
+
+  color:white;
+
+}
+
+
+
+.titleOverlay h3 {
+
+  margin:0;
+
+  font-size:1.3rem;
+
+  line-height:1.3;
+
+  font-weight:700;
+
+}
+
+
+
+/* GAVETA */
+
+.details {
+
+  width:370px;
+
+  height:360px;
+
+  background:#FCFBFA;
+
+  border:1px solid #ECE3DD;
+
+  border-left:none;
+
+  border-radius:0 18px 18px 0;
+
+  overflow:hidden;
+
+}
+
+
+
+/* conteúdo */
+
+.detailsContent {
+
+  padding:1.8rem;
+
+  animation:
+    drawerContent .65s ease forwards;
+
+}
+
+
+
+.details h4 {
+
+  margin:0 0 1.2rem;
+
+  font-size:1.35rem;
+
+  color:#2C2927;
+
+}
+
+
+
+/* informações */
+
+.info {
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:.7rem;
+
+  margin-bottom:1.2rem;
+
+}
+
+
+
+.info span {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:.55rem;
+
+  color:#8A7F77;
+
+  font-size:.9rem;
+
+}
+
+
+
+/* descrição */
+
+.details p {
+
+  color:#4B5563;
+
+  font-size:.95rem;
+
+  line-height:1.65;
+
+  animation:
+    typingReveal .8s ease forwards;
+
+}
+
+
+
+/* botão */
+
+.viewButton {
+
+  margin-top:1.2rem;
+
+  padding:.65rem 1.1rem;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:#2C2927;
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:.2s;
+
+}
+
+
+.viewButton:hover {
+
+  transform:translateY(-2px);
+
+  background:#403b38;
+
+}
+
+
+
+/* animação abertura da gaveta */
+
+@keyframes drawerContent {
+
+  from {
+
+    opacity:0;
+
+    transform:
+      translateX(-20px);
+
+  }
+
+  to {
+
+    opacity:1;
+
+    transform:
+      translateX(0);
+
+  }
+
+}
+
+
+
+/* sensação de texto aparecendo */
+
+@keyframes typingReveal {
+
+  from {
+
+    opacity:0;
+
+    clip-path:
+      inset(0 100% 0 0);
+
+  }
+
+  to {
+
+    opacity:1;
+
+    clip-path:
+      inset(0 0 0 0);
+
+  }
+
+}
+
+
+
+/* RESPONSIVO */
+
+@media(max-width:900px){
+
+  .card {
+
+    width:250px;
+
+    height:340px;
+
+  }
+
+
+  .card.open {
+
+    width:250px;
+
+  }
+
+
+  .imageContainer {
+
+    width:250px;
+
+    height:340px;
+
+  }
+
+
+  .details {
+
+    display:none;
+
+  }
+
+}

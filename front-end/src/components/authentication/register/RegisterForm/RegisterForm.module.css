@@ -1,0 +1,151 @@
+.formContainer {
+    width: 100%;
+    max-width: 520px;
+    padding: 1.75rem;
+
+    background: #fff;
+    border-radius: 28px;
+    border: 1px solid #ECE3DD;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .06);
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- Área Rolável ---------- */
+
+.scrollArea {
+    max-height: 68vh;
+    overflow-y: auto;
+    margin-right: -10px;
+    padding-right: 10px;
+}
+
+.scrollArea::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scrollArea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollArea::-webkit-scrollbar-thumb {
+    background: #D5CBC4;
+    border-radius: 999px;
+}
+
+.scrollArea::-webkit-scrollbar-thumb:hover {
+    background: #B9AEA6;
+}
+
+/* ---------------- FORM ---------------- */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+}
+
+.passwordWrapper {
+    position: relative;
+}
+
+/* ---------------- OLHO ---------------- */
+
+.eyeButton {
+    position: absolute;
+
+    right: 16px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background: none;
+
+    color: #9B8F85;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.eyeButton:hover {
+    color: #2B2624;
+}
+
+.eyeButton:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* ---------------- BOTÃO ---------------- */
+
+.submitButton {
+    width: 100%;
+    height: 52px;
+
+    margin-top: .5rem;
+
+    border: none;
+
+    border-radius: 16px;
+
+    background: #2C231F;
+
+    color: #fff;
+
+    font-size: .95rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+.submitButton:hover:not(:disabled) {
+    background: #1F1815;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .10);
+}
+
+.submitButton:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
+
+/* ---------------- ALERTAS ---------------- */
+
+.errorBanner,
+.successBanner {
+    margin-bottom: 1.5rem;
+
+    padding: .9rem 1rem;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    font-size: .9rem;
+}
+
+.errorBanner {
+    background: #FFF4F4;
+    border: 1px solid #F0D6D6;
+    color: #A94D4D;
+}
+
+.successBanner {
+    background: #EEF8F2;
+    border: 1px solid #CFE8D8;
+    color: #256A48;
+}

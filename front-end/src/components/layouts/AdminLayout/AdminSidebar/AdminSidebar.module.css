@@ -1,0 +1,118 @@
+.sidebar {
+
+
+  width: 240px;
+
+
+  min-height: 100vh;
+
+
+  padding: 1.5rem 1rem;
+
+
+  background: #fff;
+
+
+  border-right: 1px solid #ECE3DD;
+
+
+  display: flex;
+
+  flex-direction: column;
+
+
+  gap: .35rem;
+
+
+}
+
+
+/* ================= LINKS ================= */
+
+
+.link {
+
+
+  display: flex;
+
+  align-items: center;
+
+  gap: .8rem;
+
+
+  padding: .75rem 1rem;
+
+
+  border-radius: 14px;
+
+
+  color: #8A7F77;
+
+
+  text-decoration: none;
+
+
+  font-size: .95rem;
+
+  font-weight: 500;
+
+
+  transition: .2s;
+
+
+}
+
+
+
+.link svg {
+
+
+  width: 19px;
+
+  height: 19px;
+
+
+}
+
+
+
+/* hover */
+
+
+.link:hover {
+
+
+  background: #F8F6F5;
+
+
+  color: #2B2624;
+
+
+}
+
+
+
+/* ativo */
+
+
+.active {
+
+
+  background: #F5EFEA;
+
+
+  color: #2B2624;
+
+
+  font-weight: 600;
+
+
+}
+
+
+
+.active svg {
+
+  color: #B27A35;
+
+}

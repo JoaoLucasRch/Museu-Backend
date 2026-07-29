@@ -1,0 +1,39 @@
+.row {
+    display: grid;
+    grid-template-columns:
+        3fr
+        1.5fr
+        1.2fr
+        1fr
+        40px;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid #F1F1F1;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.row:hover {
+    background: #F8F9FA;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 30px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    color: #9CA3AF;
+}

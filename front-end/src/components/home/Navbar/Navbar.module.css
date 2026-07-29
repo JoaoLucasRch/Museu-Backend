@@ -1,0 +1,205 @@
+.container {
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+
+  z-index:1000;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:1.5rem 5%;
+
+  background:transparent;
+
+  transition:
+    background .3s ease,
+    backdrop-filter .3s ease,
+    box-shadow .3s ease,
+    padding .3s ease;
+}
+
+
+.scrolled {
+
+  background:rgba(252,251,250,.82);
+
+  backdrop-filter:blur(12px);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.08);
+
+  padding:1rem 5%;
+
+}
+
+
+
+/* LISTA */
+
+.list {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:2.2rem;
+
+  list-style:none;
+
+  margin:0;
+
+  padding:0;
+
+}
+
+
+
+.item a {
+
+  text-decoration:none;
+
+  color:#FCFBFA;
+
+  font-size:.95rem;
+
+  font-weight:500;
+
+  transition:.25s ease;
+
+}
+
+
+
+.container:not(.scrolled) .item a {
+
+  color:white;
+
+}
+
+
+.scrolled .item a {
+
+  color:#2C2927;
+
+}
+
+
+
+.item a:hover {
+
+  color:#A3968D;
+
+}
+
+
+
+/* BOTÃO ENTRAR */
+
+.loginButton {
+
+  position:absolute;
+
+  right:5%;
+
+  padding:.45rem 1rem;
+
+  border-radius:10px;
+
+  border:1px solid rgba(255,255,255,.35);
+
+  background:transparent;
+
+  color:white;
+
+  font-size:.85rem;
+
+  font-weight:500;
+
+  cursor:pointer;
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease;
+}
+
+
+/* quando está sobre a imagem */
+
+.container:not(.scrolled) .loginButton:hover {
+
+  background:rgba(255,255,255,.15);
+
+  border-color:white;
+
+}
+
+
+
+/* após scroll */
+
+.scrolled .loginButton {
+
+  color:#6B625B;
+
+  border-color:#E5DDD6;
+
+  background:transparent;
+
+}
+
+
+
+.scrolled .loginButton:hover {
+
+  background:#F3EFEC;
+
+  border-color:#D8CEC6;
+
+  color:#2C2927;
+
+}
+
+
+
+/* RESPONSIVO */
+
+@media(max-width:768px){
+
+  .container {
+
+    padding:1rem 1.5rem;
+
+  }
+
+
+  .list {
+
+    gap:1rem;
+
+    overflow-x:auto;
+
+  }
+
+
+  .item a {
+
+    white-space:nowrap;
+
+    font-size:.85rem;
+
+  }
+
+
+  .loginButton {
+
+    display:none;
+
+  }
+
+}

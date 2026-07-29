@@ -1,0 +1,456 @@
+.overlay{
+  position:fixed;
+  inset:0;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  padding:1.5rem;
+
+  background:rgba(20,18,17,.30);
+
+  backdrop-filter:blur(3px);
+
+  z-index:1000;
+}
+
+
+.modal{
+
+  width:100%;
+
+  max-width:620px;
+
+  max-height:90vh;
+
+  overflow-y:auto;
+
+  background:#FCFBFA;
+
+  border:1px solid #ECE3DD;
+
+  border-radius:28px;
+
+  padding:1.7rem 2rem;
+
+  box-shadow:
+  0 24px 60px rgba(0,0,0,.08);
+
+  animation:fade .25s ease;
+
+  overflow: hidden;
+
+}
+
+
+/* HEADER */
+
+.header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:1rem;
+
+  margin-bottom:1.4rem;
+}
+
+
+.headerText{
+
+  display:flex;
+
+  flex-direction:column;
+}
+
+
+.section{
+
+  display:block;
+
+  margin-bottom:.35rem;
+
+  font-size:.72rem;
+
+  font-weight:600;
+
+  letter-spacing:.12em;
+
+  color:#B09B90;
+}
+
+
+.title{
+
+  margin:0;
+
+  font-size:1.75rem;
+
+  font-weight:600;
+
+  color:#2B2624;
+}
+
+
+.subtitle{
+
+  margin-top:.4rem;
+
+  font-size:.9rem;
+
+  line-height:1.4;
+
+  color:#867C75;
+}
+
+
+.closeButton{
+
+  width:36px;
+
+  height:36px;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  border:none;
+
+  background:transparent;
+
+  border-radius:10px;
+
+  color:#8B817A;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+
+.closeButton:hover{
+
+  background:#F7F4F2;
+
+  color:#2B2624;
+}
+
+
+
+/* FORM */
+
+.form{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:1rem;
+}
+
+
+
+.row{
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:1rem;
+}
+
+
+
+.inputGroup{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:.45rem;
+}
+
+
+
+.inputGroup label{
+
+  font-size:.72rem;
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
+
+  font-weight:600;
+
+  color:#A18E84;
+}
+
+
+
+.inputGroup input,
+.inputGroup select,
+.inputGroup textarea{
+
+  width:100%;
+
+  border:1px solid #ECE3DD;
+
+  border-radius:16px;
+
+  background:white;
+
+  padding:0 1rem;
+
+  height:50px;
+
+  font-size:.95rem;
+
+  color:#2B2624;
+
+  box-sizing:border-box;
+
+  transition:.2s;
+}
+
+
+
+.inputGroup select{
+
+  cursor:pointer;
+
+  appearance:none;
+
+  background-image:
+  linear-gradient(45deg, transparent 50%, #8B817A 50%),
+  linear-gradient(135deg, #8B817A 50%, transparent 50%);
+
+  background-position:
+  calc(100% - 18px) 50%,
+  calc(100% - 13px) 50%;
+
+  background-size:
+  5px 5px,
+  5px 5px;
+
+  background-repeat:no-repeat;
+
+  padding-right:2.8rem;
+}
+
+
+
+.inputGroup textarea{
+
+  height:95px;
+
+  padding:1rem;
+
+  resize:none;
+
+  line-height:1.5;
+}
+
+
+
+.inputGroup input::placeholder,
+.inputGroup textarea::placeholder{
+
+  color:#B5AEA8;
+}
+
+
+
+.inputGroup input:focus,
+.inputGroup select:focus,
+.inputGroup textarea:focus{
+
+  outline:none;
+
+  border-color:#D2C0B4;
+
+  box-shadow:
+  0 0 0 4px rgba(210,192,180,.15);
+
+}
+
+
+
+.error{
+
+  font-size:.78rem;
+
+  color:#C44D4D;
+}
+
+
+
+/* FOOTER */
+
+.footer{
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  gap:1rem;
+
+  margin-top:.4rem;
+}
+
+
+
+.cancelButton,
+.submitButton{
+
+  height:44px;
+
+  padding:0 1.5rem;
+
+  border-radius:999px;
+
+  font-size:.9rem;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+
+
+.cancelButton{
+
+  background:white;
+
+  border:1px solid #E8DDD4;
+
+  color:#6D645E;
+}
+
+
+.cancelButton:hover{
+
+  background:#F7F4F2;
+}
+
+
+
+.submitButton{
+
+  background:#2B2624;
+
+  border:none;
+
+  color:white;
+}
+
+
+.submitButton:hover{
+
+  background:#171413;
+}
+
+
+
+.submitButton:disabled,
+.cancelButton:disabled{
+
+  opacity:.6;
+
+  cursor:not-allowed;
+}
+
+
+
+/* SCROLL */
+
+.modal::-webkit-scrollbar{
+
+  width:6px;
+}
+
+
+.modal::-webkit-scrollbar-thumb{
+
+  background:#D8CCC4;
+
+  border-radius:999px;
+}
+
+
+
+/* ANIMAÇÃO */
+
+@keyframes fade{
+
+  from{
+
+    opacity:0;
+
+    transform:translateY(-8px);
+
+  }
+
+
+  to{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+  }
+
+}
+
+
+
+/* RESPONSIVO */
+
+@media(max-width:768px){
+
+  .modal{
+
+    padding:1.5rem;
+
+    border-radius:22px;
+
+    max-height:92vh;
+
+  }
+
+
+  .row{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .footer{
+
+    flex-direction:column-reverse;
+
+  }
+
+
+  .footer button{
+
+    width:100%;
+
+  }
+
+
+  .title{
+
+    font-size:1.5rem;
+
+  }
+
+}

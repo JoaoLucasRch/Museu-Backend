@@ -1,0 +1,135 @@
+.row {
+
+    display:grid;
+
+    grid-template-columns:2fr 2.5fr 1fr 1fr 50px;
+
+    align-items:center;
+
+    padding:1.2rem 1.5rem;
+
+    border-bottom:1px solid #F1EBE6;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.row:last-child{
+
+    border-bottom:none;
+
+}
+
+
+.row:hover {
+
+    background:#FBF8F5;
+
+}
+
+
+.name {
+
+    color:#2C2927;
+
+    font-weight:600;
+
+}
+
+
+.email {
+
+    color:#8F847C;
+
+    font-size:.9rem;
+
+}
+
+
+.role {
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:.3rem .8rem;
+
+    border-radius:999px;
+
+    font-size:.75rem;
+
+    font-weight:600;
+
+}
+
+
+.admin {
+
+    background:#F1ECE7;
+
+    color:#5E534D;
+
+}
+
+
+.artist {
+
+    background:#EFE8F8;
+
+    color:#70549B;
+
+}
+
+
+.active {
+
+    display:inline-flex;
+
+    padding:.3rem .8rem;
+
+    border-radius:999px;
+
+    background:#E8F5EC;
+
+    color:#28734A;
+
+    font-size:.75rem;
+
+    font-weight:600;
+
+}
+
+
+.icon {
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    color:#A3968D;
+
+}
+
+
+@media(max-width:800px){
+
+.row{
+
+    grid-template-columns:1fr;
+
+    gap:.8rem;
+
+}
+
+.icon{
+
+    display:none;
+
+}
+
+}

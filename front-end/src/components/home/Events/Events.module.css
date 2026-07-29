@@ -1,0 +1,48 @@
+.eventosSection {
+  padding: 5rem 0;
+  background-color: #F5F3EE;
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.noEvents {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.noEvents p {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+
+  .eventosSection {
+    padding: 3rem 0;
+  }
+
+
+  .container {
+    padding: 0 1rem;
+  }
+
+
+  .title {
+    font-size: 2rem;
+  }
+
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+}

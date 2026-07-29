@@ -1,0 +1,101 @@
+.header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+
+  padding: 1.5rem 2rem;
+
+
+  background: #FAF9F7;
+
+}
+
+
+
+.title {
+
+  margin: 0;
+
+
+  font-size: 1.8rem;
+
+  font-weight: 700;
+
+
+  color: #2B2624;
+
+  letter-spacing: -.02em;
+
+}
+
+
+
+.subtitle {
+
+  display: block;
+
+
+  margin-top: .35rem;
+
+
+  font-size: .9rem;
+
+
+  color: #8A7F77;
+
+}
+
+
+
+/* ================= LOGOUT ================= */
+
+
+.logoutButton {
+
+
+  height: 40px;
+
+
+  padding: 0 1.2rem;
+
+
+  border-radius: 999px;
+
+
+  background: #fff;
+
+
+  border: 1px solid #ECE3DD;
+
+
+  color: #6B605A;
+
+
+  font-size: .9rem;
+
+  font-weight: 500;
+
+
+  cursor: pointer;
+
+
+  transition: .2s;
+
+}
+
+
+
+.logoutButton:hover {
+
+
+  background: #F8F6F5;
+
+
+  color: #2B2624;
+
+
+}

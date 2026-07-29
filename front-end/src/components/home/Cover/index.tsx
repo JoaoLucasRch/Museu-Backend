@@ -1,33 +1,127 @@
-import "./style.css";
+import {
+  useEffect,
+  useState,
+} from "react";
 
-import coverImg from '../../../assets/Cover.png';
+import styles from "./Cover.module.css";
 
-function Cover() {
+import coverImg from "../../../assets/Cover.png";
+import Museu2025 from "../../../assets/Museum/museu2025.png";
+import Pintura from "../../../assets/Expose/pinturaManuel.jpg";
+
+
+const slides = [
+  {
+    image: coverImg,
+    subtitle: "Museu Municipal de Marabá",
+    title: "FRANCISCO COELHO",
+    description:
+      "Um espaço dedicado à preservação da memória, da arte e da cultura amazônica."
+  },
+  {
+    image: Museu2025,
+    subtitle: "História e Patrimônio",
+    title: "Conheça nossas histórias",
+    description:
+      "Descubra momentos que marcaram a trajetória cultural de Marabá."
+  },
+  {
+    image: Pintura,
+    subtitle: "Arte e Expressão",
+    title: "Novas vozes, novas perspectivas",
+    description:
+      "Exposições que conectam artistas, comunidade e diferentes formas de expressão."
+  }
+];
+
+
+export default function Cover() {
+
+  const [activeSlide, setActiveSlide] = useState(0);
+
+
+  useEffect(() => {
+
+    const interval = setInterval(() => {
+
+      setActiveSlide((prev) =>
+        (prev + 1) % slides.length
+      );
+
+    }, 6000);
+
+
+    return () =>
+      clearInterval(interval);
+
+  }, []);
+
+
+
+  const slide = slides[activeSlide];
+
+
   return (
-    <>
-      {/* Nota: Se estiver usando Next.js, as meta tags e title 
-         devem ir no objeto 'metadata' ou no componente <Head>.
-      */}
 
-      <header>
-        <div className="cover">
-          {/* Lembre-se de colocar o caminho da imagem no src */}
-          <img src={coverImg} alt="Capa imagem tal aqui" />
+    <header className={styles.header}>
+
+
+      <div
+        className={styles.cover}
+        key={activeSlide}
+      >
+
+        <img
+          src={slide.image}
+          alt={slide.title}
+        />
+
+        <div className={styles.overlay}/>
+
+      </div>
+
+
+
+      <div className={styles.titles}>
+
+
+        <h5>
+          {slide.subtitle}
+        </h5>
+
+
+        <h1>
+          {slide.title}
+        </h1>
+
+
+        <p>
+          {slide.description}
+        </p>
+
+
+        <div className={styles.indicators}>
+
+          {slides.map((_, index) => (
+
+            <span
+              key={index}
+              className={
+                index === activeSlide
+                  ? styles.active
+                  : ""
+              }
+            />
+
+          ))}
+
         </div>
 
-        <div className="titles">
-          <h5>Museu Municipal de Marabá</h5>
-          <h1>FRANCISCO COELHO</h1>
-          <h5>Viva a Cultura de Marabá</h5>
-          <p>
-            Explore a rica história e cultura amazônica através de exposições
-            interativas, arte regional e patrimônio cultural que conecta passado
-            e futuro.
-          </p>
-        </div>
-      </header>
-    </>
+
+      </div>
+
+
+    </header>
+
   );
 }
-
-export default Cover;
