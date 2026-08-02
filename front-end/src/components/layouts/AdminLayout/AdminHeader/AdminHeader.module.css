@@ -1,101 +1,66 @@
 .header {
-
   display: flex;
 
   justify-content: space-between;
 
   align-items: center;
 
+  padding: 0.5rem 2rem;
 
-  padding: 1.5rem 2rem;
-
-
-  background: #FAF9F7;
-
+  background: #faf9f7;
 }
 
-
-
 .title {
-
   margin: 0;
-
 
   font-size: 1.8rem;
 
   font-weight: 700;
 
+  color: #2b2624;
 
-  color: #2B2624;
-
-  letter-spacing: -.02em;
-
+  letter-spacing: -0.02em;
 }
-
-
 
 .subtitle {
-
   display: block;
 
+  margin-top: 0.35rem;
 
-  margin-top: .35rem;
+  font-size: 0.9rem;
 
-
-  font-size: .9rem;
-
-
-  color: #8A7F77;
-
+  color: #8a7f77;
 }
-
-
 
 /* ================= LOGOUT ================= */
 
-
 .logoutButton {
-
-
   height: 40px;
-
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; /* Espaçamento entre a palavra "Sair" e o ícone */
 
   padding: 0 1.2rem;
 
-
   border-radius: 999px;
-
 
   background: #fff;
 
+  border: 1px solid #ece3dd;
 
-  border: 1px solid #ECE3DD;
+  color: #6b605a;
 
-
-  color: #6B605A;
-
-
-  font-size: .9rem;
+  font-size: 0.9rem;
 
   font-weight: 500;
 
-
   cursor: pointer;
 
-
-  transition: .2s;
-
+  transition: 0.2s;
 }
 
-
-
 .logoutButton:hover {
+  background: #f8f6f5;
 
-
-  background: #F8F6F5;
-
-
-  color: #2B2624;
-
-
+  color: #2b2624;
 }

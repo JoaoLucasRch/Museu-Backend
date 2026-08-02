@@ -3,7 +3,7 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 1.2rem;
-  padding: 1.2rem 1.5rem;
+  padding: 1.1rem 1.1rem;
   border-bottom: 1px solid #F1EBE6;
   transition: .2s;
 }
@@ -82,7 +82,7 @@
 }
 
 .meta svg {
-  color: #B27A35;
+  color: #565554;
 }
 
 /* AÇÕES */

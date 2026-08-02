@@ -1,69 +1,167 @@
 .container {
-    display:flex;
-    flex-direction:column;
-    gap:1.2rem;
-    margin-bottom:1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-/* BUSCA */
-
+/* --- CAMPO DE BUSCA --- */
 .searchContainer {
-    width:100%;
-    height:46px;
-    display:flex;
-    align-items:center;
-    gap:.7rem;
-    padding:0 1rem;
-    background:#fff;
-    border:1px solid #ECE3DD;
-    border-radius:999px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  background-color: #ffffff;
+  border: 1px solid #E7E2DE;
+  border-radius: 14px;
+  padding: 0 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.icon {
-    color:#A3968D;
+.searchContainer:focus-within {
+  border-color: #202124;
+  box-shadow: 0 0 0 3px rgba(32, 33, 36, 0.08);
 }
 
-.searchContainer input {
-    flex:1;
-    border:none;
-    outline:none;
-    background:transparent;
-
-    color:#2B2624;
-    font-size:.9rem;
+.searchIcon {
+  color: #9A918B;
+  pointer-events: none;
+  flex-shrink: 0;
+  margin-right: 0.8rem;
 }
 
-.searchContainer input::placeholder {
-    color:#B2A79F;
+.searchInput {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  font-size: 0.94rem;
+  color: #2E2A27;
+  outline: none;
 }
 
-/* FILTROS */
-
-.filters {
-    display:flex;
-    gap:.6rem;
-    flex-wrap:wrap;
+.searchInput::placeholder {
+  color: #AAA19A;
 }
 
-.filterButton {
-    height:34px;
-    padding:0 1rem;
-    border-radius:999px;
-    border:1px solid #ECE3DD;
-    background:#fff;
-    color:#8A7F77;
-    font-size:.85rem;
-    cursor:pointer;
-    transition:.2s;
+/* --- DROPDOWN CONTAINER --- */
+.selectWrapper {
+  position: relative;
+  min-width: 180px;
 }
 
-.filterButton:hover {
-    background:#F8F6F5;
+/* BOTÃO PRINCIPAL ESCURO */
+.selectButton {
+  width: 100%;
+  height: 48px;
+  padding: 0 1.25rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+
+  background-color: #202124;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.active {
-    background:#F5EFEA;
-    color:#2B2624;
-    border-color:#DDD2CB;
-    font-weight:600;
+.selectButton:hover {
+  background-color: #111827;
+  transform: translateY(-1px);
+}
+
+.buttonLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+/* --- O MENU SUSPENSO BONITO (CUSTOMIZADO) --- */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+
+  background-color: #ffffff;
+  border: 1px solid #E7E2DE;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+  z-index: 50;
+  animation: dropdownAnimation 0.18s ease-out forwards;
+}
+
+.dropdownOption {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #2E2A27;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdownOption:hover {
+  background-color: #F5EFEA;
+  color: #202124;
+}
+
+.selectedOption {
+  background-color: #202124;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.selectedOption:hover {
+  background-color: #111827;
+  color: #ffffff;
+}
+
+/* Animação suave ao abrir */
+@keyframes dropdownAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVO */
+@media (max-width: 700px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .searchContainer,
+  .selectWrapper {
+    width: 100%;
+  }
 }
