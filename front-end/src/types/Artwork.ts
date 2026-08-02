@@ -10,6 +10,7 @@ export interface Edital {
 }
 
 export interface Artwork {
+  autor: string | undefined;
   id_obra: number;
   titulo_obra: string;
   descricao_obra?: string | null;
