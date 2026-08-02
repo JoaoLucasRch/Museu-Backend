@@ -224,67 +224,96 @@
 
 /* ================= FOOTER ================= */
 
-.footer{
-  display:flex;
-  justify-content:flex-end;
-  padding:1.25rem 2rem;
-  border-top:1px solid #ECE8E5;
-  background:#FCFBFA;
-  flex-shrink:0;
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+  border-top: 1px solid #ECE8E5;
+  background: #FCFBFA;
+  flex-shrink: 0;
 }
 
-.closeButton{
-  min-width:120px;
-  height:44px;
-  padding:0 1.5rem;
-  border:none;
-  border-radius:12px;
-  background:#202124;
-  color:#FFF;
-  font-size:.92rem;
-  font-weight:600;
-  cursor:pointer;
-  transition:.2s;
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.closeButton:hover{
-  background:#111827;
+.editButton,
+.deleteButton {
+  height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* ================= RESPONSIVO ================= */
+/* Botão Editar */
+.editButton {
+  border: 1px solid #ECE3DD;
+  background: #FFF;
+  color: #4B5563;
+}
 
-@media (max-width:768px){
+.editButton:hover {
+  background: #F8F6F5;
+  color: #111827;
+}
 
-  .overlay{
-    padding:1rem;
+/* Botão Excluir */
+.deleteButton {
+  border: 1px solid #FEE2E2;
+  background: #FFF;
+  color: #DC2626;
+}
+
+.deleteButton:hover {
+  background: #FEF2F2;
+  border-color: #FCA5A5;
+}
+
+.closeButton {
+  min-width: 120px;
+  height: 44px;
+  padding: 0 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: #202124;
+  color: #FFF;
+  font-size: .92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.closeButton:hover {
+  background: #111827;
+}
+
+/* ================= RESPONSIVO (Dispositivos Móveis) ================= */
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.25rem;
+    flex-direction: column-reverse;
   }
 
-  .modal{
-    max-height:96vh;
-    border-radius:18px;
+  .actions {
+    width: 100%;
   }
 
-  .header{
-    padding:1.25rem;
-  }
-
-  .content{
-    padding:1.25rem;
-  }
-
-  .footer{
-    padding:1.25rem;
-  }
-
-  .image{
-    height:220px;
-  }
-
-  .infoGrid{
-    grid-template-columns:1fr;
-  }
-
-  .closeButton{
-    width:100%;
+  .editButton,
+  .deleteButton,
+  .closeButton {
+    flex: 1;
+    width: 100%;
+    justify-content: center;
   }
 }

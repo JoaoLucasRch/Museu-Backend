@@ -1,11 +1,12 @@
 .row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 1.2rem;
   padding: 1.1rem 1.1rem;
   border-bottom: 1px solid #F1EBE6;
   transition: .2s;
+  cursor: pointer;
 }
 
 .row:last-child {
@@ -85,46 +86,10 @@
   color: #565554;
 }
 
-/* AÇÕES */
-
-.actions {
-  display: flex;
-  gap: .4rem;
-}
-
-.actions button {
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  border: 1px solid #ECE3DD;
-  background: #fff;
-  color: #8A7F77;
-  cursor: pointer;
-  transition: .2s;
-}
-
-.actions button:hover {
-  background: #F8F6F5;
-  color: #2B2624;
-}
-
-.actions .delete:hover {
-  color: #B42318;
-  background: #FEF2F2;
-}
-
 /* RESPONSIVO */
 
 @media(max-width:800px) {
-
   .row {
     grid-template-columns: 1fr;
-  }
-
-  .actions {
-    justify-content: flex-end;
   }
 }

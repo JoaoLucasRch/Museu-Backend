@@ -25,6 +25,22 @@
   text-transform: uppercase;
 }
 
+/* Exemplo de ajuste individual no CSS */
+.colObra {
+  padding-left: 20px; /* Move o nome "Obra" para a direita */
+}
+
+.colEvento {
+  padding-right: 0px;
+}
+
+.colEnviado {
+  padding-right: 180px;
+}
+
+.colStatus {
+  padding-left: 25px;
+}
 /* Área Interna onde ficam as linhas e a rolagem */
 .scrollArea {
   max-height: 372px; 

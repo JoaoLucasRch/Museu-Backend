@@ -12,10 +12,10 @@ export default function ArtworkList({ obras, onArtworkClick }: Props) {
     <div className={styles.tableCard}>
       {/* Cabeçalho Fixo */}
       <div className={styles.header}>
-        <div>Obra</div>
-        <div>Evento</div>
-        <div>Enviado</div>
-        <div>Status</div>
+        <div className={styles.colObra}>Obra</div>
+        <div className={styles.colEvento}>Evento</div>
+        <div className={styles.colEnviado}>Enviado</div>
+        <div className={styles.colStatus}>Status</div>
       </div>
 
       {/* Conteúdo com Scroll Interno */}

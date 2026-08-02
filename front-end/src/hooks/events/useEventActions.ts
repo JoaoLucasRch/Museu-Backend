@@ -221,46 +221,26 @@ export default function useEventoActions({
   }
 
   async function handleDelete() {
+  if (!selectedEvento) return;
 
-    if (!selectedEvento)
-      return;
+  try {
+    setIsSubmitting(true);
 
-    const confirmed = confirm(
-      `Excluir "${selectedEvento.titulo_evento}"?`
+    await excluirEvento(selectedEvento.id_evento);
+
+    // Garante que fecha o modal de exclusão e limpa o evento selecionado
+    closeModal(); 
+  } catch (error: any) {
+    console.error("Erro ao excluir:", error);
+    alert(
+      error?.response?.data?.erro ??
+      error?.response?.data?.message ??
+      "Erro ao excluir evento."
     );
-
-    if (!confirmed)
-      return;
-
-    try {
-
-      setIsSubmitting(true);
-
-      await excluirEvento(
-        selectedEvento.id_evento
-      );
-
-      closeModal();
-
-    } catch (error: any) {
-
-      console.error(
-        "Erro ao excluir:",
-        error
-      );
-
-      alert(
-        error?.response?.data?.erro ??
-        error?.response?.data?.message ??
-        "Erro ao excluir evento."
-      );
-
-    } finally {
-
-      setIsSubmitting(false);
-
-    }
+  } finally {
+    setIsSubmitting(false);
   }
+}
 
   return {
     handleSubmit,

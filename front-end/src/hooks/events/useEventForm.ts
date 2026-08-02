@@ -94,8 +94,9 @@ export default function useEventForm() {
     setIsDeleteOpen(true);
   }
 
-  function closeDeleteModal() {
+ function closeDeleteModal() {
     setIsDeleteOpen(false);
+    setSelectedEvento(null); // Limpa o evento selecionado ao fechar a exclusão
   }
 
   function openViewModal(evento: Event) {
@@ -188,16 +189,12 @@ export default function useEventForm() {
     setIsEditMode(false);
   }
 
-  function closeModal() {
-
+ function closeModal() {
     setSelectedEvento(null);
-
     setIsEditMode(false);
-
     setIsCreateModalOpen(false);
-
     setIsDetailsOpen(false);
-
+    setIsDeleteOpen(false); 
     resetForm();
   }
 

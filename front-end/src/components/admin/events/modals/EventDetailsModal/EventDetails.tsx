@@ -3,7 +3,9 @@ import type { Event } from "@/types/Event";
 import {
   CalendarDays,
   MapPin,
+  Pencil,
   Tag,
+  Trash2,
   User,
   X,
 } from "lucide-react";
@@ -13,12 +15,16 @@ import styles from "./EventDetailsModal.module.css";
 interface Props {
   evento: Event;
   onClose: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   formatDate: (date: string) => string;
 }
 
 export default function EventDetails({
   evento,
   onClose,
+  onEdit,
+  onDelete,
   formatDate,
 }: Props) {
   return (
@@ -159,6 +165,32 @@ export default function EventDetails({
         </div>
 
         <footer className={styles.footer}>
+          <div className={styles.actions}>
+            {onEdit && (
+              <button
+                className={styles.editButton}
+                onClick={onEdit}
+                type="button"
+                title="Editar evento"
+              >
+                <Pencil size={18} />
+                <span>Editar</span>
+              </button>
+            )}
+
+            {onDelete && (
+              <button
+                className={styles.deleteButton}
+                onClick={onDelete}
+                type="button"
+                title="Excluir evento"
+              >
+                <Trash2 size={18} />
+                <span>Excluir</span>
+              </button>
+            )}
+          </div>
+
           <button
             className={styles.closeButton}
             onClick={onClose}

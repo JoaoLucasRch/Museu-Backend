@@ -58,7 +58,7 @@ export default function ArtworkToolbar({
         />
       </div>
 
-      {/* Dropdown Customizado Bonito */}
+      {/* Dropdown */}
       <div className={styles.selectWrapper} ref={dropdownRef}>
         <button
           type="button"
