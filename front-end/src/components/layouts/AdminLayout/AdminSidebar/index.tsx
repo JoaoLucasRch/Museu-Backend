@@ -2,7 +2,6 @@ import {
   LayoutDashboard,
   CalendarDays,
   Image,
-  Users,
   User,
   LogOut,
   PanelLeftOpen,
@@ -11,6 +10,8 @@ import {
 import { NavLink } from "react-router-dom";
 
 import type { UserProfile } from "@/types/User";
+
+import { useSidebarNotifications } from "@/hooks/admin/useSidebarNotifications";
 
 import styles from "./AdminSidebar.module.css";
 
@@ -27,6 +28,9 @@ export default function Sidebar({
   collapsed,
   onToggleSidebar,
 }: Props) {
+  const notifications =
+    useSidebarNotifications();
+
   return (
     <aside
       className={`${styles.sidebar} ${
@@ -53,7 +57,6 @@ export default function Sidebar({
 
         <div className={styles.brand}>
           <h2>Museu de Marabá</h2>
-
           <span>Francisco Coelho</span>
         </div>
 
@@ -67,8 +70,11 @@ export default function Sidebar({
               }`
             }
           >
-            <LayoutDashboard size={20} />
-            <span>Dashboard</span>
+            <div className={styles.linkContent}>
+              <LayoutDashboard size={20} />
+              <span>Dashboard</span>
+            </div>
+            
           </NavLink>
 
           <NavLink
@@ -80,8 +86,23 @@ export default function Sidebar({
               }`
             }
           >
-            <CalendarDays size={20} />
-            <span>Eventos</span>
+            <div className={styles.linkContent}>
+              <CalendarDays size={20} />
+              <span>Eventos</span>
+            </div>
+
+            {notifications.eventos
+              .novasSubmissoes > 0 && (
+              <span
+                className={styles.badge}
+              >
+                {notifications.eventos
+                  .novasSubmissoes > 99
+                  ? "99+"
+                  : notifications.eventos
+                      .novasSubmissoes}
+              </span>
+            )}
           </NavLink>
 
           <NavLink
@@ -93,21 +114,23 @@ export default function Sidebar({
               }`
             }
           >
-            <Image size={20} />
-            <span>Obras</span>
-          </NavLink>
+            <div className={styles.linkContent}>
+              <Image size={20} />
+              <span>Obras</span>
+            </div>
 
-          <NavLink
-            to="/admin/usuarios"
-            title="Usuários"
-            className={({ isActive }) =>
-              `${styles.link} ${
-                isActive ? styles.active : ""
-              }`
-            }
-          >
-            <Users size={20} />
-            <span>Usuários</span>
+            {notifications.obras
+              .pendentes > 0 && (
+              <span
+                className={styles.badge}
+              >
+                {notifications.obras
+                  .pendentes > 99
+                  ? "99+"
+                  : notifications.obras
+                      .pendentes}
+              </span>
+            )}
           </NavLink>
         </nav>
       </div>
@@ -122,17 +145,21 @@ export default function Sidebar({
             }`
           }
         >
-          <User size={20} />
-          <span>Perfil</span>
+          <div className={styles.linkContent}>
+            <User size={20} />
+            <span>Perfil</span>
+          </div>
         </NavLink>
 
         <div className={styles.account}>
           <strong>
-            {user?.nome ?? "Administrador"}
+            {user?.nome ??
+              "Administrador"}
           </strong>
 
           <span>
-            {user?.email ?? "Sem e-mail"}
+            {user?.email ??
+              "Sem e-mail"}
           </span>
         </div>
 

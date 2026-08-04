@@ -10,13 +10,12 @@ import path from 'path';
 import fs from 'fs';
 import pump from 'pump';
 
-
 import { authRoutes } from './routes/authRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
 import { eventoRoutes } from './routes/eventoRoutes.js';
 import { obraRoutes } from './routes/obraRoutes.js';
 import { dashboardRoutes } from "@/routes/dashboardRoutes";
-
+import notificationRoutes from "./routes/notificationRoutes";
 
 const __dirname = process.cwd();
 
@@ -126,6 +125,10 @@ app.register(
     prefix: "/dashboard",
   }
 );
+
+app.register(notificationRoutes, {
+  prefix: "/admin",
+});
 
 // Rotas principais
 app.register(authRoutes, { prefix: '/auth' });

@@ -8,6 +8,8 @@ import AdmDashboardHistory from "@/components/admin/dashboard/DashboardHistory";
 import AdmQuickActions from "@/components/admin/dashboard/QuickActions";
 import AdmUpcomingEvents from "@/components/admin/dashboard/UpcomingEvents";
 
+import AdminHeader from "@/components/layouts/AdminLayout/AdminHeader";
+
 import useAdminDashboard from "@/hooks/admin/useAdminDashboard";
 
 export default function AdminDashboard() {
@@ -31,13 +33,12 @@ export default function AdminDashboard() {
 
   return (
     <>
+      <AdminHeader />
+
       <div className={styles.main}>
-        <AdmDashboardCards
-          {...cards}
-        />
+        <AdmDashboardCards {...cards} />
 
         <div className={styles.dashboardGrid}>
-
           <div className={styles.charts}>
             <AdmDashboardChart
               title="Obras por Status"
@@ -58,13 +59,10 @@ export default function AdminDashboard() {
             onOpenEvents={openEvents}
             onOpenPendingArtworks={openPendingArtworks}
           />
-
         </div>
 
         <div className={styles.bottomGrid}>
-          <AdmDashboardHistory
-            items={history}
-          />
+          <AdmDashboardHistory items={history} />
 
           <AdmUpcomingEvents
             events={upcomingEvents}
