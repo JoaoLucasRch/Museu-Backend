@@ -1,19 +1,8 @@
+/* ===== LAYOUT PRINCIPAL ===== */
 .row {
-  display: grid;
-  grid-template-columns: 2.4fr 1.7fr 1.2fr 1fr;
-
-  align-items: center;
-
-  padding: 1.35rem 1.6rem;
-
   border-bottom: 1px solid #F2EEEB;
-
   cursor: pointer;
-
-  transition:
-    background .2s ease,
-    transform .15s ease,
-    box-shadow .2s ease;
+  transition: background .2s ease, transform .15s ease, box-shadow .2s ease;
 }
 
 .row:last-child {
@@ -34,8 +23,70 @@
   outline-offset: -2px;
 }
 
-/* ---------- Obra ---------- */
+/* ===== DESKTOP GRID ===== */
+.desktopGrid {
+  display: grid;
+  grid-template-columns: 2.4fr 1.7fr 1.2fr 1fr;
+  align-items: center;
+  padding: 1.35rem 1.6rem;
+  gap: 0.5rem;
+}
 
+/* ===== MOBILE CARD (oculto no desktop) ===== */
+.mobileCard {
+  display: none;
+  padding: 1rem 1.2rem;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.mobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.mobileTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2B2624;
+  flex: 1;
+}
+
+.mobileBadge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mobileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobileCategoria {
+  font-size: 0.85rem;
+  color: #8A7F77;
+}
+
+.mobileOrigem {
+  font-size: 0.85rem;
+  color: #5F5550;
+}
+
+.mobileData {
+  font-size: 0.8rem;
+  color: #948880;
+}
+
+/* ===== COLUNAS ===== */
 .artwork {
   display: flex;
   flex-direction: column;
@@ -53,19 +104,21 @@
   color: #8A7F77;
 }
 
-/* ---------- Evento / Data ---------- */
+.event {
+  color: #5F5550;
+  font-size: .92rem;
+  text-align: left;
+}
 
-.event,
 .date {
   color: #5F5550;
   font-size: .92rem;
+  text-align: left;
 }
-
-/* ---------- Status ---------- */
 
 .status {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .badge {
@@ -79,8 +132,7 @@
   text-transform: uppercase;
 }
 
-/* ---------- Cores ---------- */
-
+/* ===== CORES DOS STATUS ===== */
 .aprovada {
   background: #EEF8F2;
   color: #256A48;
@@ -101,12 +153,160 @@
   color: #2C6CB8;
 }
 
-/* ---------- Responsivo ---------- */
+/* ===== RESPONSIVO ===== */
 
-@media (max-width: 900px) {
-
-  .row {
-    min-width: 760px;
+/* Tablets e telas médias (801px - 900px) */
+@media (max-width: 900px) and (min-width: 651px) {
+  .desktopGrid {
+    grid-template-columns: 2.2fr 1.8fr 1.2fr 1fr;
+    padding: 1rem 1.2rem;
+    gap: 0.5rem;
   }
 
+  .badge {
+    min-width: 70px;
+    font-size: 0.6rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .artwork strong {
+    font-size: 0.9rem;
+  }
+
+  .artwork span {
+    font-size: 0.8rem;
+  }
+
+  .event,
+  .date {
+    font-size: 0.85rem;
+  }
+}
+
+/* Tablets pequenos (650px - 800px) - Ainda exibe grid com status visível */
+@media (max-width: 800px) and (min-width: 651px) {
+  .desktopGrid {
+    grid-template-columns: 2.4fr 1.6fr 1.2fr 0.9fr;
+    padding: 0.9rem 1rem;
+    gap: 0.4rem;
+  }
+
+  .badge {
+    min-width: 60px;
+    font-size: 0.55rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .artwork strong {
+    font-size: 0.85rem;
+  }
+
+  .artwork span {
+    font-size: 0.75rem;
+  }
+
+  .event,
+  .date {
+    font-size: 0.8rem;
+  }
+}
+
+/* Celulares (até 650px) - Mostra layout mobile */
+@media (max-width: 650px) {
+  .desktopGrid {
+    display: none;
+  }
+
+  .mobileCard {
+    display: flex;
+  }
+
+  .row {
+    border-radius: 12px;
+    border: 1px solid #F2EEEB;
+    margin-bottom: 0.75rem;
+    background: #FFFFFF;
+  }
+
+  .row:hover {
+    background: #FCFBFA;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .row:active {
+    transform: scale(0.99);
+  }
+
+  .mobileBadge {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .mobileTitle {
+    font-size: 0.95rem;
+  }
+
+  .mobileCategoria {
+    font-size: 0.8rem;
+  }
+
+  .mobileOrigem {
+    font-size: 0.8rem;
+  }
+
+  .mobileData {
+    font-size: 0.75rem;
+  }
+}
+
+/* Celulares muito pequenos (até 400px) */
+@media (max-width: 400px) {
+  .mobileCard {
+    padding: 0.8rem 1rem;
+  }
+
+  .mobileTitle {
+    font-size: 0.85rem;
+  }
+
+  .mobileBadge {
+    font-size: 0.55rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .mobileCategoria,
+  .mobileOrigem {
+    font-size: 0.75rem;
+  }
+
+  .mobileData {
+    font-size: 0.7rem;
+  }
+}
+
+/* ===== PREVENÇÃO DE ESTOURO ===== */
+.row {
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.artwork strong,
+.artwork span,
+.event,
+.date,
+.badge {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Remover o truncamento no mobile */
+@media (max-width: 650px) {
+  .artwork strong,
+  .artwork span,
+  .event,
+  .date {
+    white-space: normal;
+    word-break: break-word;
+  }
 }

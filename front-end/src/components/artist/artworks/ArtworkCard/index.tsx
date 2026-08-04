@@ -12,15 +12,13 @@ export default function ArtworkCard({
 }: ArtworkCardProps) {
   const formatDate = (date?: string) => {
     if (!date) return "-";
-
     return new Date(date).toLocaleDateString("pt-BR");
   };
 
   const statusClass = styles[artwork.status];
 
   const origemObra =
-    artwork.edital?.titulo_evento ??
-    "Exponha sua Arte";
+    artwork.edital?.titulo_evento ?? "Exponha sua Arte";
 
   return (
     <div
@@ -29,32 +27,53 @@ export default function ArtworkCard({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (
-          e.key === "Enter" ||
-          e.key === " "
-        ) {
+        if (e.key === "Enter" || e.key === " ") {
           onClick(artwork);
         }
       }}
     >
-      <div className={styles.artwork}>
-        <strong>{artwork.titulo_obra}</strong>
+      {/* Desktop: grid layout */}
+      <div className={styles.desktopGrid}>
+        <div className={styles.artwork}>
+          <strong>{artwork.titulo_obra}</strong>
+          <span>{artwork.categoria_obra}</span>
+        </div>
 
-        <span>{artwork.categoria_obra}</span>
+        <div className={styles.event}>
+          {origemObra}
+        </div>
+
+        <div className={styles.date}>
+          {formatDate(artwork.data_envio)}
+        </div>
+
+        <div className={styles.status}>
+          <span className={`${styles.badge} ${statusClass}`}>
+            {artwork.status.toUpperCase()}
+          </span>
+        </div>
       </div>
 
-      <div className={styles.event}>
-        {origemObra}
-      </div>
+      {/* Mobile: card layout */}
+      <div className={styles.mobileCard}>
+        <div className={styles.mobileHeader}>
+          <strong className={styles.mobileTitle}>{artwork.titulo_obra}</strong>
+          <span className={`${styles.mobileBadge} ${statusClass}`}>
+            {artwork.status.toUpperCase()}
+          </span>
+        </div>
 
-      <div className={styles.date}>
-        {formatDate(artwork.data_envio)}
-      </div>
-
-      <div className={styles.status}>
-        <span className={`${styles.badge} ${statusClass}`}>
-          {artwork.status.toUpperCase()}
-        </span>
+        <div className={styles.mobileInfo}>
+          <span className={styles.mobileCategoria}>
+            {artwork.categoria_obra}
+          </span>
+          <span className={styles.mobileOrigem}>
+             {origemObra}
+          </span>
+          <span className={styles.mobileData}>
+             {formatDate(artwork.data_envio)}
+          </span>
+        </div>
       </div>
     </div>
   );

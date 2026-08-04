@@ -28,16 +28,17 @@ enum TipoEvento {
 }
 
 model Usuario {
-  id      Int      @id @default(autoincrement())
-  nome    String
-  email   String   @unique
-  senha   String
-  contato String
-  foto    String?
-  bio     String?
-  role    Role     @default(ARTISTA)
-  eventos Evento[]
-  obras   Obra[]
+  id         Int      @id @default(autoincrement())
+  nome       String
+  email      String   @unique
+  senha      String
+  contato    String
+  foto       String?
+  bio        String?
+  role       Role     @default(ARTISTA)
+  created_at DateTime @default(now())
+  eventos    Evento[]
+  obras      Obra[]
 
   @@map("usuarios")
 }
