@@ -4,6 +4,7 @@ export interface UserProfile {
   email: string;
   contato: string | null;
   role: "ARTISTA" | "ADMIN";
+  created_at?: string | null; // ← ADICIONAR
 }
 
 export interface UpdateProfileData {

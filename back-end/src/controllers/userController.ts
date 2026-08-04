@@ -26,7 +26,8 @@ interface MultipartRequest extends FastifyRequest {
   file(): Promise<MultipartFile | undefined>;
 }
 
-// Visualizar Próprio Perfil
+// src/controllers/userController.ts - getMyProfile
+
 export async function getMyProfile(request: UserProfileRequest, reply: FastifyReply) {
   const userId = request.user.id;
 
@@ -41,6 +42,7 @@ export async function getMyProfile(request: UserProfileRequest, reply: FastifyRe
         foto: true,
         bio: true,
         role: true,
+        created_at: true,
       }
     });
 
@@ -48,7 +50,24 @@ export async function getMyProfile(request: UserProfileRequest, reply: FastifyRe
       return reply.status(404).send({ message: 'Perfil não encontrado.' });
     }
 
-    return reply.send(profile);
+    console.log('📦 Perfil retornado:', profile);
+
+    // 🔧 FORÇAR A RESPOSTA COMO JSON STRING
+    const response = {
+      id: profile.id,
+      nome: profile.nome,
+      email: profile.email,
+      contato: profile.contato || '',
+      foto: profile.foto || '',
+      bio: profile.bio || '',
+      role: profile.role,
+      created_at: profile.created_at ? profile.created_at.toISOString() : null,
+    };
+
+    const jsonResponse = JSON.stringify(response);
+    return reply
+      .header('Content-Type', 'application/json')
+      .send(jsonResponse);
   } catch (error) {
     console.error('Erro ao buscar perfil:', error);
     return reply.status(500).send({ message: 'Erro interno ao buscar o perfil.' });
@@ -121,7 +140,7 @@ export async function uploadProfilePhoto(request: MultipartRequest, reply: Fasti
 
     const maxSize = 5 * 1024 * 1024; // 5MB em bytes
     const chunks: Buffer[] = [];
-    
+
     for await (const chunk of data.file) {
       chunks.push(chunk);
       if (Buffer.concat(chunks).length > maxSize) {
@@ -145,7 +164,7 @@ export async function uploadProfilePhoto(request: MultipartRequest, reply: Fasti
 
     if (usuario?.foto && usuario.foto.includes('/uploads/')) {
       const oldPhotoPath = path.join(
-        process.cwd(), 
+        process.cwd(),
         usuario.foto.replace('http://localhost:3333/', '')
       );
       if (fs.existsSync(oldPhotoPath)) {
