@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import styles from "./Events.module.css";
 
 import EventToolbar from "@/components/admin/events/EventToolbar";
@@ -55,7 +56,6 @@ export default function AdmEventos() {
     formData,
     isCreateMode: isCreateModalOpen,
     closeModal,
-
     criarEvento,
     editarEvento,
     excluirEvento,
@@ -126,7 +126,14 @@ export default function AdmEventos() {
           selectedFile={selectedFile}
           isSubmitting={isSubmitting}
           uploadProgress={uploadProgress}
-          onClose={closeModal}
+          onClose={() => {
+            const tempEvento = selectedEvento;
+            closeModal();
+
+            if (isEditMode && tempEvento) {
+              openViewModal(tempEvento);
+            }
+          }}
           onSubmit={handleSubmit}
           onFileChange={handleFileChange}
           setFormData={setFormData}
@@ -138,6 +145,17 @@ export default function AdmEventos() {
           evento={selectedEvento}
           isOpen={isDetailsOpen}
           onClose={closeDetails}
+          onEdit={() => {
+            const eventoAtual = selectedEvento;
+
+            closeDetails();
+            openViewModal(eventoAtual);
+            startEdit();
+          }}
+          onDelete={() => {
+            closeDetails();
+            openDeleteModal(selectedEvento);
+          }}
           formatDate={formatDate}
         />
       )}
@@ -146,7 +164,15 @@ export default function AdmEventos() {
         <DeleteEventModal
           evento={selectedEvento}
           isOpen={isDeleteOpen}
-          onClose={closeDeleteModal}
+          onClose={() => {
+            const tempEvento = selectedEvento;
+
+            closeDeleteModal();
+
+            if (tempEvento) {
+              openViewModal(tempEvento);
+            }
+          }}
           onConfirm={handleDelete}
         />
       )}

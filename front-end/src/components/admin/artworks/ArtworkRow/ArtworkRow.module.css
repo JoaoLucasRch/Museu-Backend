@@ -1,39 +1,94 @@
 .row {
-    display: grid;
-    grid-template-columns:
-        3fr
-        1.5fr
-        1.2fr
-        1fr
-        40px;
-    align-items: center;
-    padding: 18px 24px;
-    border-bottom: 1px solid #F1F1F1;
-    cursor: pointer;
-    transition: .2s;
+  display: grid;
+  grid-template-columns: 2.2fr 1.2fr 1.2fr 1fr;
+  align-items: center;
+
+  padding: 15px 32px;
+
+  background: #FFF;
+  border-bottom: 1px solid #E7DFD8;
+
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+
+.row:last-child {
+  border-bottom: none;
 }
 
 .row:hover {
-    background: #F8F9FA;
+  background: #FCFBF9;
+}
+
+.titleColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .title {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -.2px;
+  color: #111;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 13px;
+  color: #88827E;
+}
+
+.dot {
+  font-size: 10px;
+  color: #88827E;
+}
+
+.author {
+  color: #88827E;
+}
+
+.cellText {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6D6662;
+}
+
+.statusColumn {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .status {
-    padding: 6px 12px;
-    border-radius: 30px;
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 126px;
+  height: 30px;
+
+  border-radius: 15px;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
 }
 
-.icon {
-    display: flex;
-    justify-content: center;
-    color: #9CA3AF;
+.pendente {
+  background: #F2E5A2;
+  color: #92751E;
+}
+
+.aprovado {
+  background: #D0EDD3;
+  color: #3F7D52;
+}
+
+.reprovado {
+  background: #F3D7CD;
+  color: #9C513E;
 }

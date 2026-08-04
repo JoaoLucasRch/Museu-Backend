@@ -1,45 +1,350 @@
+import ReactECharts from "echarts-for-react";
+
 import styles from "./DashboardChart.module.css";
 
-const monthlyData = [
-  { month: "Jan", value: 42 },
-  { month: "Fev", value: 68 },
-  { month: "Mar", value: 55 },
-  { month: "Abr", value: 90 },
-  { month: "Mai", value: 73 },
-  { month: "Jun", value: 82 },
-];
+import type {
+  DashboardChartData,
+} from "@/types/Dashboard";
 
-export default function AdmDashboardChart() {
+interface Props {
+  title: string;
+  subtitle: string;
+  data: DashboardChartData[];
+  type?: "donut" | "bar";
+}
+
+export default function AdmDashboardChart({
+  title,
+  subtitle,
+  data,
+  type = "donut",
+}: Props) {
+
+  const total = data.reduce(
+    (sum, item) => sum + item.value,
+    0
+  );
+
+
+  const colors = [
+    "#79AEE8",
+    "#7FC8A9",
+    "#F2B880",
+    "#B8A5E8",
+    "#E9A8B5",
+  ];
+
+
+  const tooltip = {
+    backgroundColor: "#2D231E",
+    borderWidth: 0,
+    textStyle: {
+      color: "#FFFFFF",
+      fontSize: 12,
+    },
+  };
+
+
+  const option = type === "donut"
+
+    ? {
+
+      animation: true,
+
+      animationDuration: 3000,
+
+      animationEasing: "cubicOut",
+
+      color: colors,
+
+
+      tooltip: {
+        trigger: "item",
+        ...tooltip,
+
+        formatter:
+          "{b}<br/><b>{c}</b> ({d}%)",
+      },
+
+
+      series: [
+        {
+          type: "pie",
+
+          radius: [
+            "62%",
+            "82%",
+          ],
+
+          center: [
+            "50%",
+            "50%",
+          ],
+
+          startAngle: 90,
+
+          animationType: "expansion",
+
+          animationDuration: 3000,
+
+          animationEasing: "cubicOut",
+
+          animationDelay: (index: number) => index * 250,
+
+          label: {
+            show: false,
+          },
+
+          itemStyle: {
+            borderColor: "#FFFFFF",
+            borderWidth: 4,
+          },
+
+          data: data.map(item => ({
+            name: item.label,
+            value: item.value,
+          })),
+        },
+      ],
+    }
+    : {
+
+
+      animation: true,
+
+      animationDuration: 2500,
+
+      animationEasing: "cubicOut",
+
+      animationDurationUpdate: 2500,
+
+      animationEasingUpdate: "cubicOut",
+
+
+      tooltip: {
+        trigger: "axis",
+        ...tooltip,
+      },
+
+
+      grid: {
+        left: 10,
+        right: 20,
+        top: 10,
+        bottom: 10,
+        containLabel: true,
+      },
+
+
+      xAxis: {
+        type: "value",
+        show: false,
+      },
+
+
+      yAxis: {
+
+        type: "category",
+
+        data: data.map(
+          item => item.label
+        ),
+
+
+        axisLine: {
+          show: false,
+        },
+
+
+        axisTick: {
+          show: false,
+        },
+
+
+        axisLabel: {
+          color: "#555",
+          fontSize: 13,
+        },
+
+      },
+
+
+      series: [
+        {
+
+          type: "bar",
+
+          barWidth: 14,
+
+
+          animationDuration: 2500,
+
+          animationEasing: "cubicOut",
+
+
+          animationDelay: (index: number) => {
+
+            return index * 500;
+
+          },
+
+
+          animationDelayUpdate: (index: number) => {
+
+            return index * 500;
+
+          },
+
+
+          data: data.map(
+            (item, index) => ({
+
+              value: item.value,
+
+
+              itemStyle: {
+
+                color: colors[index],
+
+
+                borderRadius: [
+                  0,
+                  8,
+                  8,
+                  0,
+                ],
+
+              },
+
+            })
+          ),
+
+        },
+      ],
+
+    };
+
+
   return (
-    <section className={styles.chart}>
-      <header className={styles.header}>
-        <div>
-          <h2>Atividade do Museu</h2>
-          <span>Eventos cadastrados nos últimos meses</span>
-        </div>
 
-        <div className={styles.summary}>
-          <strong>410</strong>
-          <small>Total de registros</small>
-        </div>
+    <section className={styles.chart}>
+
+      <header className={styles.header}>
+
+        <h2>
+          {title}
+        </h2>
+
+
+        <span>
+          {subtitle}
+        </span>
+
       </header>
 
-      <div className={styles.fakeChart}>
-        {monthlyData.map((item) => (
-          <div
-            key={item.month}
-            className={styles.barGroup}
-          >
-            <div
-              className={styles.bar}
-              style={{ height: `${item.value}%` }}
-              title={`${item.value} eventos`}
-            />
 
-            <span>{item.month}</span>
+      {
+        type === "donut"
+
+          ?
+
+          <div className={styles.content}>
+
+            <div className={styles.chartWrapper}>
+
+              <ReactECharts
+
+                option={option}
+
+                style={{
+                  width: 180,
+                  height: 180,
+                }}
+
+              />
+
+
+              <div className={styles.chartCenter}>
+
+                <strong>
+                  {total}
+                </strong>
+
+
+                <span>
+                  Obras
+                </span>
+
+
+              </div>
+
+
+            </div>
+
+
+            <div className={styles.legend}>
+
+              {
+                data.map(
+                  (item, index) => (
+
+                    <div
+                      key={item.label}
+                      className={styles.legendItem}
+                    >
+
+                      <div
+
+                        className={styles.dot}
+
+                        style={{
+                          backgroundColor:
+                            colors[index],
+                        }}
+
+                      />
+
+
+                      <span>
+                        {item.label}
+                      </span>
+
+
+                      <strong>
+                        {item.value}
+                      </strong>
+
+
+                    </div>
+
+                  )
+                )
+              }
+
+            </div>
+
+
           </div>
-        ))}
-      </div>
+
+
+          :
+
+
+          <ReactECharts
+
+            option={option}
+
+            style={{
+              width: "100%",
+              height: 170,
+            }}
+
+          />
+
+      }
+
+
     </section>
+
   );
 }

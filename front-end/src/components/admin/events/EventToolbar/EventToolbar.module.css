@@ -34,6 +34,7 @@
 .createButton{
   height:46px;
   padding:0 1.35rem;
+
   display:flex;
   align-items:center;
   justify-content:center;
@@ -49,6 +50,7 @@
   font-weight:600;
 
   cursor:pointer;
+
   transition:.2s ease;
 }
 
@@ -82,6 +84,7 @@
   padding:0 1rem;
 
   background:#FFF;
+
   border:1px solid #E7E2DE;
   border-radius:14px;
 
@@ -94,14 +97,16 @@
 }
 
 .searchBox svg{
-  flex-shrink:0;
   color:#9A918B;
+  flex-shrink:0;
 }
 
 .searchBox input{
   flex:1;
+
   border:none;
   outline:none;
+
   background:transparent;
 
   font-size:.94rem;
@@ -112,51 +117,128 @@
   color:#AAA19A;
 }
 
-/* SELECT */
+/* DROPDOWN */
 
 .selectWrapper{
+  position:relative;
   min-width:190px;
-  height:48px;
+}
 
-  display:flex;
-  align-items:center;
-  gap:.65rem;
+.selectButton{
+  width:100%;
+  height:48px;
 
   padding:0 1rem;
 
-  background:#FFF;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.65rem;
+
   border:1px solid #E7E2DE;
   border-radius:14px;
+
+  background:#FFF;
+
+  cursor:pointer;
 
   transition:.2s;
 }
 
-.selectWrapper:focus-within{
+.selectButton:hover,
+.active{
   border-color:#202124;
   box-shadow:0 0 0 3px rgba(32,33,36,.08);
 }
 
-.selectWrapper svg{
-  flex-shrink:0;
-  color:#9A918B;
-}
-
-.selectWrapper select{
-  width:100%;
-  border:none;
-  outline:none;
-  background:transparent;
+.selectLabel{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
 
   color:#2E2A27;
   font-size:.94rem;
+}
+
+.selectLabel svg,
+.selectButton>svg{
+  color:#9A918B;
+}
+
+.rotate{
+  transform:rotate(180deg);
+}
+
+.dropdownMenu{
+  position:absolute;
+
+  top:calc(100% + 8px);
+  left:0;
+
+  width:100%;
+
+  margin:0;
+  padding:.4rem;
+
+  list-style:none;
+
+  background:#FFF;
+
+  border:1px solid #E7E2DE;
+  border-radius:14px;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.08);
+
+  z-index:30;
+
+  animation:dropdown .18s ease;
+}
+
+.dropdownOption{
+  padding:.65rem .85rem;
+
+  border-radius:10px;
+
   cursor:pointer;
 
-  appearance:none;
+  font-size:.92rem;
+  color:#2E2A27;
+
+  transition:.15s;
+}
+
+.dropdownOption:hover{
+  background:#F5EFEA;
+}
+
+.selectedOption{
+  background:#202124;
+  color:#FFF;
+  font-weight:600;
+}
+
+.selectedOption:hover{
+  background:#111827;
+}
+
+@keyframes dropdown{
+
+  from{
+    opacity:0;
+    transform:translateY(-6px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
 }
 
 /* RESPONSIVO */
 
-@media (max-width:700px){
+@media(max-width:700px){
 
   .header{
     flex-direction:column;

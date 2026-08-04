@@ -135,15 +135,15 @@ export default function useEventoActions({
         inicio_submissao:
           formData.eh_edital
             ? new Date(
-                formData.inicio_submissao
-              ).toISOString()
+              formData.inicio_submissao
+            ).toISOString()
             : null,
 
         fim_submissao:
           formData.eh_edital
             ? new Date(
-                formData.fim_submissao
-              ).toISOString()
+              formData.fim_submissao
+            ).toISOString()
             : null,
       };
 
@@ -221,44 +221,30 @@ export default function useEventoActions({
   }
 
   async function handleDelete() {
-
-    if (!selectedEvento)
-      return;
+    if (!selectedEvento) return;
 
     const confirmed = confirm(
       `Excluir "${selectedEvento.titulo_evento}"?`
     );
 
-    if (!confirmed)
-      return;
+    if (!confirmed) return;
 
     try {
-
       setIsSubmitting(true);
 
-      await excluirEvento(
-        selectedEvento.id_evento
-      );
+      await excluirEvento(selectedEvento.id_evento);
 
       closeModal();
-
     } catch (error: any) {
-
-      console.error(
-        "Erro ao excluir:",
-        error
-      );
+      console.error("Erro ao excluir:", error);
 
       alert(
         error?.response?.data?.erro ??
         error?.response?.data?.message ??
         "Erro ao excluir evento."
       );
-
     } finally {
-
       setIsSubmitting(false);
-
     }
   }
 

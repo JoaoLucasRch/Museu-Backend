@@ -36,11 +36,34 @@
   flex-direction:column;
   padding:.75rem;
   gap:.75rem;
+
+  max-height:370px;
+  overflow-y:auto;
+
+  scrollbar-width:thin;
+  scrollbar-color:#D6CFC9 transparent;
+}
+
+.body::-webkit-scrollbar{
+  width:6px;
+}
+
+.body::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.body::-webkit-scrollbar-thumb{
+  background:#D6CFC9;
+  border-radius:999px;
+}
+
+.body::-webkit-scrollbar-thumb:hover{
+  background:#A3968D;
 }
 
 /* RESPONSIVO */
 
-@media (max-width:700px){
+@media(max-width:700px){
 
   .header{
     padding:1.25rem;
@@ -48,6 +71,7 @@
 
   .body{
     padding:.6rem;
+    max-height:560px;
   }
 
   .title{

@@ -1,16 +1,6 @@
-import {
-  ChevronRight,
-} from "lucide-react";
+import type { Artwork } from "@/types/Artwork";
 
 import styles from "./ArtworkRow.module.css";
-
-import type {
-  Artwork,
-} from "@/types/Artwork";
-
-import {
-  getArtworkStatusColor,
-} from "@/utils/artwork";
 
 interface Props {
   artwork: Artwork;
@@ -24,47 +14,109 @@ export default function ArtworkRow({
   artwork,
   onClick,
 }: Props) {
+  function getStatusClass(status: string) {
+    if (!status) {
+      return "";
+    }
+
+    const value = status.toLowerCase().trim();
+
+    if (value.includes("pendente")) {
+      return styles.pendente;
+    }
+
+    if (value.includes("aprovad")) {
+      return styles.aprovado;
+    }
+
+    if (
+      value.includes("reprovad") ||
+      value.includes("rejeitad")
+    ) {
+      return styles.reprovado;
+    }
+
+    return "";
+  }
+
+  function formatDate(dateString?: string) {
+    if (!dateString) {
+      return "-";
+    }
+
+    const [year, month, day] =
+      dateString.split("T")[0].split("-");
+
+    if (!year || !month || !day) {
+      return "-";
+    }
+
+    const date = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day)
+    );
+
+    const dayFormatted = String(
+      date.getDate()
+    ).padStart(2, "0");
+
+    const monthName = date
+      .toLocaleDateString("pt-BR", {
+        month: "short",
+      })
+      .replace(".", "");
+
+    return `${dayFormatted} de ${monthName} ${year}`;
+  }
+
   return (
     <div
       className={styles.row}
       onClick={() => onClick(artwork)}
     >
-      <div className={styles.title}>
-        <strong>
+      <div className={styles.titleColumn}>
+        <span className={styles.title}>
           {artwork.titulo_obra}
-        </strong>
+        </span>
+
+        <div className={styles.meta}>
+          <span>
+            {artwork.categoria_obra}
+          </span>
+
+          <span className={styles.dot}>
+            •
+          </span>
+
+          <span>
+            Autor:{" "}
+
+            <span className={styles.author}>
+              {artwork.artista?.nome ??
+                artwork.autor ??
+                "Não informado"}
+            </span>
+          </span>
+        </div>
       </div>
 
-      <div>
-        {artwork.categoria_obra}
+      <div className={styles.cellText}>
+        {artwork.edital?.titulo_evento ?? "Exponha"}
       </div>
 
-      <div>
+      <div className={styles.cellText}>
+        {formatDate(artwork.data_envio)}
+      </div>
+
+      <div className={styles.statusColumn}>
         <span
-          className={styles.status}
-          style={{
-            backgroundColor:
-              getArtworkStatusColor(
-                artwork.status
-              ),
-          }}
+          className={`${styles.status} ${getStatusClass(
+            artwork.status
+          )}`}
         >
           {artwork.status}
         </span>
-      </div>
-
-      <div>
-        {artwork.data_envio
-          ? new Date(
-              artwork.data_envio
-            ).toLocaleDateString(
-              "pt-BR"
-            )
-          : "-"}
-      </div>
-
-      <div className={styles.icon}>
-        <ChevronRight size={18} />
       </div>
     </div>
   );

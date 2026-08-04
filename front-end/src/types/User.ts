@@ -3,7 +3,6 @@ export interface UserProfile {
   nome: string;
   email: string;
   contato: string | null;
-  portfolio: string | null;
   role: "ARTISTA" | "ADMIN";
 }
 
@@ -11,5 +10,4 @@ export interface UpdateProfileData {
   nome: string;
   email: string;
   contato: string;
-  portfolio: string;
 }

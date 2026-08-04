@@ -189,7 +189,6 @@ export default function useEventForm() {
   }
 
   function closeModal() {
-
     setSelectedEvento(null);
 
     setIsEditMode(false);
@@ -197,6 +196,8 @@ export default function useEventForm() {
     setIsCreateModalOpen(false);
 
     setIsDetailsOpen(false);
+
+    setIsDeleteOpen(false);
 
     resetForm();
   }

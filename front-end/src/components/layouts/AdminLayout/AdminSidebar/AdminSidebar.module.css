@@ -1,118 +1,277 @@
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
 
+  width: 250px;
+  height: 100vh;
 
-  width: 240px;
+  padding: 1.25rem;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  min-height: 100vh;
+  box-sizing: border-box;
 
-
-  padding: 1.5rem 1rem;
-
-
-  background: #fff;
-
-
+  background: #FCFBFA;
   border-right: 1px solid #ECE3DD;
 
+  overflow: hidden;
+  z-index: 100;
 
-  display: flex;
-
-  flex-direction: column;
-
-
-  gap: .35rem;
-
-
+  transition: width .3s ease;
 }
 
+.collapsed {
+  width: 84px;
+}
 
-/* ================= LINKS ================= */
+/* BOTÃO */
 
-
-.link {
-
+.collapseButton {
+  width: 40px;
+  height: 40px;
 
   display: flex;
-
   align-items: center;
+  justify-content: center;
 
-  gap: .8rem;
+  margin-bottom: 1.5rem;
 
-
-  padding: .75rem 1rem;
-
-
+  border: 1px solid #ECE3DD;
   border-radius: 14px;
 
+  background: #FFF;
+  color: #8A8079;
 
-  color: #8A7F77;
+  cursor: pointer;
 
+  transition: .25s;
+}
+
+.collapseButton:hover {
+  background: #F7F2EE;
+  color: #2B2624;
+
+  transform: translateX(2px);
+}
+
+.collapsed .collapseButton {
+  margin-inline: auto;
+}
+
+/* MARCA */
+
+.brand {
+  padding: .75rem;
+  margin-bottom: 2rem;
+}
+
+.brand h2 {
+  margin: 0;
+
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+
+  color: #2B2624;
+
+  white-space: nowrap;
+}
+
+.brand span {
+  display: block;
+
+  margin-top: .25rem;
+
+  font-size: .78rem;
+
+  color: #A18E84;
+
+  white-space: nowrap;
+}
+
+/* MENU */
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+
+.link {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+
+  padding: .8rem 1rem;
+
+  border-radius: 16px;
+
+  color: #867C75;
 
   text-decoration: none;
 
-
-  font-size: .95rem;
-
+  font-size: .92rem;
   font-weight: 500;
 
-
-  transition: .2s;
-
-
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
 }
-
-
 
 .link svg {
-
-
   width: 19px;
-
   height: 19px;
 
-
+  flex-shrink: 0;
 }
 
-
-
-/* hover */
-
+.link span {
+  white-space: nowrap;
+}
 
 .link:hover {
-
-
-  background: #F8F6F5;
-
-
+  background: #F7F2EE;
   color: #2B2624;
 
-
+  transform: translateX(3px);
 }
-
-
-
-/* ativo */
-
 
 .active {
+  background: #F1E7DD;
+  color: #2B2624;
 
+  font-weight: 600;
+}
 
-  background: #F5EFEA;
+.active::before {
+  content: "";
 
+  position: absolute;
+
+  left: 0;
+  top: 25%;
+
+  width: 3px;
+  height: 50%;
+
+  border-radius: 10px;
+
+  background: #B27A35;
+}
+
+.active svg {
+  color: #B27A35;
+}
+
+/* FOOTER */
+
+.footer {
+  display: flex;
+  flex-direction: column;
+
+  gap: .8rem;
+
+  padding-top: 1rem;
+
+  border-top: 1px solid #ECE3DD;
+}
+
+.account {
+  padding: .8rem;
+
+  border-radius: 16px;
+
+  background: #F8F6F5;
+}
+
+.account strong {
+  display: block;
+
+  font-size: .86rem;
+  font-weight: 600;
 
   color: #2B2624;
 
-
-  font-weight: 600;
-
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.account span {
+  display: block;
 
+  margin-top: .25rem;
 
-.active svg {
+  font-size: .78rem;
 
-  color: #B27A35;
+  color: #8A7F77;
 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* SAIR */
+
+.logout {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+
+  width: 100%;
+
+  padding: .8rem 1rem;
+
+  border: 1px solid transparent;
+  border-radius: 16px;
+
+  background: transparent;
+
+  color: #867C75;
+
+  cursor: pointer;
+
+  font-size: .92rem;
+  font-weight: 500;
+
+  transition: .2s;
+}
+
+.logout:hover {
+  background: #FEF2F2;
+  border-color: #FECACA;
+
+  color: #B42318;
+}
+
+/* RECOLHIDA */
+
+.collapsed .brand {
+  display: none;
+}
+
+.collapsed .link,
+.collapsed .logout {
+  justify-content: center;
+  padding: .85rem;
+}
+
+.collapsed .link span,
+.collapsed .logout span,
+.collapsed .account {
+  display: none;
+}
+
+.collapsed .navigation {
+  align-items: center;
+}
+
+.collapsed .footer {
+  align-items: center;
 }

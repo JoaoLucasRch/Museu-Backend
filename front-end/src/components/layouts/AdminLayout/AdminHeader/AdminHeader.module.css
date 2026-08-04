@@ -1,101 +1,116 @@
+.content {
+  padding-left: .5rem;
+}
+
 .header {
-
   display: flex;
-
+  align-items: center;
   justify-content: space-between;
 
+  gap: 1.5rem;
+
+  padding: 2rem 0 2.5rem;
+  margin-left: .5rem;
+}
+
+.left {
+  max-width: 720px;
+}
+
+.badge {
+  display: inline-flex;
   align-items: center;
 
-
-  padding: 1.5rem 2rem;
-
-
-  background: #FAF9F7;
-
-}
-
-
-
-.title {
-
-  margin: 0;
-
-
-  font-size: 1.8rem;
-
-  font-weight: 700;
-
-
-  color: #2B2624;
-
-  letter-spacing: -.02em;
-
-}
-
-
-
-.subtitle {
-
-  display: block;
-
-
-  margin-top: .35rem;
-
-
-  font-size: .9rem;
-
-
-  color: #8A7F77;
-
-}
-
-
-
-/* ================= LOGOUT ================= */
-
-
-.logoutButton {
-
-
-  height: 40px;
-
-
-  padding: 0 1.2rem;
-
+  padding: .38rem .85rem;
+  margin-bottom: 1rem;
 
   border-radius: 999px;
 
+  background: #F5EFEA;
 
-  background: #fff;
+  color: #9B6D3D;
 
-
-  border: 1px solid #ECE3DD;
-
-
-  color: #6B605A;
-
-
-  font-size: .9rem;
-
-  font-weight: 500;
-
-
-  cursor: pointer;
-
-
-  transition: .2s;
-
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
+.title {
+  margin: 0;
 
-
-.logoutButton:hover {
-
-
-  background: #F8F6F5;
-
+  font-size: 2rem;
+  font-weight: 700;
 
   color: #2B2624;
 
+  letter-spacing: -.03em;
+}
 
+.subtitle {
+  margin-top: .85rem;
+
+  max-width: 640px;
+
+  color: #7F756E;
+
+  font-size: .96rem;
+  line-height: 1.6;
+}
+
+.logoutButton {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+
+  flex-shrink: 0;
+
+  height: 42px;
+  padding: 0 1.15rem;
+
+  border: 1px solid #ECE3DD;
+  border-radius: 999px;
+
+  background: #FFF;
+
+  color: #6B605A;
+
+  font-size: .9rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease,
+    transform .15s ease;
+}
+
+.logoutButton:hover {
+  background: #F8F5F2;
+  color: #2B2624;
+  border-color: #DCCFC7;
+}
+
+.logoutButton:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 1.5rem 0 2rem;
+    margin-left: 0;
+  }
+
+  .title {
+    font-size: 1.7rem;
+  }
+
+  .logoutButton {
+    align-self: flex-start;
+  }
 }

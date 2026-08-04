@@ -1,17 +1,13 @@
-import type { ReactNode, InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, ReactNode } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 
 import styles from "./style.module.css";
 
 interface InputFieldProps
   extends InputHTMLAttributes<HTMLInputElement> {
-
   label: string;
-
   register: UseFormRegisterReturn;
-
   error?: string;
-
   icon?: ReactNode;
 }
 
@@ -23,16 +19,13 @@ export default function InputField({
   type = "text",
   ...rest
 }: InputFieldProps) {
-
   return (
     <div className={styles.field}>
-
       <div
         className={`${styles.inputWrapper} ${
-          error ? styles.error : ""
-        }`}
+          icon ? styles.hasIcon : ""
+        } ${error ? styles.error : ""}`}
       >
-
         {icon && (
           <span className={styles.icon}>
             {icon}
@@ -52,7 +45,6 @@ export default function InputField({
             {label}
           </label>
         )}
-
       </div>
 
       {error && (
@@ -60,7 +52,6 @@ export default function InputField({
           {error}
         </span>
       )}
-
     </div>
   );
 }

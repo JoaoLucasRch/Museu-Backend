@@ -1,24 +1,52 @@
 import {
+  useState,
+  useRef,
+  useEffect,
+} from "react";
+
+import {
   Search,
   Plus,
   Filter,
+  ChevronDown,
 } from "lucide-react";
 
 import styles from "./EventToolbar.module.css";
 
 interface Props {
   search: string;
+
   onSearchChange: (
     value: string
   ) => void;
 
   status: string;
+
   onStatusChange: (
     value: string
   ) => void;
 
   onCreate: () => void;
 }
+
+const STATUS_OPTIONS = [
+  {
+    label: "Todos",
+    value: "",
+  },
+  {
+    label: "Ativos",
+    value: "ATIVO",
+  },
+  {
+    label: "Rascunhos",
+    value: "RASCUNHO",
+  },
+  {
+    label: "Encerrados",
+    value: "ENCERRADO",
+  },
+];
 
 export default function EventToolbar({
   search,
@@ -27,27 +55,71 @@ export default function EventToolbar({
   onStatusChange,
   onCreate,
 }: Props) {
+
+  const [isOpen, setIsOpen] =
+    useState(false);
+
+  const dropdownRef =
+    useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+
+    function handleClickOutside(
+      event: MouseEvent
+    ) {
+
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(
+          event.target as Node
+        )
+      ) {
+        setIsOpen(false);
+      }
+
+    }
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+
+  }, []);
+
+  const currentLabel =
+    STATUS_OPTIONS.find(
+      option => option.value === status
+    )?.label ?? "Todos";
+
   return (
     <div className={styles.container}>
 
       <div className={styles.header}>
 
         <div>
+
           <h1 className={styles.title}>
             Eventos
           </h1>
 
           <p className={styles.subtitle}>
-              Cadastre, acompanhe e gerencie a programação do museu.
+            Cadastre, acompanhe e gerencie a programação do museu.
           </p>
+
         </div>
 
         <button
+          type="button"
           className={styles.createButton}
           onClick={onCreate}
         >
           <Plus size={18} />
-
           Novo Evento
         </button>
 
@@ -72,34 +144,83 @@ export default function EventToolbar({
 
         </div>
 
-        <div className={styles.selectWrapper}>
+        <div
+          className={styles.selectWrapper}
+          ref={dropdownRef}
+        >
 
-          <Filter size={16} />
-
-          <select
-            value={status}
-            onChange={(e) =>
-              onStatusChange(
-                e.target.value
-              )
+          <button
+            type="button"
+            className={`${styles.selectButton} ${
+              isOpen
+                ? styles.active
+                : ""
+            }`}
+            onClick={() =>
+              setIsOpen(prev => !prev)
             }
           >
-            <option value="">
-              Todos
-            </option>
 
-            <option value="ATIVO">
-              Ativos
-            </option>
+            <div
+              className={styles.selectLabel}
+            >
 
-            <option value="RASCUNHO">
-              Rascunhos
-            </option>
+              <Filter size={16} />
 
-            <option value="ENCERRADO">
-              Encerrados
-            </option>
-          </select>
+              <span>
+                {currentLabel}
+              </span>
+
+            </div>
+
+            <ChevronDown
+              size={16}
+              className={
+                isOpen
+                  ? styles.rotate
+                  : ""
+              }
+            />
+
+          </button>
+
+          {isOpen && (
+
+            <ul
+              className={
+                styles.dropdownMenu
+              }
+            >
+
+              {STATUS_OPTIONS.map(
+                (option) => (
+
+                  <li
+                    key={option.value}
+                    className={`${
+                      styles.dropdownOption
+                    } ${
+                      status ===
+                      option.value
+                        ? styles.selectedOption
+                        : ""
+                    }`}
+                    onClick={() => {
+                      onStatusChange(
+                        option.value
+                      );
+                      setIsOpen(false);
+                    }}
+                  >
+                    {option.label}
+                  </li>
+
+                )
+              )}
+
+            </ul>
+
+          )}
 
         </div>
 

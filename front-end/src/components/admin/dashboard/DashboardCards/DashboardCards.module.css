@@ -1,141 +1,130 @@
-.cards {
-
+.cards{
   display:grid;
-
-  grid-template-columns:repeat(4, 1fr);
-
-  gap:1rem;
-
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
 }
 
-
-
-.card {
-
-  background:#fff;
-
-  border:1px solid #ECE3DD;
-
-  border-radius:18px;
-
-  padding:1.2rem;
-
-
-  min-height:130px;
-
-
+.card{
   display:flex;
-
   flex-direction:column;
-
   justify-content:space-between;
 
+  min-height:118px;
+  padding:18px;
 
-  transition:.2s;
+  background:#FFFFFF;
+  border-radius:20px;
+  border-top:4px solid transparent;
 
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
-
-
-.card:hover {
-
-  border-color:#DCCFC6;
-
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(0,0,0,.05);
 }
 
-
-
-.header {
-
+.header{
   display:flex;
-
+  align-items:center;
   justify-content:space-between;
 
-  align-items:center;
-
-
-  color:#8A7F77;
-
-  font-size:.85rem;
-
+  font-size:13px;
   font-weight:600;
-
+  color:#555555;
 }
 
-
-
-.icon {
-
-  width:34px;
-
-  height:34px;
-
+.icon{
+  width:32px;
+  height:32px;
 
   display:flex;
-
   align-items:center;
-
   justify-content:center;
 
-
   border-radius:10px;
-
-
-  background:#F7F2ED;
-
-  color:#B27A35;
-
 }
 
+.icon svg{
+  stroke-width:1.8;
+}
 
+.card strong{
+  margin-top:10px;
 
-.card strong {
-
-  margin-top:.8rem;
-
-
-  font-size:2rem;
-
+  font-size:38px;
   line-height:1;
+  letter-spacing:-1px;
+  font-weight:700;
 
-
-  color:#2B2624;
-
+  color:#222222;
 }
 
+.card small{
+  margin-top:6px;
 
-
-.card small {
-
-  margin-top:.35rem;
-
-
-  color:#91867E;
-
-  font-size:.8rem;
-
+  font-size:12px;
+  color:#666666;
 }
 
+/* Eventos */
 
-
-@media(max-width:1000px){
-
-.cards{
-
-grid-template-columns:repeat(2,1fr);
-
+.events{
+  border-color:#8E6F57;
+  background:linear-gradient(180deg,#FFFDFB 0%,#FFFFFF 100%);
 }
 
+.events .icon{
+  background:#F5ECE4;
+  color:#8E6F57;
 }
 
+/* Obras */
 
+.artworks{
+  border-color:#6D8A7A;
+  background:linear-gradient(180deg,#FBFDFC 0%,#FFFFFF 100%);
+}
+
+.artworks .icon{
+  background:#EAF4EF;
+  color:#5F7C6C;
+}
+
+/* Editais */
+
+.notices{
+  border-color:#9A8570;
+  background:linear-gradient(180deg,#FFFCF8 0%,#FFFFFF 100%);
+}
+
+.notices .icon{
+  background:#F7EFE7;
+  color:#8A715D;
+}
+
+/* Pendentes */
+
+.pending{
+  border-color:#C98C47;
+  background:linear-gradient(180deg,#FFFBF6 0%,#FFFFFF 100%);
+}
+
+.pending .icon{
+  background:#FDF0DF;
+  color:#B8772C;
+}
+
+@media(max-width:1200px){
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
 
 @media(max-width:600px){
-
-.cards{
-
-grid-template-columns:1fr;
-
-}
-
+  .cards{
+    grid-template-columns:1fr;
+  }
 }

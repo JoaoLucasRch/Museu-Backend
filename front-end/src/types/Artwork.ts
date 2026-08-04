@@ -16,6 +16,8 @@ export interface Artwork {
   categoria_obra: string;
   imagens_obras?: string | null;
 
+  autor: string | undefined;
+
   status:
     | "pendente"
     | "aprovada"
@@ -26,8 +28,10 @@ export interface Artwork {
 
   data_exposicao?: string | null;
   data_fim_exposicao?: string | null;
+
   artista_id: number;
   edital_id?: number | null;
+
   artista?: Artist;
   edital?: Edital | null;
 }

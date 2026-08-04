@@ -15,6 +15,8 @@ import { authRoutes } from './routes/authRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
 import { eventoRoutes } from './routes/eventoRoutes.js';
 import { obraRoutes } from './routes/obraRoutes.js';
+import { dashboardRoutes } from "@/routes/dashboardRoutes";
+
 
 const __dirname = process.cwd();
 
@@ -114,6 +116,16 @@ app.register(swaggerUi, {
     deepLinking: false,
   },
 });
+
+
+// Dashboard Admin
+
+app.register(
+  dashboardRoutes,
+  {
+    prefix: "/dashboard",
+  }
+);
 
 // Rotas principais
 app.register(authRoutes, { prefix: '/auth' });
