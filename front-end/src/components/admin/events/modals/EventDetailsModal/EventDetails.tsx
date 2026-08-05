@@ -14,10 +14,16 @@ import styles from "./EventDetailsModal.module.css";
 
 interface Props {
   evento: Event;
+
   onClose: () => void;
+
   onEdit?: () => void;
+
   onDelete?: () => void;
-  formatDate: (date: string) => string;
+
+  formatDate: (
+    date: string
+  ) => string;
 }
 
 export default function EventDetails({
@@ -34,11 +40,15 @@ export default function EventDetails({
     >
       <div
         className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) =>
+          e.stopPropagation()
+        }
       >
         <header className={styles.header}>
           <div>
-            <h2>{evento.titulo_evento}</h2>
+            <h2>
+              {evento.titulo_evento}
+            </h2>
 
             <p className={styles.subtitle}>
               Visualização das informações do evento.
@@ -76,7 +86,9 @@ export default function EventDetails({
             </h3>
 
             <div className={styles.group}>
-              <label>Descrição</label>
+              <label>
+                Descrição
+              </label>
 
               <p className={styles.description}>
                 {evento.descricao_evento}
@@ -92,7 +104,9 @@ export default function EventDetails({
                     Local
                   </span>
 
-                  <strong>{evento.local_evento}</strong>
+                  <strong>
+                    {evento.local_evento}
+                  </strong>
                 </div>
               </div>
 
@@ -104,7 +118,9 @@ export default function EventDetails({
                     Categoria
                   </span>
 
-                  <strong>{evento.tipo_evento}</strong>
+                  <strong>
+                    {evento.tipo_evento}
+                  </strong>
                 </div>
               </div>
 
@@ -117,9 +133,13 @@ export default function EventDetails({
                   </span>
 
                   <strong>
-                    {formatDate(evento.data_hora_inicio)}
+                    {formatDate(
+                      evento.data_hora_inicio
+                    )}
                     {" — "}
-                    {formatDate(evento.data_hora_fim)}
+                    {formatDate(
+                      evento.data_hora_fim
+                    )}
                   </strong>
                 </div>
               </div>
@@ -147,15 +167,23 @@ export default function EventDetails({
                 </span>
 
                 <div className={styles.editalInfo}>
-                  <strong>Período de submissão</strong>
+                  <strong>
+                    Período de submissão
+                  </strong>
 
                   <p>
                     {evento.inicio_submissao
-                      ? formatDate(evento.inicio_submissao)
+                      ? formatDate(
+                          evento.inicio_submissao
+                        )
                       : "—"}
+
                     {" até "}
+
                     {evento.fim_submissao
-                      ? formatDate(evento.fim_submissao)
+                      ? formatDate(
+                          evento.fim_submissao
+                        )
                       : "—"}
                   </p>
                 </div>
@@ -174,7 +202,10 @@ export default function EventDetails({
                 title="Editar evento"
               >
                 <Pencil size={18} />
-                <span>Editar</span>
+
+                <span>
+                  Editar
+                </span>
               </button>
             )}
 
@@ -186,7 +217,10 @@ export default function EventDetails({
                 title="Excluir evento"
               >
                 <Trash2 size={18} />
-                <span>Excluir</span>
+
+                <span>
+                  Excluir
+                </span>
               </button>
             )}
           </div>

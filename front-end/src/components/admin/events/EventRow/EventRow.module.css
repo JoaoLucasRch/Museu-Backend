@@ -1,95 +1,98 @@
-.row {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 1.1rem 1.1rem;
-  border-bottom: 1px solid #F1EBE6;
-  transition: .2s;
-  cursor: pointer;
+.row{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  gap:1.2rem;
+  padding:1.1rem;
+  border-bottom:1px solid #F1EBE6;
+  transition:.2s;
+  cursor:pointer;
 }
 
-.row:last-child {
-  border-bottom: none;
+.row:last-child{
+  border-bottom:none;
 }
 
-.row:hover {
-  background: #FCFAF8;
+.row:hover{
+  background:#FCFAF8;
 }
 
 /* IMAGEM */
 
-.thumbnail {
-  width: 72px;
-  height: 72px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #F5F1ED;
-  flex-shrink: 0;
+.thumbnail{
+  width:72px;
+  height:72px;
+  border-radius:14px;
+  overflow:hidden;
+  background:#F5F1ED;
+  flex-shrink:0;
 }
 
-.thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.thumbnail img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-.placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #A3968D;
-  font-size: .7rem;
+.placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#A3968D;
+  font-size:.7rem;
 }
 
 /* CONTEÚDO */
 
-.content h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #2B2624;
-  font-weight: 600;
+.content h3{
+  margin:0;
+  font-size:1rem;
+  font-weight:600;
+  color:#2B2624;
 }
 
-.content p {
-  margin: .35rem 0;
-  max-width: 600px;
-  color: #8A7F77;
-  font-size: .85rem;
-  line-height: 1.4;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.content p{
+  margin:.35rem 0;
+  max-width:600px;
+  color:#8A7F77;
+  font-size:.85rem;
+  line-height:1.4;
+
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
 }
 
 /* METAS */
 
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: .6rem;
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:1rem;
+  margin-top:.6rem;
 }
 
-.meta span {
-  display: flex;
-  align-items: center;
-  gap: .35rem;
-  color: #8A7F77;
-  font-size: .78rem;
+.meta span{
+  display:flex;
+  align-items:center;
+  gap:.35rem;
+  color:#8A7F77;
+  font-size:.78rem;
 }
 
-.meta svg {
-  color: #565554;
+.meta svg{
+  color:#565554;
 }
 
 /* RESPONSIVO */
 
-@media(max-width:800px) {
-  .row {
-    grid-template-columns: 1fr;
+@media (max-width:800px){
+
+  .row{
+    grid-template-columns:1fr;
   }
+
 }

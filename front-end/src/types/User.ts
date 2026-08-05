@@ -3,13 +3,12 @@ export interface UserProfile {
   nome: string;
   email: string;
   contato: string | null;
-  portfolio: string | null;
   role: "ARTISTA" | "ADMIN";
+  created_at?: string | null; // ← ADICIONAR
 }
 
 export interface UpdateProfileData {
   nome: string;
   email: string;
   contato: string;
-  portfolio: string;
 }

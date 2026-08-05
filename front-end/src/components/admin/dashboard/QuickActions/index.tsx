@@ -2,58 +2,77 @@ import {
   CalendarPlus,
   CheckCircle2,
   UserPlus,
+  ArrowUpRight,
 } from "lucide-react";
 
 import styles from "./QuickActions.module.css";
 
 interface Props {
   onRegisterAdmin: () => void;
-  onCreateEvent?: () => void;
-  onApproveArtworks?: () => void;
+  onOpenEvents: () => void;
+  onOpenPendingArtworks: () => void;
 }
 
 export default function AdmQuickActions({
   onRegisterAdmin,
-  onCreateEvent,
-  onApproveArtworks,
+  onOpenEvents,
+  onOpenPendingArtworks,
 }: Props) {
+  const actions = [
+    {
+      label: "Novo Evento",
+      icon: CalendarPlus,
+      action: onOpenEvents,
+    },
+    {
+      label: "Obras Pendentes",
+      icon: CheckCircle2,
+      action: onOpenPendingArtworks,
+    },
+    {
+      label: "Cadastrar Admin",
+      icon: UserPlus,
+      action: onRegisterAdmin,
+    },
+  ];
+
   return (
     <section className={styles.actionsSection}>
-      <div className={styles.header}>
-        <h2>Ações Rápidas</h2>
+      <header className={styles.header}>
+        <h2>AÇÕES RÁPIDAS</h2>
 
         <p>
-          Execute rapidamente as principais tarefas do painel.
+          Acesse rapidamente as principais áreas administrativas.
         </p>
-      </div>
+      </header>
+
 
       <div className={styles.actions}>
-        <button
-          onClick={onCreateEvent}
-          className={styles.actionButton}
-        >
-          <CalendarPlus size={20} />
+        {actions.map((item) => {
+          const Icon = item.icon;
 
-          <span>Novo Evento</span>
-        </button>
+          return (
+            <button
+              key={item.label}
+              onClick={item.action}
+              className={styles.actionButton}
+            >
+              <div className={styles.left}>
+                <Icon size={18} />
 
-        <button
-          onClick={onApproveArtworks}
-          className={styles.actionButton}
-        >
-          <CheckCircle2 size={20} />
+                <span>
+                  {item.label}
+                </span>
+              </div>
 
-          <span>Aprovar Obras</span>
-        </button>
 
-        <button
-          onClick={onRegisterAdmin}
-          className={styles.actionButton}
-        >
-          <UserPlus size={20} />
-
-          <span>Cadastrar Admin</span>
-        </button>
+              <ArrowUpRight
+                size={18}
+                className={styles.arrow}
+              />
+            </button>
+          );
+        })}
       </div>
     </section>
   );

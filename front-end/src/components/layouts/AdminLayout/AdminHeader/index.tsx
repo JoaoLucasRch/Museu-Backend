@@ -1,31 +1,41 @@
 import { LogOut } from "lucide-react";
+
 import styles from "./AdminHeader.module.css";
 
 interface HeaderProps {
-  onLogout: () => void;
+  onLogout?: () => void;
 }
 
-export default function Header({ onLogout }: HeaderProps) {
+export default function Header({
+  onLogout,
+}: HeaderProps) {
   return (
     <header className={styles.header}>
-      <div>
+      <div className={styles.left}>
+        <span className={styles.badge}>
+          Painel Administrativo
+        </span>
+
         <h1 className={styles.title}>
-          Museu Municipal Francisco Coelho
+          Bem-vindo ao Museu de Marabá
         </h1>
 
-        <span className={styles.subtitle}>
-          Dashboard Administrativo
-        </span>
+        <p className={styles.subtitle}>
+          Gerencie eventos, obras, editais e usuários em um único ambiente.
+        </p>
       </div>
 
-      <button
-      
-        className={styles.logoutButton}
-        onClick={onLogout}
-      >
-        <span>Sair</span>
-        <LogOut size={15} strokeWidth={2} />
-      </button>
+      {onLogout && (
+        <button
+          type="button"
+          className={styles.logoutButton}
+          onClick={onLogout}
+        >
+          <span>Sair</span>
+
+          <LogOut size={16} />
+        </button>
+      )}
     </header>
   );
 }

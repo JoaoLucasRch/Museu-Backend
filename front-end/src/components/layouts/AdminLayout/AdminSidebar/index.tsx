@@ -1,89 +1,151 @@
-import { useState } from "react";
 import {
   LayoutDashboard,
   CalendarDays,
   Image,
   Users,
-  PanelLeftClose,
+  User,
+  LogOut,
   PanelLeftOpen,
+  PanelLeftClose,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
+import type { UserProfile } from "@/types/User";
+
 import styles from "./AdminSidebar.module.css";
 
-export default function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+interface Props {
+  user: UserProfile | null;
+  onLogout: () => void;
+  collapsed: boolean;
+  onToggleSidebar: () => void;
+}
 
-  function toggleSidebar() {
-    setIsCollapsed((prev) => !prev);
-  }
-
+export default function Sidebar({
+  user,
+  onLogout,
+  collapsed,
+  onToggleSidebar,
+}: Props) {
   return (
     <aside
       className={`${styles.sidebar} ${
-        isCollapsed ? styles.collapsed : ""
+        collapsed ? styles.collapsed : ""
       }`}
     >
-      <div className={styles.topBar}>
+      <div>
         <button
           type="button"
-          className={styles.toggleBtn}
-          onClick={toggleSidebar}
-          title={isCollapsed ? "Expandir menu" : "Recolher menu"}
+          className={styles.collapseButton}
+          onClick={onToggleSidebar}
+          title={
+            collapsed
+              ? "Expandir menu"
+              : "Recolher menu"
+          }
         >
-          {isCollapsed ? (
-            <PanelLeftOpen size={20} />
+          {collapsed ? (
+            <PanelLeftOpen size={18} />
           ) : (
-            <PanelLeftClose size={20} />
+            <PanelLeftClose size={18} />
           )}
         </button>
+
+        <div className={styles.brand}>
+          <h2>Museu de Marabá</h2>
+
+          <span>Francisco Coelho</span>
+        </div>
+
+        <nav className={styles.navigation}>
+          <NavLink
+            to="/admin/dashboard"
+            title="Dashboard"
+            className={({ isActive }) =>
+              `${styles.link} ${
+                isActive ? styles.active : ""
+              }`
+            }
+          >
+            <LayoutDashboard size={20} />
+            <span>Dashboard</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/eventos"
+            title="Eventos"
+            className={({ isActive }) =>
+              `${styles.link} ${
+                isActive ? styles.active : ""
+              }`
+            }
+          >
+            <CalendarDays size={20} />
+            <span>Eventos</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/obras"
+            title="Obras"
+            className={({ isActive }) =>
+              `${styles.link} ${
+                isActive ? styles.active : ""
+              }`
+            }
+          >
+            <Image size={20} />
+            <span>Obras</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/usuarios"
+            title="Usuários"
+            className={({ isActive }) =>
+              `${styles.link} ${
+                isActive ? styles.active : ""
+              }`
+            }
+          >
+            <Users size={20} />
+            <span>Usuários</span>
+          </NavLink>
+        </nav>
       </div>
 
-      <nav className={styles.nav}>
+      <div className={styles.footer}>
         <NavLink
-          to="/admin/dashboard"
+          to="/admin/perfil"
+          title="Perfil"
           className={({ isActive }) =>
-            `${styles.link} ${isActive ? styles.active : ""}`
+            `${styles.link} ${
+              isActive ? styles.active : ""
+            }`
           }
-          title="Dashboard"
         >
-          <LayoutDashboard size={20} />
-          <span className={styles.label}>Dashboard</span>
+          <User size={20} />
+          <span>Perfil</span>
         </NavLink>
 
-        <NavLink
-          to="/admin/eventos"
-          className={({ isActive }) =>
-            `${styles.link} ${isActive ? styles.active : ""}`
-          }
-          title="Eventos"
-        >
-          <CalendarDays size={20} />
-          <span className={styles.label}>Eventos</span>
-        </NavLink>
+        <div className={styles.account}>
+          <strong>
+            {user?.nome ?? "Administrador"}
+          </strong>
 
-        <NavLink
-          to="/admin/obras"
-          className={({ isActive }) =>
-            `${styles.link} ${isActive ? styles.active : ""}`
-          }
-          title="Obras"
-        >
-          <Image size={20} />
-          <span className={styles.label}>Obras</span>
-        </NavLink>
+          <span>
+            {user?.email ?? "Sem e-mail"}
+          </span>
+        </div>
 
-        <NavLink
-          to="/admin/usuarios"
-          className={({ isActive }) =>
-            `${styles.link} ${isActive ? styles.active : ""}`
-          }
-          title="Usuários"
+        <button
+          type="button"
+          className={styles.logout}
+          onClick={onLogout}
+          title="Sair"
         >
-          <Users size={20} />
-          <span className={styles.label}>Usuários</span>
-        </NavLink>
-      </nav>
+          <LogOut size={18} />
+          <span>Sair</span>
+        </button>
+      </div>
     </aside>
   );
 }

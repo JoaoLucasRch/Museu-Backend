@@ -5,6 +5,7 @@ import {
   loginGoogle,
   forgotPassword,
   resetPassword,
+  changePassword,
   RegisterBody,
 } from '../controllers/authController.js';
 import { verifyJWT } from '../middlewares/verifyJWT.js';
@@ -170,6 +171,70 @@ export async function authRoutes(app: FastifyInstance) {
       },
     },
   }, resetPassword);
+
+  // Alterar senha do usuário autenticado
+  app.patch('/change-password', {
+    preHandler: verifyJWT,
+    schema: {
+      summary:
+        'Alterar senha do usuário autenticado',
+      description:
+        'Permite que um usuário logado altere sua própria senha.',
+      tags: [
+        'Auth'
+      ],
+      security: [
+        {
+          bearerAuth: []
+        }
+      ],
+      body: {
+        type: 'object',
+        required: [
+          'senhaAtual',
+          'novaSenha'
+        ],
+        properties: {
+          senhaAtual: {
+            type: 'string',
+            example: 'senhaAtual123'
+          },
+          novaSenha: {
+            type: 'string',
+            example: 'novaSenha456'
+          },
+        },
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example:
+                'Senha alterada com sucesso'
+            }
+          }
+        },
+        400: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string'
+            }
+          }
+        },
+        401: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string'
+            }
+          }
+        }
+      }
+    }
+  }, changePassword);
 }
 
 export function getMuseumEmail(): string {

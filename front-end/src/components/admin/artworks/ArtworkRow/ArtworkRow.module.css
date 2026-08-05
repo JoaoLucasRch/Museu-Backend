@@ -1,93 +1,94 @@
-/* Linha principal */
 .row {
-    display: grid;
-    grid-template-columns: 2.2fr 1.2fr 1.2fr 1fr;
-    align-items: center;
-    padding: 15px 32px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #e7dfd8;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
+  display: grid;
+  grid-template-columns: 2.2fr 1.2fr 1.2fr 1fr;
+  align-items: center;
 
-.row:hover {
-    background-color: #fcfbf9;
+  padding: 15px 32px;
+
+  background: #FFF;
+  border-bottom: 1px solid #E7DFD8;
+
+  cursor: pointer;
+  transition: background-color .15s ease;
 }
 
 .row:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
-/* Coluna 1: Título e Subtítulo */
+.row:hover {
+  background: #FCFBF9;
+}
+
 .titleColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .title {
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    color: #111111;
-    letter-spacing: -0.2px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -.2px;
+  color: #111;
 }
 
 .meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #88827e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 13px;
+  color: #88827E;
 }
 
 .dot {
-    font-size: 10px;
-    color: #88827e;
+  font-size: 10px;
+  color: #88827E;
 }
 
 .author {
-    color: #88827e;
+  color: #88827E;
 }
 
-/* Colunas 2 e 3: Texto de Evento e Data */
 .cellText {
-    font-size: 13px;
-    color: #6d6662;
-    font-weight: 400;
+  font-size: 13px;
+  font-weight: 400;
+  color: #6D6662;
 }
 
-/* Coluna 4: Status e Pílulas Pastel */
 .statusColumn {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .status {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 126px; /* Largura fixa para manter todas as pílulas idênticas */
-    height: 30px;
-    border-radius: 15px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 126px;
+  height: 30px;
+
+  border-radius: 15px;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
 }
 
-/* Cores FIÉIS à imagem */
 .pendente {
-    background-color: #f2e5a2;
-    color: #92751e;
+  background: #F2E5A2;
+  color: #92751E;
 }
 
 .aprovado {
-    background-color: #D0EDD3;
-    color: #3f7d52;
+  background: #D0EDD3;
+  color: #3F7D52;
 }
 
 .reprovado {
-    background-color: #f3d7cd;
-    color: #9c513e;
+  background: #F3D7CD;
+  color: #9C513E;
 }

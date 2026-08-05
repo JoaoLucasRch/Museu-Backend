@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import styles from "./Events.module.css";
 
 import EventToolbar from "@/components/admin/events/EventToolbar";
@@ -44,18 +45,21 @@ export default function AdmEventos() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
 
-  const { handleSubmit, handleDelete, isSubmitting, uploadProgress } =
-    useEventoActions({
-      selectedEvento,
-      selectedFile,
-      formData,
-      isCreateMode: isCreateModalOpen,
-      closeModal,
-
-      criarEvento,
-      editarEvento,
-      excluirEvento,
-    });
+  const {
+    handleSubmit,
+    handleDelete,
+    isSubmitting,
+    uploadProgress,
+  } = useEventoActions({
+    selectedEvento,
+    selectedFile,
+    formData,
+    isCreateMode: isCreateModalOpen,
+    closeModal,
+    criarEvento,
+    editarEvento,
+    excluirEvento,
+  });
 
   function formatDate(date: string) {
     return new Date(date).toLocaleString("pt-BR", {
@@ -65,11 +69,17 @@ export default function AdmEventos() {
   }
 
   const filteredEvents = eventos.filter((event) =>
-    event.titulo_evento.toLowerCase().includes(search.toLowerCase()),
+    event.titulo_evento
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   if (isLoading) {
-    return <div className={styles.container}>Carregando eventos...</div>;
+    return (
+      <div className={styles.container}>
+        Carregando eventos...
+      </div>
+    );
   }
 
   if (error) {
@@ -97,6 +107,7 @@ export default function AdmEventos() {
           onView={openViewModal}
           onEdit={(evento) => {
             openViewModal(evento);
+            startEdit();
           }}
           onDelete={openDeleteModal}
         />
@@ -107,7 +118,6 @@ export default function AdmEventos() {
         </div>
       )}
 
-    {/* Modal de Criação / Edição */}
       {(isCreateModalOpen || isEditMode) && (
         <EventModal
           isOpen
@@ -117,10 +127,11 @@ export default function AdmEventos() {
           isSubmitting={isSubmitting}
           uploadProgress={uploadProgress}
           onClose={() => {
-            const tempEvento = selectedEvento; // Guarda a referência antes de limpar
+            const tempEvento = selectedEvento;
             closeModal();
+
             if (isEditMode && tempEvento) {
-              openViewModal(tempEvento); // Reabre os detalhes com o evento guardado
+              openViewModal(tempEvento);
             }
           }}
           onSubmit={handleSubmit}
@@ -128,19 +139,16 @@ export default function AdmEventos() {
           setFormData={setFormData}
         />
       )}
-      
-      {/* Modal de Detalhes */}
+
       {isDetailsOpen && selectedEvento && (
         <EventDetailsModal
           evento={selectedEvento}
           isOpen={isDetailsOpen}
           onClose={closeDetails}
           onEdit={() => {
-            // Guarda o evento atual antes de fechar os detalhes
             const eventoAtual = selectedEvento;
+
             closeDetails();
-            
-            // Re-seleciona para garantir que a edição receba os dados
             openViewModal(eventoAtual);
             startEdit();
           }}
@@ -152,16 +160,17 @@ export default function AdmEventos() {
         />
       )}
 
-      {/* Modal de Exclusão */}
       {isDeleteOpen && selectedEvento && (
         <DeleteEventModal
           evento={selectedEvento}
           isOpen={isDeleteOpen}
           onClose={() => {
-            const tempEvento = selectedEvento; // Guarda a referência antes de fechar
+            const tempEvento = selectedEvento;
+
             closeDeleteModal();
+
             if (tempEvento) {
-              openViewModal(tempEvento); // Reabre os detalhes
+              openViewModal(tempEvento);
             }
           }}
           onConfirm={handleDelete}

@@ -214,43 +214,6 @@
   word-break:break-word;
 }
 
-
-/* PORTFÓLIO */
-
-.portfolioLink {
-
-  display:flex;
-
-  align-items:center;
-
-  gap:.6rem;
-
-  width:max-content;
-
-  padding:.75rem 1rem;
-
-  border-radius:12px;
-
-  background:#F7F5F3;
-
-  color:#2E2A27;
-
-  text-decoration:none;
-
-  font-size:.9rem;
-
-  font-weight:500;
-
-  transition:.2s;
-}
-
-
-.portfolioLink:hover {
-
-  background:#ECE8E5;
-}
-
-
 /* ESTATÍSTICAS */
 
 .statsGrid {

@@ -10,6 +10,7 @@ import AdminDashboard from "./pages/Admin/Dashboard";
 import AdminEventos from "./pages/Admin/Events";
 import AdminObras from "./pages/Admin/Artworks";
 import AdminUsuarios from "./pages/Admin/Users";
+import AdminProfile from "./pages/Admin/Profile";
 
 import { PrivateRoute } from "@/components";
 import AdminLayout from "@/components/layouts/AdminLayout/AdminLayout";
@@ -63,6 +64,11 @@ function App() {
           path="usuarios"
           element={<AdminUsuarios />}
         />
+
+<Route
+  path="perfil"
+  element={<AdminProfile />}
+/>
 
       </Route>
     </Routes>

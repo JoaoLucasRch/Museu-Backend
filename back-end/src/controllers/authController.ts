@@ -114,7 +114,7 @@ export async function login(
       return reply.status(400).send({ message: 'Formato de email inválido.' });
     }
 
-    const user = await prisma.usuario.findUnique({ 
+    const user = await prisma.usuario.findUnique({
       where: { email: email.toLowerCase() }
     });
 
@@ -220,22 +220,22 @@ export async function forgotPassword(
     });
 
     if (!user) {
-      return reply.send({ 
-        message: 'Se o email estiver cadastrado, enviaremos instruções para redefinição.' 
+      return reply.send({
+        message: 'Se o email estiver cadastrado, enviaremos instruções para redefinição.'
       });
     }
 
     //Verifica se é usuário Google
     if (user.senha === '') {
-      return reply.status(400).send({ 
-        message: 'Esta conta foi criada via Google. Use o login social.' 
+      return reply.status(400).send({
+        message: 'Esta conta foi criada via Google. Use o login social.'
       });
     }
 
     //Gera token de redefinição
     const resetToken = jwt.sign(
-      { 
-        id: user.id, 
+      {
+        id: user.id,
         email: user.email,
         type: 'password_reset'
       },
@@ -250,13 +250,13 @@ export async function forgotPassword(
     );
 
     if (!emailSent) {
-      return reply.status(500).send({ 
-        message: 'Erro ao enviar email. Tente novamente.' 
+      return reply.status(500).send({
+        message: 'Erro ao enviar email. Tente novamente.'
       });
     }
 
-    return reply.send({ 
-      message: 'Se o email estiver cadastrado, enviaremos instruções para redefinição.' 
+    return reply.send({
+      message: 'Se o email estiver cadastrado, enviaremos instruções para redefinição.'
     });
 
   } catch (error) {
@@ -303,13 +303,13 @@ export async function resetPassword(
 
     const hashedPassword = await bcrypt.hash(novaSenha, 10);
 
-      const JWT_SECRET = process.env.JWT_SECRET;
-  if (!JWT_SECRET) {
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
 
-    throw new Error('Variável de ambiente JWT_SECRET não está definida.'); 
-  }
+      throw new Error('Variável de ambiente JWT_SECRET não está definida.');
+    }
 
-  const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
     //Atualiza senha
     await prisma.usuario.update({
@@ -317,15 +317,15 @@ export async function resetPassword(
       data: { senha: hashedPassword }
     });
 
-    return reply.send({ 
-      message: 'Senha redefinida com sucesso.' 
+    return reply.send({
+      message: 'Senha redefinida com sucesso.'
     });
 
   } catch (error: any) {
     if (error.name === 'TokenExpiredError') {
       return reply.status(400).send({ message: 'Token expirado. Solicite uma nova redefinição.' });
     }
-    
+
     if (error.name === 'JsonWebTokenError') {
       return reply.status(400).send({ message: 'Token inválido.' });
     }
@@ -333,4 +333,73 @@ export async function resetPassword(
     console.error('Erro ao redefinir senha:', error);
     return reply.status(500).send({ message: 'Erro interno ao redefinir senha.' });
   }
+
+}
+// Alterar senha do usuário autenticado
+
+export async function changePassword(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  try {
+    const userId = request.user.id;
+    const {
+      senhaAtual,
+      novaSenha,
+    } = request.body as {
+      senhaAtual: string;
+      novaSenha: string;
+    };
+    const user = await prisma.usuario.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+
+      return reply.status(404).send({
+        message: "Usuário não encontrado.",
+      });
+    }
+    const senhaValida =
+      await bcrypt.compare(
+        senhaAtual,
+        user.senha
+      );
+
+    if (!senhaValida) {
+      return reply.status(400).send({
+        message: "Senha atual incorreta.",
+      });
+    }
+    const novaSenhaHash =
+      await bcrypt.hash(
+        novaSenha,
+        10
+      );
+
+    await prisma.usuario.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        senha: novaSenhaHash,
+      },
+    });
+
+    return reply.send({
+      message:
+        "Senha alterada com sucesso.",
+    });
+
+  } catch (error) {
+    console.error(error);
+    return reply.status(500).send({
+      message:
+        "Erro ao alterar senha.",
+    });
+
+  }
+
 }

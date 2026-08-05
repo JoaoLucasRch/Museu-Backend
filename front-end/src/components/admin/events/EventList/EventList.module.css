@@ -1,89 +1,85 @@
-.container {
-  background: #FFF;
-  border: 1px solid #ECE3DD;
-  border-radius: 20px;
-  overflow: hidden;
+.container{
+  background:#FFF;
+  border:1px solid #ECE3DD;
+  border-radius:20px;
+  overflow:hidden;
 }
 
 /* HEADER */
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem 1.75rem;
-  border-bottom: 1px solid #ECE3DD;
-  background: #FCFBFA;
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1.5rem 1.75rem;
+  border-bottom:1px solid #ECE3DD;
+  background:#FCFBFA;
 }
 
-.title {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #2E2A27;
+.title{
+  margin:0;
+  font-size:1.05rem;
+  font-weight:600;
+  color:#2E2A27;
 }
 
-.subtitle {
-  margin: .35rem 0 0;
-  font-size: .9rem;
-  color: #8A7F77;
+.subtitle{
+  margin:.35rem 0 0;
+  font-size:.9rem;
+  color:#8A7F77;
 }
 
-/* BODY (COM ROLAGEM PARA 3 ITENS) */
+/* BODY */
 
-.body {
-  display: flex;
-  flex-direction: column;
-  padding: .75rem;
-  gap: .75rem;
+.body{
+  display:flex;
+  flex-direction:column;
+  padding:.75rem;
+  gap:.75rem;
 
-  /* Limita a altura para mostrar ~3 itens */
-  max-height: 370px;
-  overflow-y: auto;
+  max-height:370px;
+  overflow-y:auto;
 
-  /* Estilização elegante da rolagem no Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: #D6CFC9 transparent;
+  scrollbar-width:thin;
+  scrollbar-color:#D6CFC9 transparent;
 }
 
-/* Personalização da barra de rolagem (Chrome, Safari, Edge) */
-.body::-webkit-scrollbar {
-  width: 6px;
+.body::-webkit-scrollbar{
+  width:6px;
 }
 
-.body::-webkit-scrollbar-track {
-  background: transparent;
+.body::-webkit-scrollbar-track{
+  background:transparent;
 }
 
-.body::-webkit-scrollbar-thumb {
-  background-color: #D6CFC9;
-  border-radius: 999px;
+.body::-webkit-scrollbar-thumb{
+  background:#D6CFC9;
+  border-radius:999px;
 }
 
-.body::-webkit-scrollbar-thumb:hover {
-  background-color: #A3968D;
+.body::-webkit-scrollbar-thumb:hover{
+  background:#A3968D;
 }
 
 /* RESPONSIVO */
 
-@media (max-width: 700px) {
+@media(max-width:700px){
 
-  .header {
-    padding: 1.25rem;
+  .header{
+    padding:1.25rem;
   }
 
-  .body {
-    padding: .6rem;
-    /* Ajuste para o mobile onde os cards ficam mais altos */
-    max-height: 560px; 
+  .body{
+    padding:.6rem;
+    max-height:560px;
   }
 
-  .title {
-    font-size: 1rem;
+  .title{
+    font-size:1rem;
   }
 
-  .subtitle {
-    font-size: .85rem;
+  .subtitle{
+    font-size:.85rem;
   }
 
 }

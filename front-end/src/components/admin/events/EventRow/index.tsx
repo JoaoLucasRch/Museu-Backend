@@ -17,16 +17,20 @@ export default function EventRow({
   event,
   onView,
 }: Props) {
-
   function formatDate(date: string) {
-    return new Date(date).toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+    return new Date(date).toLocaleDateString(
+      "pt-BR",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
+    );
   }
 
-  function formatType(type: Event["tipo_evento"]) {
+  function formatType(
+    type: Event["tipo_evento"]
+  ) {
     switch (type) {
       case "EXPOSICAO":
         return "Exposição";
@@ -58,7 +62,10 @@ export default function EventRow({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        if (
+          e.key === "Enter" ||
+          e.key === " "
+        ) {
           e.preventDefault();
           onView();
         }
@@ -66,9 +73,14 @@ export default function EventRow({
     >
       <div className={styles.thumbnail}>
         {imageUrl ? (
-          <img src={imageUrl} alt={event.titulo_evento} />
+          <img
+            src={imageUrl}
+            alt={event.titulo_evento}
+          />
         ) : (
-          <div className={styles.placeholder}>Sem imagem</div>
+          <div className={styles.placeholder}>
+            Sem imagem
+          </div>
         )}
       </div>
 
@@ -85,14 +97,20 @@ export default function EventRow({
 
           <span>
             <Tag size={15} />
-            {formatType(event.tipo_evento)}
+            {formatType(
+              event.tipo_evento
+            )}
           </span>
 
           <span>
             <CalendarDays size={15} />
-            {formatDate(event.data_hora_inicio)}
+            {formatDate(
+              event.data_hora_inicio
+            )}
             {" — "}
-            {formatDate(event.data_hora_fim)}
+            {formatDate(
+              event.data_hora_fim
+            )}
           </span>
         </div>
       </div>

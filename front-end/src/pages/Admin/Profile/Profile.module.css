@@ -1,0 +1,141 @@
+.profile{
+  width:100%;
+  max-width:1050px;
+  margin:0 auto;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.5fr .95fr;
+  gap:1.5rem;
+  align-items:stretch;
+}
+
+.sideColumn{
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  gap:1rem;
+}
+
+.profileCard,
+.smallCard{
+  background:linear-gradient(180deg,#FCFBFA 0%,#FFFFFF 100%);
+  border:1px solid #ECE3DD;
+  border-radius:24px;
+  box-shadow:0 10px 28px rgba(0,0,0,.03);
+}
+
+.profileCard{
+  padding:2rem;
+}
+
+.smallCard{
+  padding:1.2rem 1.35rem;
+}
+
+.cardHeader{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:1rem;
+}
+
+.icon{
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background:#F5EFEA;
+  color:#B27A35;
+}
+
+.cardHeader h2{
+  margin:0;
+  font-size:1rem;
+  font-weight:600;
+  color:#2B2624;
+}
+
+.cardHeader span{
+  display:block;
+  margin-top:3px;
+  font-size:.8rem;
+  color:#8A8079;
+}
+
+.info{
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+  margin-bottom:2rem;
+}
+
+.info label{
+  margin-top:.8rem;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#A0958D;
+  font-weight:600;
+}
+
+.info strong{
+  font-size:.95rem;
+  font-weight:500;
+  color:#3A302B;
+}
+
+.primaryButton,
+.secondaryButton{
+  width:100%;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.5rem;
+  padding:0 1.2rem;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:.88rem;
+  font-weight:600;
+  transition:.2s;
+}
+
+.primaryButton{
+  border:none;
+  background:#2B2624;
+  color:#FFF;
+}
+
+.primaryButton:hover{
+  background:#171413;
+}
+
+.secondaryButton{
+  border:1px solid #E8DDD4;
+  background:#FFF;
+  color:#6D645E;
+}
+
+.secondaryButton:hover{
+  background:#F7F4F2;
+}
+
+.smallCard p{
+  margin:.55rem 0 1rem;
+  font-size:.86rem;
+  line-height:1.45;
+  color:#867C75;
+}
+
+@media(max-width:900px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .sideColumn{
+    gap:1rem;
+  }
+}

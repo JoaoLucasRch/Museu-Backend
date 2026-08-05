@@ -1,243 +1,259 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
+.container{
+  display:flex;
+  flex-direction:column;
+  gap:1.75rem;
+  margin-bottom:2rem;
 }
 
 /* HEADER */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 1.5rem;
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:1.5rem;
 }
 
-.title {
-  margin: 0;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2E2A27;
-  line-height: 1.2;
+.title{
+  margin:0;
+  font-size:2rem;
+  font-weight:700;
+  color:#2E2A27;
+  line-height:1.2;
 }
 
-.subtitle {
-  margin-top: 0.45rem;
-  color: #7A746E;
-  font-size: 0.96rem;
-  line-height: 1.5;
+.subtitle{
+  margin-top:.45rem;
+  color:#7A746E;
+  font-size:.96rem;
+  line-height:1.5;
 }
 
-/* BOTÃO ESCURO (NOVO EVENTO) */
-.createButton {
-  height: 48px;
-  min-width: 160px;
-  padding: 0 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
+/* BOTÃO */
 
-  border: none;
-  border-radius: 14px;
-  background: #202124;
-  color: #FFFFFF;
+.createButton{
+  height:46px;
+  padding:0 1.35rem;
 
-  font-size: 0.92rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.6rem;
+
+  border:none;
+  border-radius:14px;
+
+  background:#202124;
+  color:#FFF;
+
+  font-size:.92rem;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.2s ease;
 }
 
-.createButton:hover {
-  background: #111827;
-  transform: translateY(-1px);
+.createButton:hover{
+  background:#111827;
+  transform:translateY(-1px);
 }
 
-.createButton:active {
-  transform: translateY(0);
+.createButton:active{
+  transform:translateY(0);
 }
 
-/* FILTROS CONTAINER */
-.filters {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+/* FILTROS */
+
+.filters{
+  display:flex;
+  align-items:center;
+  gap:1rem;
 }
 
 /* PESQUISA */
-.searchBox {
-  flex: 1;
-  max-width: 800px;
-  height: 48px;
 
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0 1rem;
+.searchBox{
+  flex:1;
+  height:48px;
 
-  background: #FFFFFF;
-  border: 1px solid #E7E2DE;
-  border-radius: 14px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+
+  padding:0 1rem;
+
+  background:#FFF;
+
+  border:1px solid #E7E2DE;
+  border-radius:14px;
+
+  transition:.2s;
 }
 
-.searchBox:focus-within {
-  border-color: #202124;
-  box-shadow: 0 0 0 3px rgba(32, 33, 36, 0.08);
+.searchBox:focus-within{
+  border-color:#202124;
+  box-shadow:0 0 0 3px rgba(32,33,36,.08);
 }
 
-.searchBox svg {
-  flex-shrink: 0;
-  color: #9A918B;
+.searchBox svg{
+  color:#9A918B;
+  flex-shrink:0;
 }
 
-.searchBox input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.94rem;
-  color: #2E2A27;
+.searchBox input{
+  flex:1;
+
+  border:none;
+  outline:none;
+
+  background:transparent;
+
+  font-size:.94rem;
+  color:#2E2A27;
 }
 
-.searchBox input::placeholder {
-  color: #AAA19A;
+.searchBox input::placeholder{
+  color:#AAA19A;
 }
 
-/* --- DROPDOWN CUSTOMIZADO (BRANCO & ELEGANTE) --- */
-.selectWrapper {
-  position: relative;
-  min-width: 200px;
+/* DROPDOWN */
+
+.selectWrapper{
+  position:relative;
+  min-width:190px;
 }
 
-/* Botão Gatilho (Mantém o estilo do seu select branco anterior) */
-.selectButton {
-  width: 100%;
-  height: 48px;
-  padding: 0 1rem;
+.selectButton{
+  width:100%;
+  height:48px;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.65rem;
+  padding:0 1rem;
 
-  background: #FFFFFF;
-  border: 1px solid #E7E2DE;
-  border-radius: 14px;
-  color: #2E2A27;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.65rem;
 
-  font-size: 0.94rem;
-  font-weight: 500;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border:1px solid #E7E2DE;
+  border-radius:14px;
+
+  background:#FFF;
+
+  cursor:pointer;
+
+  transition:.2s;
 }
 
 .selectButton:hover,
-.selectButton.active {
-  border-color: #202124;
-  box-shadow: 0 0 0 3px rgba(32, 33, 36, 0.08);
+.active{
+  border-color:#202124;
+  box-shadow:0 0 0 3px rgba(32,33,36,.08);
 }
 
-.selectLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
+.selectLabel{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+
+  color:#2E2A27;
+  font-size:.94rem;
 }
 
-.filterIcon,
-.chevron {
-  flex-shrink: 0;
-  color: #9A918B;
-  transition: transform 0.2s ease, color 0.2s ease;
+.selectLabel svg,
+.selectButton>svg{
+  color:#9A918B;
 }
 
-.selectButton:hover .filterIcon,
-.selectButton:hover .chevron {
-  color: #2E2A27;
+.rotate{
+  transform:rotate(180deg);
 }
 
-.rotate {
-  transform: rotate(180deg);
+.dropdownMenu{
+  position:absolute;
+
+  top:calc(100% + 8px);
+  left:0;
+
+  width:100%;
+
+  margin:0;
+  padding:.4rem;
+
+  list-style:none;
+
+  background:#FFF;
+
+  border:1px solid #E7E2DE;
+  border-radius:14px;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.08);
+
+  z-index:30;
+
+  animation:dropdown .18s ease;
 }
 
-/* MENU SUSPENSO MODERNO (POPUP) */
-.dropdownMenu {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  width: 100%;
+.dropdownOption{
+  padding:.65rem .85rem;
 
-  margin: 0;
-  padding: 0.4rem;
-  list-style: none;
+  border-radius:10px;
 
-  background-color: #FFFFFF;
-  border: 1px solid #E7E2DE;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08),
-    0 8px 10px -6px rgba(0, 0, 0, 0.03);
+  cursor:pointer;
 
-  z-index: 50;
-  animation: dropdownAnimation 0.18s ease-out forwards;
+  font-size:.92rem;
+  color:#2E2A27;
+
+  transition:.15s;
 }
 
-.dropdownOption {
-  padding: 0.65rem 0.85rem;
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: #2E2A27;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+.dropdownOption:hover{
+  background:#F5EFEA;
 }
 
-/* Hover suave em tom bege da sua paleta */
-.dropdownOption:hover {
-  background-color: #F5EFEA;
-  color: #202124;
+.selectedOption{
+  background:#202124;
+  color:#FFF;
+  font-weight:600;
 }
 
-/* Opção Selecionada */
-.selectedOption {
-  background-color: #202124;
-  color: #FFFFFF;
-  font-weight: 600;
+.selectedOption:hover{
+  background:#111827;
 }
 
-.selectedOption:hover {
-  background-color: #111827;
-  color: #FFFFFF;
-}
+@keyframes dropdown{
 
-/* Animação suave ao abrir */
-@keyframes dropdownAnimation {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
+  from{
+    opacity:0;
+    transform:translateY(-6px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  to{
+    opacity:1;
+    transform:translateY(0);
   }
+
 }
 
 /* RESPONSIVO */
-@media (max-width: 700px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
+
+@media(max-width:700px){
+
+  .header{
+    flex-direction:column;
+    align-items:flex-start;
   }
 
-  .filters {
-    flex-direction: column;
-    width: 100%;
+  .filters{
+    flex-direction:column;
+    width:100%;
   }
 
   .searchBox,
   .selectWrapper,
-  .createButton {
-    width: 100%;
+  .createButton{
+    width:100%;
   }
+
 }

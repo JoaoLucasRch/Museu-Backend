@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Filter } from "lucide-react";
 
 import styles from "./ArtworkList.module.css";
 import { ArtworkService } from "@/services/artworks/artworkService";
@@ -43,6 +43,8 @@ export default function ArtworksList() {
 
   const [isDeleting, setIsDeleting] =
     useState(false);
+
+  const [filterOpen, setFilterOpen] = useState(false);
 
   useEffect(() => {
     loadArtworks();
@@ -154,16 +156,29 @@ export default function ArtworksList() {
       statusFilter
     ]);
 
+  const getFilterLabel = () => {
+    const option = statusOptions.find(o => o.value === statusFilter);
+    return option ? option.label : "Todas";
+  };
+
+  const statusOptions = [
+    { value: "todas", label: "Todas" },
+    { value: "pendente", label: "Pendentes" },
+    { value: "aprovada", label: "Aprovadas" },
+    { value: "rejeitada", label: "Rejeitadas" },
+    { value: "exposta", label: "Expostas" },
+  ];
+
   return (
     <section className={styles.container}>
 
       <header className={styles.header}>
         <span className={styles.section}>
-          PORTFÓLIO
+          MINHAS OBRAS
         </span>
 
         <h2 className={styles.title}>
-          Minhas obras
+          Exposição de Arte
         </h2>
 
         <p className={styles.subtitle}>
@@ -172,14 +187,12 @@ export default function ArtworksList() {
         </p>
       </header>
 
-
       <div className={styles.toolbar}>
 
         <div className={styles.leftTools}>
 
           <div className={styles.search}>
             <Search size={17} />
-
             <input
               type="text"
               placeholder="Pesquisar obra..."
@@ -190,130 +203,113 @@ export default function ArtworksList() {
             />
           </div>
 
+          <div className={styles.filterWrapper}>
+            {/* Filtro Desktop com contador integrado */}
+            <div className={styles.selectWrapperDesktop}>
+              <select
+                value={statusFilter}
+                onChange={e =>
+                  setStatusFilter(e.target.value)
+                }
+              >
+                {statusOptions.map(option => {
+                  const count = artworks.filter(a =>
+                    option.value === "todas" || a.status === option.value
+                  ).length;
+                  return (
+                    <option key={option.value} value={option.value}>
+                      {option.label} {count}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
 
-          <div className={styles.selectWrapper}>
+            {/* Filtro Mobile com contador */}
+            <div className={styles.filterMobile}>
+              <button
+                className={styles.filterToggle}
+                onClick={() => setFilterOpen(!filterOpen)}
+              >
+                <Filter size={16} />
+                <span>Filtrar</span>
+                <span className={styles.filterCount}>
+                  {filteredArtworks.length}
+                </span>
+              </button>
 
-            <select
-              value={statusFilter}
-              onChange={e =>
-                setStatusFilter(e.target.value)
+              {filterOpen && (
+                <div className={styles.filterDropdown}>
+                  {statusOptions.map(option => {
+                    const count = artworks.filter(a =>
+                      option.value === "todas" || a.status === option.value
+                    ).length;
+                    return (
+                      <button
+                        key={option.value}
+                        className={`${styles.filterOption} ${statusFilter === option.value ? styles.filterOptionActive : ""}`}
+                        onClick={() => {
+                          setStatusFilter(option.value);
+                          setFilterOpen(false);
+                        }}
+                      >
+                        {option.label}
+                        <span className={styles.filterOptionCount}>
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Botão Nova Obra - ao lado do filtro */}
+            <button
+              className={styles.createButton}
+              onClick={() =>
+                setCreateOpen(true)
               }
             >
-              <option value="todas">
-                Todas
-              </option>
-
-              <option value="pendente">
-                Pendentes
-              </option>
-
-              <option value="aprovada">
-                Aprovadas
-              </option>
-
-              <option value="rejeitada">
-                Rejeitadas
-              </option>
-
-              <option value="exposta">
-                Expostas
-              </option>
-
-            </select>
-
+              <Plus size={17} />
+              Nova obra
+            </button>
           </div>
-
-        </div>
-
-
-        <div className={styles.actions}>
-
-          <div className={styles.counter}>
-            <strong>
-              {artworks.length}
-            </strong>
-
-            <span>
-              obras
-            </span>
-          </div>
-
-
-          <button
-            className={styles.createButton}
-            onClick={() =>
-              setCreateOpen(true)
-            }
-          >
-            <Plus size={17} />
-            Nova obra
-          </button>
 
         </div>
 
       </div>
-
 
       <div className={styles.tableHeader}>
-
-        <span>
-          Nome
-        </span>
-
-        <span>
-          Origem
-        </span>
-
-        <span>
-          Enviado
-        </span>
-
-        <span>
-          Status
-        </span>
-
+        <span>Nome</span>
+        <span>Origem</span>
+        <span>Enviado</span>
+        <span>Status</span>
       </div>
 
-
       <div className={styles.list}>
-
         {
           loading ? (
-
             <div className={styles.empty}>
               Carregando obras...
             </div>
-
-          )
-
-            :
-
-            filteredArtworks.length === 0 ? (
-
-              <div className={styles.empty}>
-                Nenhuma obra encontrada.
-              </div>
-
-            )
-
-              :
-
-              filteredArtworks.map(
-                artwork => (
-
-                  <ArtworkCard
-                    key={artwork.id_obra}
-                    artwork={artwork}
-                    onClick={openDetails}
-                  />
-
-                )
+          ) : filteredArtworks.length === 0 ? (
+            <div className={styles.empty}>
+              Nenhuma obra encontrada.
+            </div>
+          ) : (
+            filteredArtworks.map(
+              artwork => (
+                <ArtworkCard
+                  key={artwork.id_obra}
+                  artwork={artwork}
+                  onClick={openDetails}
+                />
               )
-
+            )
+          )
         }
-
       </div>
-
 
       <CreateArtworkModal
         isOpen={createOpen}
@@ -323,14 +319,12 @@ export default function ArtworksList() {
         onSuccess={handleCreateSuccess}
       />
 
-
       <ArtworkDetailsModal
         isOpen={detailsOpen}
         artwork={selectedArtwork}
         onClose={closeDetails}
         onDelete={openDelete}
       />
-
 
       <DeleteConfirmationModal
         isOpen={deleteOpen}
@@ -347,5 +341,4 @@ export default function ArtworksList() {
 
     </section>
   );
-
 }

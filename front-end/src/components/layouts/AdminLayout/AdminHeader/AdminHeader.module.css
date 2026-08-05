@@ -1,66 +1,116 @@
+.content {
+  padding-left: .5rem;
+}
+
 .header {
   display: flex;
-
+  align-items: center;
   justify-content: space-between;
 
+  gap: 1.5rem;
+
+  padding: 2rem 0 2.5rem;
+  margin-left: .5rem;
+}
+
+.left {
+  max-width: 720px;
+}
+
+.badge {
+  display: inline-flex;
   align-items: center;
 
-  padding: 0.5rem 2rem;
+  padding: .38rem .85rem;
+  margin-bottom: 1rem;
 
-  background: #faf9f7;
+  border-radius: 999px;
+
+  background: #F5EFEA;
+
+  color: #9B6D3D;
+
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
 .title {
   margin: 0;
 
-  font-size: 1.8rem;
-
+  font-size: 2rem;
   font-weight: 700;
 
-  color: #2b2624;
+  color: #2B2624;
 
-  letter-spacing: -0.02em;
+  letter-spacing: -.03em;
 }
 
 .subtitle {
-  display: block;
+  margin-top: .85rem;
 
-  margin-top: 0.35rem;
+  max-width: 640px;
 
-  font-size: 0.9rem;
+  color: #7F756E;
 
-  color: #8a7f77;
+  font-size: .96rem;
+  line-height: 1.6;
 }
 
-/* ================= LOGOUT ================= */
-
 .logoutButton {
-  height: 40px;
   display: inline-flex;
   align-items: center;
-  gap: 10px; /* Espaçamento entre a palavra "Sair" e o ícone */
+  gap: .55rem;
 
-  padding: 0 1.2rem;
+  flex-shrink: 0;
 
+  height: 42px;
+  padding: 0 1.15rem;
+
+  border: 1px solid #ECE3DD;
   border-radius: 999px;
 
-  background: #fff;
+  background: #FFF;
 
-  border: 1px solid #ece3dd;
+  color: #6B605A;
 
-  color: #6b605a;
-
-  font-size: 0.9rem;
-
-  font-weight: 500;
+  font-size: .9rem;
+  font-weight: 600;
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease,
+    transform .15s ease;
 }
 
 .logoutButton:hover {
-  background: #f8f6f5;
+  background: #F8F5F2;
+  color: #2B2624;
+  border-color: #DCCFC7;
+}
 
-  color: #2b2624;
+.logoutButton:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 1.5rem 0 2rem;
+    margin-left: 0;
+  }
+
+  .title {
+    font-size: 1.7rem;
+  }
+
+  .logoutButton {
+    align-self: flex-start;
+  }
 }

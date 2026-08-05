@@ -137,53 +137,95 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-// ==================== LISTAR OBRAS DO ARTISTA ====================
-export async function getMyObras(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
-  const { id: artistaId, role } = request.user;
+// src/controllers/ObraController.ts - getMyObras
 
-  if (role !== "ARTISTA") {
-    return reply.status(403).send({
-      message: "Apenas artistas podem visualizar suas obras.",
-    });
+export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
+  const { id: artistaId, role } = request.user as { id: number; role: string };
+
+  if (role !== 'ARTISTA') {
+    return reply.status(403).send({ message: 'Apenas artistas podem visualizar suas obras.' });
   }
 
   try {
-    const obras = await prisma.obra.findMany({
-      where: {
-        artista_id: artistaId,
-      },
-      orderBy: {
-        data_envio: "desc",
-      },
-      include: {
-        artista: {
-          select: {
-            id: true,
-            nome: true,
-            email: true,
-          },
-        },
-        edital: {
-          select: {
-            id_evento: true,
-            titulo_evento: true,
-          },
-        },
-      },
+    const rawResults = await prisma.$queryRaw`
+      SELECT 
+        o.id_obra,
+        o.titulo_obra,
+        o.descricao_obra,
+        o.imagens_obras,
+        o.categoria_obra,
+        o.status,
+        o.data_envio,
+        o.data_exposicao,
+        o.data_fim_exposicao,
+        o.artista_id,
+        o.edital_id,
+        u.id as artista_id_join,
+        u.nome as artista_nome,
+        u.email as artista_email,
+        e.id_evento as edital_id_evento,
+        e.titulo_evento as edital_titulo,
+        e.eh_edital as edital_eh_edital,
+        e.inicio_submissao as edital_inicio,
+        e.fim_submissao as edital_fim
+      FROM obras o
+      LEFT JOIN usuarios u ON o.artista_id = u.id
+      LEFT JOIN eventos e ON o.edital_id = e.id_evento
+      WHERE o.artista_id = ${artistaId}
+      ORDER BY o.data_envio DESC
+    `;
+
+    const obras = (rawResults as any[]).map(row => {
+      let dataEnvio = '';
+      if (row.data_envio) {
+        if (row.data_envio instanceof Date) {
+          dataEnvio = row.data_envio.toISOString();
+        } else if (typeof row.data_envio === 'string') {
+          dataEnvio = row.data_envio;
+        } else {
+          dataEnvio = String(row.data_envio);
+        }
+      }
+
+      return {
+        id_obra: Number(row.id_obra),
+        titulo_obra: String(row.titulo_obra || ''),
+        descricao_obra: String(row.descricao_obra || ''),
+        imagens_obras: String(row.imagens_obras || ''),
+        categoria_obra: String(row.categoria_obra || ''),
+        status: String(row.status || 'pendente'),
+        data_envio: dataEnvio,
+        data_exposicao: String(row.data_exposicao || ''),
+        data_fim_exposicao: String(row.data_fim_exposicao || ''),
+        artista_id: Number(row.artista_id),
+        edital_id: row.edital_id ? Number(row.edital_id) : null,
+        artista: row.artista_id_join ? {
+          id: Number(row.artista_id_join),
+          nome: String(row.artista_nome || ''),
+          email: String(row.artista_email || ''),
+        } : null,
+        // 🔧 CORREÇÃO: Adicionar o objeto edital
+        edital: row.edital_id_evento ? {
+          id_evento: Number(row.edital_id_evento),
+          titulo_evento: String(row.edital_titulo || ''),
+          eh_edital: row.edital_eh_edital ? true : false,
+          inicio_submissao: row.edital_inicio ? String(row.edital_inicio) : null,
+          fim_submissao: row.edital_fim ? String(row.edital_fim) : null,
+        } : null,
+      };
     });
 
-    console.log("OBRAS DO ARTISTA:", obras);
+    console.log(`📦 ${obras.length} obras encontradas para o artista ${artistaId}`);
+    console.log('📅 data_envio da primeira obra:', obras[0]?.data_envio);
 
-    return reply.send(obras);
+    // 🔧 Forçar a resposta como JSON
+    const jsonResponse = JSON.stringify(obras);
+    return reply
+      .header('Content-Type', 'application/json')
+      .send(jsonResponse);
   } catch (error) {
-    console.error("[getMyObras]", error);
-
-    return reply.status(500).send({
-      message: "Erro ao buscar obras.",
-    });
+    console.error('[getMyObras] Erro:', error);
+    return reply.status(500).send({ message: 'Erro ao buscar obras.' });
   }
 }
 
@@ -228,6 +270,8 @@ export async function deleteObra(request: FastifyRequest, reply: FastifyReply) {
 }
 
 // ==================== LISTAR TODAS AS OBRAS (ADMIN) ====================
+// src/controllers/ObraController.ts - getAllObras
+
 export async function getAllObras(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
 
@@ -236,7 +280,6 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
   }
 
   try {
-    // $queryRaw PARA GARANTIR data_envio
     const rawResults = await prisma.$queryRaw`
       SELECT 
         o.id_obra,
@@ -255,15 +298,15 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
         u.email as artista_email,
         e.id_evento as edital_id_evento,
         e.titulo_evento as edital_titulo,
-        e.data_hora_inicio as edital_data_inicio,
-        e.data_hora_fim as edital_data_fim
+        e.eh_edital as edital_eh_edital,
+        e.inicio_submissao as edital_inicio,
+        e.fim_submissao as edital_fim
       FROM obras o
       LEFT JOIN usuarios u ON o.artista_id = u.id
       LEFT JOIN eventos e ON o.edital_id = e.id_evento
       ORDER BY o.data_envio DESC
     `;
 
-    // Mapear os resultados
     const obras = (rawResults as any[]).map(row => {
       let dataEnvio = '';
       if (row.data_envio) {
@@ -293,12 +336,13 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
           nome: String(row.artista_nome || ''),
           email: String(row.artista_email || ''),
         } : null,
-        edital: row.edital_id_evento
-          ? {
-            id_evento: Number(row.edital_id_evento),
-            titulo_evento: String(row.edital_titulo),
-          }
-          : null,
+        edital: row.edital_id_evento ? {
+          id_evento: Number(row.edital_id_evento),
+          titulo_evento: String(row.edital_titulo || ''),
+          eh_edital: row.edital_eh_edital ? true : false,
+          inicio_submissao: row.edital_inicio ? String(row.edital_inicio) : null,
+          fim_submissao: row.edital_fim ? String(row.edital_fim) : null,
+        } : null,
       };
     });
 

@@ -4,7 +4,6 @@ import {
   Mail,
   Phone,
   Shield,
-  Link as LinkIcon,
   BarChart3,
 } from "lucide-react";
 
@@ -112,25 +111,6 @@ export default function UserModal({
               </div>
             </div>
           </section>
-
-          {user.portfolio && (
-            <section className={styles.section}>
-              <h3 className={styles.sectionTitle}>
-                Portfólio
-              </h3>
-
-              <a
-                href={user.portfolio}
-                target="_blank"
-                rel="noreferrer"
-                className={styles.portfolioLink}
-              >
-                <LinkIcon size={18} />
-
-                Acessar portfólio
-              </a>
-            </section>
-          )}
 
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>

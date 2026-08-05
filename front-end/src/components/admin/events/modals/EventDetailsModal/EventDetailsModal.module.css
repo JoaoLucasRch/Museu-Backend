@@ -22,7 +22,7 @@
   box-shadow:0 24px 60px rgba(0,0,0,.18);
 }
 
-/* ================= HEADER ================= */
+/* HEADER */
 
 .header{
   display:flex;
@@ -66,7 +66,7 @@
   background:#F3F4F6;
 }
 
-/* ================= BODY ================= */
+/* BODY */
 
 .content{
   flex:1;
@@ -77,7 +77,7 @@
   gap:1.5rem;
 }
 
-/* ================= IMAGE ================= */
+/* IMAGE */
 
 .imageContainer{
   width:100%;
@@ -91,7 +91,7 @@
   background:#F3F4F6;
 }
 
-/* ================= SECTION ================= */
+/* SECTION */
 
 .section{
   display:flex;
@@ -112,7 +112,7 @@
   color:#2E2A27;
 }
 
-/* ================= DESCRIPTION ================= */
+/* DESCRIPTION */
 
 .group{
   display:flex;
@@ -136,7 +136,7 @@
   font-size:.95rem;
 }
 
-/* ================= INFO GRID ================= */
+/* INFO */
 
 .infoGrid{
   display:grid;
@@ -183,7 +183,7 @@
   word-break:break-word;
 }
 
-/* ================= EDITAL ================= */
+/* EDITAL */
 
 .editalBox{
   display:flex;
@@ -222,98 +222,130 @@
   color:#4B5563;
 }
 
-/* ================= FOOTER ================= */
+/* FOOTER */
 
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.25rem 2rem;
-  border-top: 1px solid #ECE8E5;
-  background: #FCFBFA;
-  flex-shrink: 0;
+.footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+  padding:1.25rem 2rem;
+  border-top:1px solid #ECE8E5;
+  background:#FCFBFA;
+  flex-shrink:0;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.actions{
+  display:flex;
+  align-items:center;
+  gap:.75rem;
 }
 
 .editButton,
-.deleteButton {
-  height: 44px;
-  padding: 0 1.1rem;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: 0.2s;
+.deleteButton{
+  height:44px;
+  padding:0 1.1rem;
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+
+  border-radius:12px;
+
+  font-size:.9rem;
+  font-weight:500;
+
+  cursor:pointer;
+  transition:.2s;
 }
 
-/* Botão Editar */
-.editButton {
-  border: 1px solid #ECE3DD;
-  background: #FFF;
-  color: #4B5563;
+.editButton{
+  border:1px solid #ECE3DD;
+  background:#FFF;
+  color:#4B5563;
 }
 
-.editButton:hover {
-  background: #F8F6F5;
-  color: #111827;
+.editButton:hover{
+  background:#F8F6F5;
+  color:#111827;
 }
 
-/* Botão Excluir */
-.deleteButton {
-  border: 1px solid #FEE2E2;
-  background: #FFF;
-  color: #DC2626;
+.deleteButton{
+  border:1px solid #FEE2E2;
+  background:#FFF;
+  color:#DC2626;
 }
 
-.deleteButton:hover {
-  background: #FEF2F2;
-  border-color: #FCA5A5;
+.deleteButton:hover{
+  background:#FEF2F2;
+  border-color:#FCA5A5;
 }
 
-.closeButton {
-  min-width: 120px;
-  height: 44px;
-  padding: 0 1.5rem;
-  border: none;
-  border-radius: 12px;
-  background: #202124;
-  color: #FFF;
-  font-size: .92rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: .2s;
+.closeButton{
+  min-width:120px;
+  height:44px;
+  padding:0 1.5rem;
+
+  border:none;
+  border-radius:12px;
+
+  background:#202124;
+  color:#FFF;
+
+  font-size:.92rem;
+  font-weight:600;
+
+  cursor:pointer;
+  transition:.2s;
 }
 
-.closeButton:hover {
-  background: #111827;
+.closeButton:hover{
+  background:#111827;
 }
 
-/* ================= RESPONSIVO (Dispositivos Móveis) ================= */
+/* RESPONSIVO */
 
-@media (max-width: 768px) {
-  .footer {
-    padding: 1.25rem;
-    flex-direction: column-reverse;
+@media (max-width:768px){
+
+  .overlay{
+    padding:1rem;
   }
 
-  .actions {
-    width: 100%;
+  .modal{
+    max-height:96vh;
+    border-radius:18px;
+  }
+
+  .header{
+    padding:1.25rem;
+  }
+
+  .content{
+    padding:1.25rem;
+  }
+
+  .footer{
+    padding:1.25rem;
+    flex-direction:column-reverse;
+  }
+
+  .actions{
+    width:100%;
   }
 
   .editButton,
   .deleteButton,
-  .closeButton {
-    flex: 1;
-    width: 100%;
-    justify-content: center;
+  .closeButton{
+    width:100%;
+    flex:1;
+    justify-content:center;
   }
+
+  .image{
+    height:220px;
+  }
+
+  .infoGrid{
+    grid-template-columns:1fr;
+  }
+
 }
