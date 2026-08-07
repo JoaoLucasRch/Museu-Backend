@@ -1,126 +1,86 @@
 .container {
-  min-height: 100vh;
-  background: #FAF9F7;
+
+  min-height:100vh;
+
+  background:#FAF9F7;
+
 }
 
 
-/* ================= MAIN ================= */
 
 .main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
 
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
+  width:100%;
 
+  max-width:1180px;
 
-/* ================= GRID ================= */
+  margin:0 auto;
 
-.dashboardGrid{
-  display:grid;
-  grid-template-columns:1fr 320px;
+  padding:24px;
+
+  display:flex;
+
+  flex-direction:column;
+
   gap:24px;
-  align-items:start;
+
 }
 
-.charts{
+
+
+/* Movimento mensal */
+
+.monthly {
+
+  width:100%;
+
+}
+
+
+
+/* Gráficos */
+
+.analytics {
+
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+
+  grid-template-columns:
+
+    1fr 1fr;
+
   gap:24px;
-}
-
-
-/* ================= HEADER ================= */
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-bottom: 1.5rem;
-}
-
-
-.title {
-  margin: 0;
-
-  font-size: 2rem;
-  font-weight: 700;
-
-  color: #2B2624;
-}
-
-
-/* ================= LOGOUT ================= */
-
-.logoutButton {
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 40px;
-
-  padding: 0 1.2rem;
-
-  background: #fff;
-
-  border: 1px solid #ECE3DD;
-  border-radius: 999px;
-
-  color: #6B605A;
-
-  font-size: .9rem;
-  font-weight: 500;
-
-  cursor: pointer;
-
-  transition: .2s;
-}
-
-
-.logoutButton:hover {
-
-  background: #F8F6F5;
-
-  color: #2B2624;
 
 }
 
 
-/* ================= CARDS GERAIS ================= */
 
-.profileSection,
-.obrasSection {
+/* Histórico */
 
-  background: #fff;
+.bottomGrid {
 
-  border: 1px solid #ECE3DD;
+  display:grid;
 
-  border-radius: 20px;
+  grid-template-columns:
 
-  padding: 1.5rem;
+    2fr 1fr;
 
-  box-shadow:
-    0 4px 18px rgba(43,38,36,.04);
+  gap:24px;
+
 }
 
 
 
-/* ================= MODAL ================= */
+/* Modal */
 
 .modalOverlay {
 
-  position: fixed;
+  position:fixed;
 
-  inset: 0;
+  inset:0;
 
-  background: rgba(43,38,36,.25);
+  background:rgba(43,38,36,.25);
 
-  backdrop-filter: blur(4px);
+  backdrop-filter:blur(4px);
 
   display:flex;
 
@@ -131,6 +91,7 @@
   z-index:1000;
 
 }
+
 
 
 .newAdminModal {
@@ -145,32 +106,6 @@
 
   overflow:hidden;
 
-  box-shadow:
-    0 20px 60px rgba(43,38,36,.15);
-
-  animation:slideUp .25s ease;
-
-}
-
-
-@keyframes slideUp {
-
-  from {
-
-    opacity:0;
-
-    transform:translateY(15px);
-
-  }
-
-  to {
-
-    opacity:1;
-
-    transform:translateY(0);
-
-  }
-
 }
 
 
@@ -183,48 +118,7 @@
 
   align-items:center;
 
-  padding:1.5rem 1.8rem;
-
-  border-bottom:1px solid #F0EAE5;
-
-}
-
-
-.modalTitle {
-
-  margin:0;
-
-  font-size:1.3rem;
-
-  font-weight:700;
-
-  color:#2B2624;
-
-}
-
-
-.closeButton {
-
-  width:36px;
-
-  height:36px;
-
-  border-radius:50%;
-
-  border:none;
-
-  background:transparent;
-
-  color:#8A7F77;
-
-  cursor:pointer;
-
-}
-
-
-.closeButton:hover {
-
-  background:#F8F6F5;
+  padding:1.5rem;
 
 }
 
@@ -232,64 +126,37 @@
 
 .modalContent {
 
-  padding:1.8rem;
-
-}
-
-.bottomGrid {
-
-  display:grid;
-
-  grid-template-columns:
-    2fr 1fr;
-
-
-  gap:24px;
-
-  margin-top:24px;
+  padding:1.5rem;
 
 }
 
 
-/* ================= RESPONSIVO ================= */
 
 
 @media(max-width:900px){
 
-  .dashboardGrid{
+
+  .analytics,
+
+  .bottomGrid {
 
     grid-template-columns:1fr;
 
   }
 
+
 }
+
 
 
 @media(max-width:768px){
 
-  .main{
 
-    padding:1rem;
+  .main {
 
-  }
-
-
-  .header{
-
-    flex-direction:column;
-
-    align-items:flex-start;
-
-    gap:1rem;
+    padding:16px;
 
   }
 
-
-  .profileSection,
-  .obrasSection{
-
-    padding:1rem;
-
-  }
 
 }

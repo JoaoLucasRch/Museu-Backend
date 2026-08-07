@@ -1,144 +1,298 @@
 .profile{
   width:100%;
-  max-width:1050px;
+  max-width:1120px;
   margin:0 auto;
+  padding:3rem 0 2rem;
+
   display:flex;
   flex-direction:column;
-  padding-top:8rem;
+  gap:1.8rem;
 }
+
+/* ================= HEADER ================= */
+
+.pageHeader{
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+}
+
+.badge{
+  width:max-content;
+
+  padding:.35rem .85rem;
+
+  border-radius:999px;
+
+  font-size:.72rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+
+  color:#8B664A;
+
+  background:#F5ECE4;
+}
+
+.pageTitle{
+  margin:0;
+
+  font-size:2.1rem;
+  font-weight:700;
+  letter-spacing:-1px;
+
+  color:#2B2624;
+}
+
+.pageSubtitle{
+  max-width:620px;
+
+  margin:0;
+
+  color:#7A7069;
+
+  line-height:1.6;
+
+  font-size:.92rem;
+}
+
+/* ================= GRID ================= */
 
 .grid{
   display:grid;
-  grid-template-columns:1.5fr .95fr;
-  gap:1.5rem;
-  align-items:stretch;
+  grid-template-columns:1.45fr .9fr;
+  gap:1.2rem;
+  align-items:start;
 }
 
 .sideColumn{
   display:grid;
-  grid-template-rows:1fr 1fr;
   gap:1rem;
 }
 
+/* ================= CARDS ================= */
+
 .profileCard,
 .smallCard{
-  background:linear-gradient(180deg,#FCFBFA 0%,#FFFFFF 100%);
+
+  background:#FFFFFF;
+
   border:1px solid #ECE3DD;
-  border-radius:24px;
-  box-shadow:0 10px 28px rgba(0,0,0,.03);
+
+  border-radius:22px;
+
+  box-shadow:
+    0 8px 24px rgba(43,38,36,.04);
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease;
+}
+
+.profileCard:hover,
+.smallCard:hover{
+
+  transform:translateY(-3px);
+
+  border-color:#DDD0C5;
+
+  box-shadow:
+    0 16px 34px rgba(43,38,36,.08);
 }
 
 .profileCard{
-  padding:2rem;
+  padding:1.5rem;
 }
 
 .smallCard{
-  padding:1.2rem 1.35rem;
+  padding:1.2rem;
 }
 
+/* ================= HEADER DOS CARDS ================= */
+
 .cardHeader{
+
   display:flex;
   align-items:center;
   gap:12px;
-  margin-bottom:1rem;
+
+  margin-bottom:1.2rem;
 }
 
 .icon{
-  width:42px;
-  height:42px;
+
+  width:44px;
+  height:44px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   border-radius:14px;
-  background:#F5EFEA;
-  color:#B27A35;
+
+  background:#F6EFE8;
+
+  color:#AF7A43;
 }
 
 .cardHeader h2{
   margin:0;
-  font-size:1rem;
-  font-weight:600;
+
+  font-size:.98rem;
+  font-weight:650;
+
   color:#2B2624;
 }
 
 .cardHeader span{
+
   display:block;
+
   margin-top:3px;
-  font-size:.8rem;
+
+  font-size:.78rem;
+
   color:#8A8079;
 }
 
+/* ================= INFO ================= */
+
 .info{
-  display:flex;
-  flex-direction:column;
-  gap:.4rem;
-  margin-bottom:2rem;
+
+  display:grid;
+
+  gap:1rem;
+
+  margin-bottom:1.5rem;
 }
 
 .info label{
-  margin-top:.8rem;
-  font-size:.72rem;
+
+  display:block;
+
+  margin-bottom:.25rem;
+
+  font-size:.7rem;
+
   text-transform:uppercase;
+
   letter-spacing:.08em;
-  color:#A0958D;
-  font-weight:600;
+
+  font-weight:700;
+
+  color:#A19790;
 }
 
 .info strong{
+
+  display:block;
+
   font-size:.95rem;
-  font-weight:500;
-  color:#3A302B;
+
+  font-weight:600;
+
+  color:#352D29;
+
+  word-break:break-word;
 }
+
+/* ================= TEXTO ================= */
+
+.smallCard p{
+
+  margin:.15rem 0 1.2rem;
+
+  color:#7C726B;
+
+  line-height:1.55;
+
+  font-size:.88rem;
+}
+
+/* ================= BOTÕES ================= */
 
 .primaryButton,
 .secondaryButton{
+
   width:100%;
   height:42px;
+
   display:flex;
   align-items:center;
   justify-content:center;
   gap:.5rem;
-  padding:0 1.2rem;
-  border-radius:999px;
+
+  border-radius:14px;
+
   cursor:pointer;
+
   font-size:.88rem;
   font-weight:600;
-  transition:.2s;
+
+  transition:.2s ease;
 }
 
 .primaryButton{
+
   border:none;
+
   background:#2B2624;
+
   color:#FFF;
 }
 
 .primaryButton:hover{
-  background:#171413;
+
+  background:#1C1817;
 }
 
 .secondaryButton{
-  border:1px solid #E8DDD4;
+
   background:#FFF;
-  color:#6D645E;
+
+  border:1px solid #E5DBD2;
+
+  color:#655C56;
 }
 
 .secondaryButton:hover{
-  background:#F7F4F2;
+
+  background:#F8F6F4;
+
+  border-color:#D8C9BC;
 }
 
-.smallCard p{
-  margin:.55rem 0 1rem;
-  font-size:.86rem;
-  line-height:1.45;
-  color:#867C75;
-}
+/* ================= RESPONSIVO ================= */
 
-@media(max-width:900px){
+@media(max-width:950px){
+
   .grid{
     grid-template-columns:1fr;
   }
+}
 
-  .sideColumn{
-    gap:1rem;
+@media(max-width:768px){
+
+  .profile{
+    padding-top:6.5rem;
+    gap:1.5rem;
+  }
+
+  .pageTitle{
+    font-size:1.8rem;
+  }
+
+  .profileCard{
+    padding:1.3rem;
+  }
+
+  .smallCard{
+    padding:1.1rem;
+  }
+
+  .icon{
+    width:40px;
+    height:40px;
   }
 }

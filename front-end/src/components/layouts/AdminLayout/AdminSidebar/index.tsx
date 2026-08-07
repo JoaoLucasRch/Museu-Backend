@@ -33,9 +33,8 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`${styles.sidebar} ${
-        collapsed ? styles.collapsed : ""
-      }`}
+      className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""
+        }`}
     >
       <div>
         <button
@@ -65,8 +64,7 @@ export default function Sidebar({
             to="/admin/dashboard"
             title="Dashboard"
             className={({ isActive }) =>
-              `${styles.link} ${
-                isActive ? styles.active : ""
+              `${styles.link} ${isActive ? styles.active : ""
               }`
             }
           >
@@ -74,15 +72,14 @@ export default function Sidebar({
               <LayoutDashboard size={20} />
               <span>Dashboard</span>
             </div>
-            
+
           </NavLink>
 
           <NavLink
             to="/admin/eventos"
             title="Eventos"
             className={({ isActive }) =>
-              `${styles.link} ${
-                isActive ? styles.active : ""
+              `${styles.link} ${isActive ? styles.active : ""
               }`
             }
           >
@@ -91,26 +88,17 @@ export default function Sidebar({
               <span>Eventos</span>
             </div>
 
-            {notifications.eventos
-              .novasSubmissoes > 0 && (
-              <span
-                className={styles.badge}
-              >
-                {notifications.eventos
-                  .novasSubmissoes > 99
-                  ? "99+"
-                  : notifications.eventos
-                      .novasSubmissoes}
-              </span>
-            )}
+            <span
+              className={`${styles.badge} ${styles.badgePlaceholder}`}
+              aria-hidden="true"
+            />
           </NavLink>
 
           <NavLink
             to="/admin/obras"
             title="Obras"
             className={({ isActive }) =>
-              `${styles.link} ${
-                isActive ? styles.active : ""
+              `${styles.link} ${isActive ? styles.active : ""
               }`
             }
           >
@@ -121,16 +109,16 @@ export default function Sidebar({
 
             {notifications.obras
               .pendentes > 0 && (
-              <span
-                className={styles.badge}
-              >
-                {notifications.obras
-                  .pendentes > 99
-                  ? "99+"
-                  : notifications.obras
+                <span
+                  className={styles.badge}
+                >
+                  {notifications.obras
+                    .pendentes > 99
+                    ? "99+"
+                    : notifications.obras
                       .pendentes}
-              </span>
-            )}
+                </span>
+              )}
           </NavLink>
         </nav>
       </div>
@@ -140,8 +128,7 @@ export default function Sidebar({
           to="/admin/perfil"
           title="Perfil"
           className={({ isActive }) =>
-            `${styles.link} ${
-              isActive ? styles.active : ""
+            `${styles.link} ${isActive ? styles.active : ""
             }`
           }
         >

@@ -1,0 +1,329 @@
+/* ======================
+   CONTAINER
+====================== */
+.containerCard {
+  width: 100%;
+  padding: 1.25rem;
+  background: #FFFFFF;
+  border: 1px solid #E8E2DC;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.containerCard:hover {
+  border-color: #D6CEC5;
+  box-shadow: 0 4px 16px rgba(28, 26, 25, 0.05);
+}
+
+/* ======================
+   HEADER
+====================== */
+.header {
+  margin-bottom: 1.1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1C1A19;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #8A827A;
+  font-weight: 400;
+}
+
+/* ======================
+   CONTENT
+====================== */
+.content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ======================
+   DONUT
+====================== */
+.chartWrapper {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.centerOverlay {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.centerValue {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #1C1A19;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.centerLabel {
+  margin-top: 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 550;
+  color: #8A827A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ======================
+   LEGEND
+====================== */
+.legendContainer {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.legendItem:hover {
+  background: #F7F3EF;
+}
+
+.legendLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.legendItem:hover .dot {
+  transform: scale(1.2);
+}
+
+.itemLabel {
+  font-size: 0.8rem;
+  color: #6B635C;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+.legendItem:hover .itemLabel {
+  color: #1C1A19;
+}
+
+.legendRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ======================
+   PROGRESS
+====================== */
+.progressBarBg {
+  width: 36px;
+  height: 3px;
+  background: #F0EBE6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  border-radius: 999px;
+  transform-origin: left;
+  animation: progressIn 0.8s ease both;
+}
+
+@keyframes progressIn {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.itemValue {
+  min-width: 18px;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: #1C1A19;
+  text-align: right;
+}
+
+.itemPercentage {
+  width: 28px;
+  font-size: 0.68rem;
+  font-weight: 550;
+  color: #8A827A;
+  text-align: right;
+}
+
+/* ======================
+   EVENTS BADGE
+====================== */
+.eventsBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.85rem;
+  background: #F7F3EF;
+  border: 1px solid #E8E2DC;
+  border-radius: 8px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.eventsBadge:hover {
+  border-color: #D6CEC5;
+  background: #F3EDE7;
+}
+
+.eventsIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #5B6EF5, #8A5CF6);
+  color: #FFFFFF;
+}
+
+.eventsText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.eventsValueGroup {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.eventsValueGroup strong {
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: #1C1A19;
+}
+
+.eventsValueGroup span {
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: #6B635C;
+}
+
+.eventsSubtext {
+  margin: 0;
+  font-size: 0.68rem;
+  color: #8A827A;
+}
+
+/* ======================
+   EMPTY
+====================== */
+.emptyState {
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #A39B93;
+  font-size: 0.85rem;
+}
+
+/* ======================
+   RESPONSIVE
+====================== */
+@media (max-width: 760px) {
+  .content {
+    gap: 1rem;
+  }
+
+  .chartWrapper {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 640px) {
+  .containerCard {
+    padding: 1rem;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .chartWrapper {
+    align-self: center;
+  }
+
+  .legendContainer {
+    width: 100%;
+  }
+
+  .progressBarBg {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressBarFill {
+    animation: none;
+  }
+
+  .legendItem,
+  .dot,
+  .eventsBadge {
+    transition: none;
+  }
+}
