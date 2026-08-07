@@ -35,6 +35,10 @@ export default function ArtworkRow({
     ) {
       return styles.reprovado;
     }
+    
+    if (value.includes("expost")) {
+    return styles.exposta;
+    }
 
     return "";
   }

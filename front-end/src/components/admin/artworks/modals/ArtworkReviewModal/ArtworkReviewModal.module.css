@@ -314,78 +314,145 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* CONFIRM MODALS */
+/* ================= MODAIS DE CONFIRMAÇÃO (CONFIRMMODAL) ================= */
 
 .confirmModal {
   width: 100%;
-  max-width: 430px;
-  background: #fcfbfa;
-  border: 1px solid #ece3dd;
-  border-radius: 28px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
-  padding: 2rem;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #FAFAFA;
+  border-radius: 24px;
+  padding: 2.25rem 2.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.confirmHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.badgeApprove {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #166534;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+
+.badgeReject {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
 }
 
 .confirmTitle {
-  margin: 1rem 0 0.75rem;
-  color: #2b2624;
-  font-size: 1.25rem;
-  font-weight: 600;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  margin-left: 300px;
+  border-radius: 50%;
+  background: transparent;
+  color: #737373;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.closeButton:hover {
+  background: #E5E5E5;
+}
+
+.confirmContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0.25rem 0 1rem;
 }
 
 .confirmText {
-  color: #6b7280;
+  margin: 0;
+  color: #525252;
   line-height: 1.6;
+  font-size: 0.98rem;
+}
+
+.confirmText strong {
+  color: #1A1A1A;
+  font-weight: 700;
 }
 
 .confirmButtons {
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 2rem;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.cancelButton,
+.confirmApproveButton,
+.confirmRejectButton {
+  height: 40px;
+  padding: 0 1.35rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .cancelButton {
-  height: 42px;
-  padding: 0 1.3rem;
-  border: 1px solid #e8ddd4;
-  border-radius: 999px;
-  background: #fff;
-  color: #6d645e;
-  cursor: pointer;
+  background: #FFFFFF;
+  color: #404040;
+  border: 1px solid #E5E5E5;
 }
 
-.confirmApproveButton,
-.confirmRejectButton {
-  height: 42px;
-  padding: 0 1.3rem;
-  border: none;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
+.cancelButton:hover:not(:disabled) {
+  background: #F5F5F5;
+  border-color: #D4D4D4;
 }
 
 .confirmApproveButton {
-  background: #2b2624;
-  color: #fff;
+  background: #241F1D;
+  color: #FFFFFF;
+  border: none;
+}
+
+.confirmApproveButton:hover:not(:disabled) {
+  background: #0d3e00;
 }
 
 .confirmRejectButton {
-  background: #fdecec;
-  color: #c24141;
+  background: #000000;
+  color: #FFFFFF;
+  border: none;
 }
 
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.confirmRejectButton:hover:not(:disabled) {
+  background: #7d0d0d;
 }
+
 
 @media (max-width: 768px) {
   .overlay {

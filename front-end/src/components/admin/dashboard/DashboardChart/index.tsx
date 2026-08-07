@@ -9,7 +9,7 @@ import type {
 interface Props {
   title: string;
   subtitle: string;
-  data: DashboardChartData[];
+  data?: DashboardChartData[];
   type?: "donut" | "bar";
 }
 
@@ -20,11 +20,12 @@ export default function AdmDashboardChart({
   type = "donut",
 }: Props) {
 
-  const total = data.reduce(
+  const chartData = data ?? [];
+
+  const total = chartData.reduce(
     (sum, item) => sum + item.value,
     0
   );
-
 
   const colors = [
     "#79AEE8",
@@ -33,7 +34,6 @@ export default function AdmDashboardChart({
     "#B8A5E8",
     "#E9A8B5",
   ];
-
 
   const tooltip = {
     backgroundColor: "#2D231E",
@@ -44,307 +44,189 @@ export default function AdmDashboardChart({
     },
   };
 
-
-  const option = type === "donut"
-
-    ? {
-
-      animation: true,
-
-      animationDuration: 3000,
-
-      animationEasing: "cubicOut",
-
-      color: colors,
-
-
-      tooltip: {
-        trigger: "item",
-        ...tooltip,
-
-        formatter:
-          "{b}<br/><b>{c}</b> ({d}%)",
-      },
-
-
-      series: [
-        {
-          type: "pie",
-
-          radius: [
-            "62%",
-            "82%",
-          ],
-
-          center: [
-            "50%",
-            "50%",
-          ],
-
-          startAngle: 90,
-
-          animationType: "expansion",
-
+  const option =
+    type === "donut"
+      ? {
+          animation: true,
           animationDuration: 3000,
-
           animationEasing: "cubicOut",
 
-          animationDelay: (index: number) => index * 250,
+          color: colors,
 
-          label: {
-            show: false,
+          tooltip: {
+            trigger: "item",
+            ...tooltip,
+            formatter: "{b}<br/><b>{c}</b> ({d}%)",
           },
 
-          itemStyle: {
-            borderColor: "#FFFFFF",
-            borderWidth: 4,
-          },
+          series: [
+            {
+              type: "pie",
 
-          data: data.map(item => ({
-            name: item.label,
-            value: item.value,
-          })),
-        },
-      ],
-    }
-    : {
+              radius: ["62%", "82%"],
 
+              center: ["50%", "50%"],
 
-      animation: true,
+              startAngle: 90,
 
-      animationDuration: 2500,
+              animationType: "expansion",
 
-      animationEasing: "cubicOut",
+              animationDuration: 3000,
 
-      animationDurationUpdate: 2500,
+              animationEasing: "cubicOut",
 
-      animationEasingUpdate: "cubicOut",
+              animationDelay: (index: number) =>
+                index * 250,
 
+              label: {
+                show: false,
+              },
 
-      tooltip: {
-        trigger: "axis",
-        ...tooltip,
-      },
+              itemStyle: {
+                borderColor: "#FFFFFF",
+                borderWidth: 4,
+              },
 
-
-      grid: {
-        left: 10,
-        right: 20,
-        top: 10,
-        bottom: 10,
-        containLabel: true,
-      },
-
-
-      xAxis: {
-        type: "value",
-        show: false,
-      },
-
-
-      yAxis: {
-
-        type: "category",
-
-        data: data.map(
-          item => item.label
-        ),
-
-
-        axisLine: {
-          show: false,
-        },
-
-
-        axisTick: {
-          show: false,
-        },
-
-
-        axisLabel: {
-          color: "#555",
-          fontSize: 13,
-        },
-
-      },
-
-
-      series: [
-        {
-
-          type: "bar",
-
-          barWidth: 14,
-
+              data: chartData.map(item => ({
+                name: item.label,
+                value: item.value,
+              })),
+            },
+          ],
+        }
+      : {
+          animation: true,
 
           animationDuration: 2500,
 
           animationEasing: "cubicOut",
 
+          animationDurationUpdate: 2500,
 
-          animationDelay: (index: number) => {
+          animationEasingUpdate: "cubicOut",
 
-            return index * 500;
-
+          tooltip: {
+            trigger: "axis",
+            ...tooltip,
           },
 
-
-          animationDelayUpdate: (index: number) => {
-
-            return index * 500;
-
+          grid: {
+            left: 10,
+            right: 20,
+            top: 10,
+            bottom: 10,
+            containLabel: true,
           },
 
+          xAxis: {
+            type: "value",
+            show: false,
+          },
 
-          data: data.map(
-            (item, index) => ({
+          yAxis: {
+            type: "category",
 
-              value: item.value,
+            data: chartData.map(item => item.label),
 
+            axisLine: {
+              show: false,
+            },
 
-              itemStyle: {
+            axisTick: {
+              show: false,
+            },
 
-                color: colors[index],
+            axisLabel: {
+              color: "#555",
+              fontSize: 13,
+            },
+          },
 
+          series: [
+            {
+              type: "bar",
 
-                borderRadius: [
-                  0,
-                  8,
-                  8,
-                  0,
-                ],
+              barWidth: 14,
 
-              },
+              animationDuration: 2500,
 
-            })
-          ),
+              animationEasing: "cubicOut",
 
-        },
-      ],
+              animationDelay: (index: number) =>
+                index * 500,
 
-    };
+              animationDelayUpdate: (index: number) =>
+                index * 500,
 
+              data: chartData.map((item, index) => ({
+                value: item.value,
+
+                itemStyle: {
+                  color: colors[index % colors.length],
+
+                  borderRadius: [0, 8, 8, 0],
+                },
+              })),
+            },
+          ],
+        };
 
   return (
-
     <section className={styles.chart}>
-
       <header className={styles.header}>
+        <h2>{title}</h2>
 
-        <h2>
-          {title}
-        </h2>
-
-
-        <span>
-          {subtitle}
-        </span>
-
+        <span>{subtitle}</span>
       </header>
 
+      {type === "donut" ? (
+        <div className={styles.content}>
+          <div className={styles.chartWrapper}>
+            <ReactECharts
+              option={option}
+              style={{
+                width: 180,
+                height: 180,
+              }}
+            />
 
-      {
-        type === "donut"
+            <div className={styles.chartCenter}>
+              <strong>{total}</strong>
 
-          ?
-
-          <div className={styles.content}>
-
-            <div className={styles.chartWrapper}>
-
-              <ReactECharts
-
-                option={option}
-
-                style={{
-                  width: 180,
-                  height: 180,
-                }}
-
-              />
-
-
-              <div className={styles.chartCenter}>
-
-                <strong>
-                  {total}
-                </strong>
-
-
-                <span>
-                  Obras
-                </span>
-
-
-              </div>
-
-
+              <span>Obras</span>
             </div>
-
-
-            <div className={styles.legend}>
-
-              {
-                data.map(
-                  (item, index) => (
-
-                    <div
-                      key={item.label}
-                      className={styles.legendItem}
-                    >
-
-                      <div
-
-                        className={styles.dot}
-
-                        style={{
-                          backgroundColor:
-                            colors[index],
-                        }}
-
-                      />
-
-
-                      <span>
-                        {item.label}
-                      </span>
-
-
-                      <strong>
-                        {item.value}
-                      </strong>
-
-
-                    </div>
-
-                  )
-                )
-              }
-
-            </div>
-
-
           </div>
 
+          <div className={styles.legend}>
+            {chartData.map((item, index) => (
+              <div
+                key={item.label}
+                className={styles.legendItem}
+              >
+                <div
+                  className={styles.dot}
+                  style={{
+                    backgroundColor:
+                      colors[index % colors.length],
+                  }}
+                />
 
-          :
+                <span>{item.label}</span>
 
-
-          <ReactECharts
-
-            option={option}
-
-            style={{
-              width: "100%",
-              height: 170,
-            }}
-
-          />
-
-      }
-
-
+                <strong>{item.value}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <ReactECharts
+          option={option}
+          style={{
+            width: "100%",
+            height: 170,
+          }}
+        />
+      )}
     </section>
-
   );
 }

@@ -1,190 +1,212 @@
+import { useState } from "react";
 import {
   CalendarPlus,
   ImagePlus,
   UserRound,
+  ShieldCheck,
+  ChevronDown,
+  ChevronUp,
+  Clock,
 } from "lucide-react";
 
-import {
-  useState,
-} from "react";
-
-import type {
-  DashboardHistoryItem,
-} from "@/types/Dashboard";
-
+import type { DashboardHistoryItem } from "@/types/Dashboard";
 import styles from "./DashboardHistory.module.css";
-
 
 interface Props {
   items: DashboardHistoryItem[];
 }
 
+const ICON_MAP = {
+  EVENT: {
+    component: CalendarPlus,
+    className: styles.eventIcon,
+  },
+  IMAGE: {
+    component: ImagePlus,
+    className: styles.imageIcon,
+  },
+  ADMIN: {
+    component: ShieldCheck,
+    className: styles.adminIcon,
+  },
+  USER: {
+    component: UserRound,
+    className: styles.userIcon,
+  },
+} as const;
 
-function formatRelativeDate(
-  date: string | Date
-) {
-  const diff =
-    new Date().getTime() -
-    new Date(date).getTime();
+function formatRelativeDate(date: string | Date) {
+  const diff = new Date().getTime() - new Date(date).getTime();
 
-  const minutes =
-    Math.floor(diff / 1000 / 60);
-
-  const hours =
-    Math.floor(minutes / 60);
-
-  const days =
-    Math.floor(hours / 24);
-
+  const minutes = Math.floor(diff / 1000 / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
 
   if (minutes < 1) {
-    return "Agora";
+    return {
+      text: "Agora mesmo",
+      isRecent: true,
+    };
   }
 
   if (minutes < 60) {
-    return `Há ${minutes} min`;
+    return {
+      text: `Há ${minutes} min`,
+      isRecent: true,
+    };
   }
 
   if (hours < 24) {
-    return `Há ${hours}h`;
+    return {
+      text: `Há ${hours}h`,
+      isRecent: false,
+    };
   }
 
   if (days < 7) {
-    return `Há ${days}d`;
+    return {
+      text: `Há ${days}d`,
+      isRecent: false,
+    };
   }
 
-  return new Date(date).toLocaleDateString(
-    "pt-BR"
-  );
+  return {
+    text: new Date(date).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "short",
+    }),
+    isRecent: false,
+  };
 }
-
-
-function getIcon(
-  type: string
-) {
-  switch (type) {
-    case "EVENT":
-      return CalendarPlus;
-
-    case "IMAGE":
-      return ImagePlus;
-
-    case "USER":
-      return UserRound;
-
-    default:
-      return UserRound;
-  }
-}
-
 
 export default function AdmDashboardHistory({
-  items,
+  items = [],
 }: Props) {
+  const [showAll, setShowAll] = useState(false);
 
-  const [
-    showAll,
-    setShowAll,
-  ] = useState(false);
-
-
-  const visibleItems =
-    showAll
-      ? items
-      : items.slice(0, 3);
-
+  const visibleItems = showAll ? items : items.slice(0, 4);
 
   return (
-    <section className={styles.history}>
-
+    <section className={styles.historyCard}>
       <header className={styles.header}>
-        <div>
-          <h2>
-            Atividades Recentes
-          </h2>
+        <div className={styles.titleBadge}>
+          <div className={styles.historyIconWrapper}>
+            <Clock size={16} strokeWidth={2.2} />
+          </div>
 
-          <span>
-            Últimas ações do sistema
-          </span>
+          <div>
+            <h2 className={styles.title}>
+              Atividades Recentes
+            </h2>
+
+            <p className={styles.subtitle}>
+              Últimas ações executadas na plataforma
+            </p>
+          </div>
         </div>
       </header>
 
+      {items.length === 0 ? (
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIconWrapper}>
+            <Clock size={20} strokeWidth={2} />
+          </div>
 
-      <div className={styles.timeline}>
+          <div className={styles.emptyText}>
+            <strong>Nenhuma atividade</strong>
+            <span>
+              As ações recentes aparecerão aqui.
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div
+          className={`${styles.timeline} ${
+            showAll ? styles.timelineExpanded : ""
+          }`}
+        >
+          {visibleItems.map((activity, index) => {
+            const config =
+              ICON_MAP[
+                activity.icon as keyof typeof ICON_MAP
+              ] || ICON_MAP.USER;
 
-        {visibleItems.map(
-          activity => {
-
-            const Icon =
-              getIcon(activity.icon);
-
+            const Icon = config.component;
+            const dateInfo = formatRelativeDate(activity.date);
 
             return (
               <article
                 key={activity.id}
                 className={styles.item}
+                style={
+                  {
+                    "--item-delay": `${index * 70}ms`,
+                  } as React.CSSProperties
+                }
               >
-
                 <div
-                  className={`${styles.icon} ${activity.icon === "EVENT"
-                      ? styles.eventIcon
-                      : activity.icon === "IMAGE"
-                        ? styles.imageIcon
-                        : styles.userIcon
-                    }`}
+                  className={`${styles.timelineNode} ${config.className}`}
                 >
-                  <Icon size={14} />
+                  <div className={styles.iconWrapper}>
+                    <Icon
+                      size={17}
+                      strokeWidth={2.25}
+                    />
+                  </div>
                 </div>
-
 
                 <div className={styles.content}>
-
-                  <strong>
+                  <p className={styles.activityTitle}>
                     {activity.title}
-                  </strong>
-
-                  <p>
-                    {activity.description}
                   </p>
 
-                  <div className={styles.meta}>
-                    <span>
-                      {activity.responsible}
-                    </span>
+                  <time
+                    className={`${styles.dateBadge} ${
+                      dateInfo.isRecent
+                        ? styles.recentBadge
+                        : ""
+                    }`}
+                    dateTime={new Date(
+                      activity.date
+                    ).toISOString()}
+                  >
+                    {dateInfo.isRecent && (
+                      <span className={styles.liveDot} />
+                    )}
 
-                    <small>
-                      {formatRelativeDate(activity.date)}
-                    </small>
-                  </div>
-
+                    {dateInfo.text}
+                  </time>
                 </div>
-
               </article>
             );
+          })}
+        </div>
+      )}
 
-          }
-        )}
-
-      </div>
-
-
-      {
-        items.length > 3 && (
+      {items.length > 4 && (
+        <footer className={styles.footer}>
           <button
-            className={styles.moreLink}
-            onClick={() =>
-              setShowAll(!showAll)
-            }
+            type="button"
+            className={styles.toggleBtn}
+            onClick={() => setShowAll((current) => !current)}
+            aria-expanded={showAll}
           >
-            {
-              showAll
+            <span>
+              {showAll
                 ? "Mostrar menos"
-                : "Ver todas"
-            }
-          </button>
-        )
-      }
+                : `Ver todas as atividades (${items.length})`}
+            </span>
 
+            <span className={styles.toggleIcon}>
+              {showAll ? (
+                <ChevronUp size={14} />
+              ) : (
+                <ChevronDown size={14} />
+              )}
+            </span>
+          </button>
+        </footer>
+      )}
     </section>
   );
 }

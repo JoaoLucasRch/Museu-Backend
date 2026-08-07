@@ -1,4 +1,5 @@
 import styles from "./Artworks.module.css";
+import AdminHeader from "@/components/layouts/AdminLayout/AdminHeader";
 
 import {
   ArtworkToolbar,
@@ -82,14 +83,16 @@ export default function AdmObras() {
   }
 
   return (
+    
     <div className={styles.container}>
+      <AdminHeader />
+
       <ArtworkToolbar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         statusFilter={statusFilter}
         onStatusChange={setStatusFilter}
       />
-      
 
       <ArtworkList
         obras={filteredObras}

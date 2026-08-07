@@ -64,6 +64,7 @@ export async function getMyProfile(request: UserProfileRequest, reply: FastifyRe
       created_at: profile.created_at ? profile.created_at.toISOString() : null,
     };
 
+
     const jsonResponse = JSON.stringify(response);
     return reply
       .header('Content-Type', 'application/json')

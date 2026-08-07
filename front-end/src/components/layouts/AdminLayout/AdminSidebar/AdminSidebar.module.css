@@ -1,134 +1,119 @@
+/* ======================
+   SIDEBAR
+====================== */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-
-  width: 250px;
+  width: 248px;
   height: 100vh;
-
-  padding: 1.25rem;
-
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   box-sizing: border-box;
-
   background: #FCFBFA;
   border-right: 1px solid #ECE3DD;
-
   overflow: hidden;
   z-index: 100;
-
-  transition: width .3s ease;
+  transition: width 0.25s ease;
 }
 
 .collapsed {
-  width: 84px;
+  width: 72px;
+  padding-inline: 0.75rem;
 }
 
-/* BOTÃO */
-
+/* ======================
+   COLLAPSE BUTTON
+====================== */
 .collapseButton {
-  width: 40px;
-  height: 40px;
-
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  margin-bottom: 1.5rem;
-
+  margin-bottom: 2rem;
   border: 1px solid #ECE3DD;
-  border-radius: 14px;
-
-  background: #FFF;
+  border-radius: 8px;
+  background: #FFFFFF;
   color: #8A8079;
-
   cursor: pointer;
-
-  transition: .25s;
+  transition: all 0.2s ease;
 }
 
 .collapseButton:hover {
   background: #F7F2EE;
   color: #2B2624;
-
-  transform: translateX(2px);
+  border-color: #D9CFC6;
 }
 
 .collapsed .collapseButton {
   margin-inline: auto;
 }
 
-/* MARCA */
-
+/* ======================
+   BRAND
+====================== */
 .brand {
-  padding: .75rem;
-  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+  margin-bottom: 2.25rem;
 }
 
 .brand h2 {
   margin: 0;
-
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -.02em;
-
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: #2B2624;
-
   white-space: nowrap;
+  line-height: 1.3;
 }
 
 .brand span {
   display: block;
-
-  margin-top: .25rem;
-
-  font-size: .78rem;
-
+  margin-top: 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 400;
   color: #A18E84;
-
   white-space: nowrap;
 }
 
-/* MENU */
-
+/* ======================
+   NAVIGATION
+====================== */
 .navigation {
   display: flex;
   flex-direction: column;
-  gap: .45rem;
+  gap: 0.25rem;
 }
 
 .link {
   position: relative;
-
   display: flex;
   align-items: center;
-  gap: .85rem;
-
-  padding: .8rem 1rem;
-
-  border-radius: 16px;
-
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
   color: #867C75;
-
   text-decoration: none;
-
-  font-size: .92rem;
+  font-size: 0.875rem;
   font-weight: 500;
+  transition: all 0.15s ease;
+}
 
-  transition:
-    background .2s ease,
-    color .2s ease,
-    transform .2s ease;
+.linkContent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .link svg {
-  width: 19px;
-  height: 19px;
-
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+  opacity: 0.9;
 }
 
 .link span {
@@ -138,120 +123,122 @@
 .link:hover {
   background: #F7F2EE;
   color: #2B2624;
-
-  transform: translateX(3px);
 }
 
+.link:hover svg {
+  opacity: 1;
+}
+
+/* Active */
 .active {
   background: #F1E7DD;
   color: #2B2624;
-
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .active::before {
   content: "";
-
   position: absolute;
-
   left: 0;
-  top: 25%;
-
-  width: 3px;
-  height: 50%;
-
-  border-radius: 10px;
-
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 60%;
   background: #B27A35;
+  border-radius: 0 2px 2px 0;
 }
 
 .active svg {
   color: #B27A35;
+  opacity: 1;
 }
 
-/* FOOTER */
+/* ======================
+   BADGE
+====================== */
+.badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #C45C5C;
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1;
+}
 
+.badgePlaceholder {
+  visibility: hidden;
+}
+
+/* ======================
+   FOOTER
+====================== */
 .footer {
   display: flex;
   flex-direction: column;
-
-  gap: .8rem;
-
-  padding-top: 1rem;
-
+  gap: 0.5rem;
+  padding-top: 1.25rem;
   border-top: 1px solid #ECE3DD;
 }
 
 .account {
-  padding: .8rem;
-
-  border-radius: 16px;
-
+  padding: 0.7rem 0.8rem;
+  border-radius: 8px;
   background: #F8F6F5;
 }
 
 .account strong {
   display: block;
-
-  font-size: .86rem;
-  font-weight: 600;
-
+  font-size: 0.82rem;
+  font-weight: 550;
   color: #2B2624;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3;
 }
 
 .account span {
   display: block;
-
-  margin-top: .25rem;
-
-  font-size: .78rem;
-
+  margin-top: 0.1rem;
+  font-size: 0.72rem;
   color: #8A7F77;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* SAIR */
-
+/* Logout */
 .logout {
   display: flex;
   align-items: center;
-  gap: .8rem;
-
+  gap: 0.75rem;
   width: 100%;
-
-  padding: .8rem 1rem;
-
+  padding: 0.7rem 0.85rem;
   border: 1px solid transparent;
-  border-radius: 16px;
-
+  border-radius: 8px;
   background: transparent;
-
   color: #867C75;
-
   cursor: pointer;
-
-  font-size: .92rem;
+  font-size: 0.875rem;
   font-weight: 500;
-
-  transition: .2s;
+  transition: all 0.15s ease;
 }
 
 .logout:hover {
   background: #FEF2F2;
   border-color: #FECACA;
-
   color: #B42318;
 }
 
-/* RECOLHIDA */
-
+/* ======================
+   COLLAPSED
+====================== */
 .collapsed .brand {
   display: none;
 }
@@ -259,7 +246,7 @@
 .collapsed .link,
 .collapsed .logout {
   justify-content: center;
-  padding: .85rem;
+  padding: 0.75rem;
 }
 
 .collapsed .link span,
@@ -274,4 +261,22 @@
 
 .collapsed .footer {
   align-items: center;
+}
+
+.collapsed .badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  font-size: 0.58rem;
+}
+
+/* Focus */
+.link:focus-visible,
+.collapseButton:focus-visible,
+.logout:focus-visible {
+  outline: 2px solid #B27A35;
+  outline-offset: 2px;
 }

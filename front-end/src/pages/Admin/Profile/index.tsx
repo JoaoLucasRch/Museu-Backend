@@ -48,6 +48,13 @@ export default function AdminProfile() {
 
   return (
     <section className={styles.profile}>
+      <header className={styles.pageHeader}>
+      <span className={styles.badge}>Conta</span>
+      <h1 className={styles.pageTitle}>Meu perfil</h1>
+      <p className={styles.pageSubtitle}>
+        Gerencie suas informações pessoais, segurança e administradores do painel.
+      </p>
+    </header>
       <div className={styles.grid}>
         <article className={styles.profileCard}>
           <div className={styles.cardHeader}>

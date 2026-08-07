@@ -111,7 +111,7 @@ export default function ArtworkToolbar({
         <input
           className={styles.searchInput}
           type="text"
-          placeholder="Buscar por título ou evento..."
+          placeholder="Buscar por obra..."
           value={searchTerm}
           onChange={(e) =>
             onSearchChange(

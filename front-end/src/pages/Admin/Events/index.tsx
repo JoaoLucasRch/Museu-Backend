@@ -13,6 +13,8 @@ import useEventos from "@/hooks/events/useEvents";
 import useEventForm from "@/hooks/events/useEventForm";
 import useEventoActions from "@/hooks/events/useEventActions";
 
+import AdminHeader from "@/components/layouts/AdminLayout/AdminHeader";
+
 export default function AdmEventos() {
   const {
     eventos,
@@ -93,6 +95,7 @@ export default function AdmEventos() {
 
   return (
     <div className={styles.container}>
+      <AdminHeader />
       <EventToolbar
         search={search}
         onSearchChange={setSearch}

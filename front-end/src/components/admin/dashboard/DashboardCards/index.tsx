@@ -1,17 +1,17 @@
 import {
   CalendarDays,
-  Image,
+  Image as ImageIcon,
   FileText,
   Clock3,
 } from "lucide-react";
 
 import styles from "./DashboardCards.module.css";
 
-interface DashboardCardsProps{
-  totalEventos:number;
-  totalObras:number;
-  editaisAtivos:number;
-  obrasPendentes:number;
+interface DashboardCardsProps {
+  totalEventos: number;
+  totalObras: number;
+  editaisAtivos: number;
+  obrasPendentes: number;
 }
 
 export default function AdmDashboardCards({
@@ -19,71 +19,81 @@ export default function AdmDashboardCards({
   totalObras,
   editaisAtivos,
   obrasPendentes,
-}:DashboardCardsProps){
-
-  const cards=[
+}: DashboardCardsProps) {
+  const cards = [
     {
-      title:"Eventos",
-      value:totalEventos,
-      info:"Eventos cadastrados",
-      icon:CalendarDays,
-      className:styles.events,
+      id: "eventos",
+      title: "Eventos",
+      value: totalEventos,
+      info: "Cadastrados no museu",
+      icon: CalendarDays,
+      variantClass: styles.eventsCard,
     },
     {
-      title:"Obras",
-      value:totalObras,
-      info:"Obras cadastradas",
-      icon:Image,
-      className:styles.artworks,
+      id: "obras",
+      title: "Obras",
+      value: totalObras,
+      info: "No acervo digital",
+      icon: ImageIcon,
+      variantClass: styles.artworksCard,
     },
     {
-      title:"Editais Ativos",
-      value:editaisAtivos,
-      info:"Recebendo submissões",
-      icon:FileText,
-      className:styles.notices,
+      id: "editais",
+      title: "Editais Ativos",
+      value: editaisAtivos,
+      info: "Recebendo inscrições",
+      icon: FileText,
+      variantClass: styles.noticesCard,
     },
     {
-      title:"Obras Pendentes",
-      value:obrasPendentes,
-      info:"Aguardando aprovação",
-      icon:Clock3,
-      className:styles.pending,
+      id: "pendentes",
+      title: "Pendentes",
+      value: obrasPendentes,
+      info: "Aguardando análise",
+      icon: Clock3,
+      variantClass: styles.pendingCard,
     },
   ];
 
-  return(
-    <section className={styles.cards}>
+  return (
+    <section className={styles.grid}>
+      {cards.map((card, index) => {
+        const Icon = card.icon;
 
-      {cards.map(card=>{
-
-        const Icon=card.icon;
-
-        return(
+        return (
           <article
-            key={card.title}
-            className={`${styles.card} ${card.className}`}
+            key={card.id}
+            className={`${styles.card} ${card.variantClass}`}
+            style={{
+              animationDelay: `${index * 70}ms`,
+            }}
           >
+            <div className={styles.glow} />
 
             <div className={styles.header}>
-
-              <span>{card.title}</span>
-
-              <div className={styles.icon}>
-                <Icon size={19}/>
+              <div className={styles.titleGroup}>
+                <span className={styles.title}>{card.title}</span>
+                <span className={styles.statusDot} />
               </div>
 
+              <div className={styles.iconWrapper}>
+                <Icon size={19} strokeWidth={2} />
+              </div>
             </div>
 
-            <strong>{card.value}</strong>
+            <div className={styles.body}>
+              <strong className={styles.value}>
+                {new Intl.NumberFormat("pt-BR").format(card.value || 0)}
+              </strong>
 
-            <small>{card.info}</small>
+              <p className={styles.info}>{card.info}</p>
+            </div>
 
+            <div className={styles.accentBar} />
           </article>
         );
-
       })}
-
     </section>
   );
 }
+

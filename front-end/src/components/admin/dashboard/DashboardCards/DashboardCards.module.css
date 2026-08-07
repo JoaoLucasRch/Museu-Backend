@@ -1,130 +1,244 @@
-.cards{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
+/* ======================
+   GRID
+====================== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
 }
 
-.card{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+/* ======================
+   CARD
+====================== */
+.card {
+  --accent: #4F6BED;
+  --accent-light: #EEF1FF;
+  --accent-soft: rgba(79, 107, 237, 0.08);
 
-  min-height:118px;
-  padding:18px;
-
-  background:#FFFFFF;
-  border-radius:20px;
-  border-top:4px solid transparent;
-
+  position: relative;
+  overflow: hidden;
+  min-height: 140px;
+  padding: 1.2rem 1.25rem;
+  background: #FFFFFF;
+  border: 1px solid #E8E2DC;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: cardEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   transition:
-    transform .2s ease,
-    box-shadow .2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 26px rgba(0,0,0,.05);
-}
-
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  font-size:13px;
-  font-weight:600;
-  color:#555555;
-}
-
-.icon{
-  width:32px;
-  height:32px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:10px;
-}
-
-.icon svg{
-  stroke-width:1.8;
-}
-
-.card strong{
-  margin-top:10px;
-
-  font-size:38px;
-  line-height:1;
-  letter-spacing:-1px;
-  font-weight:700;
-
-  color:#222222;
-}
-
-.card small{
-  margin-top:6px;
-
-  font-size:12px;
-  color:#666666;
-}
-
-/* Eventos */
-
-.events{
-  border-color:#8E6F57;
-  background:linear-gradient(180deg,#FFFDFB 0%,#FFFFFF 100%);
-}
-
-.events .icon{
-  background:#F5ECE4;
-  color:#8E6F57;
-}
-
-/* Obras */
-
-.artworks{
-  border-color:#6D8A7A;
-  background:linear-gradient(180deg,#FBFDFC 0%,#FFFFFF 100%);
-}
-
-.artworks .icon{
-  background:#EAF4EF;
-  color:#5F7C6C;
-}
-
-/* Editais */
-
-.notices{
-  border-color:#9A8570;
-  background:linear-gradient(180deg,#FFFCF8 0%,#FFFFFF 100%);
-}
-
-.notices .icon{
-  background:#F7EFE7;
-  color:#8A715D;
-}
-
-/* Pendentes */
-
-.pending{
-  border-color:#C98C47;
-  background:linear-gradient(180deg,#FFFBF6 0%,#FFFFFF 100%);
-}
-
-.pending .icon{
-  background:#FDF0DF;
-  color:#B8772C;
-}
-
-@media(max-width:1200px){
-  .cards{
-    grid-template-columns:repeat(2,1fr);
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media(max-width:600px){
-  .cards{
-    grid-template-columns:1fr;
+.card:hover {
+  border-color: #D6CEC5;
+  box-shadow: 0 4px 16px rgba(28, 26, 25, 0.05);
+}
+
+/* ======================
+   GLOW (sutil)
+====================== */
+.glow {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: -50px;
+  right: -40px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.04;
+  filter: blur(6px);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover .glow {
+  opacity: 0.07;
+}
+
+/* ======================
+   HEADER
+====================== */
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.title {
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: #6B635C;
+  letter-spacing: -0.01em;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.65;
+}
+
+/* ======================
+   ICON
+====================== */
+.iconWrapper {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--accent);
+  background: var(--accent-light);
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.card:hover .iconWrapper {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+/* ======================
+   BODY
+====================== */
+.body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.value {
+  font-size: 1.65rem;
+  font-weight: 650;
+  color: #1C1A19;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.info {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 450;
+  color: #8A827A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ======================
+   ACCENT BAR
+====================== */
+.accentBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0.3);
+  opacity: 0.7;
+  transition:
+    transform 0.3s ease,
+    opacity 0.2s ease;
+}
+
+.card:hover .accentBar {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* ======================
+   VARIANTES
+====================== */
+.eventsCard {
+  --accent: #4F6BED;
+  --accent-light: #EEF1FF;
+  --accent-soft: rgba(79, 107, 237, 0.08);
+}
+
+.artworksCard {
+  --accent: #D97706;
+  --accent-light: #FFF5E6;
+  --accent-soft: rgba(217, 119, 6, 0.08);
+}
+
+.noticesCard {
+  --accent: #059669;
+  --accent-light: #E9F8F3;
+  --accent-soft: rgba(5, 150, 105, 0.08);
+}
+
+.pendingCard {
+  --accent: #7C3AED;
+  --accent-light: #F3EDFF;
+  --accent-soft: rgba(124, 58, 237, 0.08);
+}
+
+/* ======================
+   RESPONSIVE
+====================== */
+@media (max-width: 1050px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .card {
+    min-height: 128px;
+    padding: 1rem;
+  }
+
+  .value {
+    font-size: 1.4rem;
+  }
+
+  .iconWrapper {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 420px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,7 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import Header from "@/components/layouts/AdminLayout/AdminHeader";
 import Sidebar from "@/components/layouts/AdminLayout/AdminSidebar";
 
 import type { UserProfile } from "@/types/User";
@@ -62,12 +61,9 @@ export default function AdminLayout() {
       />
 
       <div
-        className={`${styles.content} ${
-          collapsed ? styles.contentCollapsed : ""
-        }`}
+        className={`${styles.content} ${collapsed ? styles.contentCollapsed : ""
+          }`}
       >
-        <Header />
-
         <main className={styles.main}>
           <Outlet
             context={{

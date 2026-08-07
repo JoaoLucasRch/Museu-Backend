@@ -1,0 +1,156 @@
+/* ======================
+   CONTAINER
+====================== */
+.containerCard {
+  width: 100%;
+  padding: 1.25rem;
+  background: #FFFFFF;
+  border: 1px solid #E8E2DC;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.containerCard:hover {
+  border-color: #D6CEC5;
+  box-shadow: 0 4px 16px rgba(28, 26, 25, 0.05);
+}
+
+/* ======================
+   HEADER
+====================== */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.headerTitleGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activityIcon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #4F6BED;
+  background: #EEF1FF;
+  border: 1px solid #E0E5FF;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1C1A19;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  color: #8A827A;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ======================
+   STATS
+====================== */
+.statsGroup {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.statInline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 56px;
+}
+
+.statLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 550;
+  color: #8A827A;
+}
+
+.statValue {
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: #1C1A19;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.peakLabelGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #7C3AED;
+}
+
+.peakValue {
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: #6D28D9;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+/* ======================
+   CHART
+====================== */
+.chartWrapper {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chartWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.chart {
+  min-width: 480px;
+}
+
+/* ======================
+   RESPONSIVE
+====================== */
+@media (max-width: 640px) {
+  .containerCard {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .statsGroup {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1.25rem;
+  }
+
+  .chart {
+    min-width: 380px;
+  }
+}

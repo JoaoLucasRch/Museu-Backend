@@ -205,7 +205,7 @@ export default function EventToolbar({
           onClick={onCreate}
         >
           <Plus size={18} />
-          Novo Evento
+          Evento
         </button>
 
       </div>

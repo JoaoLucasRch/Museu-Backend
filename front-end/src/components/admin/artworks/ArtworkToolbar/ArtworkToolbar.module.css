@@ -10,8 +10,6 @@
 
 .searchContainer{
   position:relative;
-  flex:1;
-
   display:flex;
   align-items:center;
 
@@ -38,7 +36,7 @@
 }
 
 .searchInput{
-  width:100%;
+  width:500px;
   height:100%;
 
   border:none;
