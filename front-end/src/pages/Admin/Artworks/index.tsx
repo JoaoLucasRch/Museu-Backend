@@ -3,7 +3,7 @@ import styles from "./Artworks.module.css";
 import {
   ArtworkToolbar,
   ArtworkEmptyState,
-  ArtworkList
+  ArtworkList,
 } from "@/components/admin/artworks";
 
 import { ArtworkReviewModal } from "@/components/admin/artworks/modals";
@@ -26,35 +26,32 @@ export default function AdmObras() {
   const {
     searchTerm,
     setSearchTerm,
-
     statusFilter,
     setStatusFilter,
-
     filteredObras,
-
   } = useArtworkFilters(obras);
 
   const {
     selectedObra,
     isModalOpen,
-
     showApproval,
     showRejection,
-
+    showExhibition,
     openModal,
     closeModal,
-
     openApproval,
     closeApproval,
-
     openRejection,
     closeRejection,
+    openExhibition,
+    closeExhibition,
   } = useArtworkModal();
 
   const {
     isUpdating,
     confirmApproval,
     confirmRejection,
+    confirmExhibition,
     formatDate,
   } = useArtworkActions({
     selectedObra,
@@ -62,14 +59,13 @@ export default function AdmObras() {
     closeModal,
     closeApproval,
     closeRejection,
+    closeExhibition,
   });
 
   if (loading) {
     return (
       <div className={styles.container}>
-        <ArtworkEmptyState
-          loading
-        />
+        <ArtworkEmptyState loading />
       </div>
     );
   }
@@ -103,21 +99,19 @@ export default function AdmObras() {
         isOpen={isModalOpen}
         artwork={selectedObra}
         isUpdating={isUpdating}
-
         showApproval={showApproval}
         showRejection={showRejection}
-
+        showExhibition={showExhibition}
         onClose={closeModal}
-
         onApprove={openApproval}
         onReject={openRejection}
-
+        onExhibit={openExhibition}
         onConfirmApproval={confirmApproval}
         onConfirmRejection={confirmRejection}
-
+        onConfirmExhibition={confirmExhibition}
         onCancelApproval={closeApproval}
         onCancelRejection={closeRejection}
-
+        onCancelExhibition={closeExhibition}
         formatDate={formatDate}
       />
     </div>

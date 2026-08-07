@@ -2,22 +2,27 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../prisma';
 import { EmailService } from '../services/emailService.js';
 
+
 interface UserPayload {
   id: number;
   role: 'ARTISTA' | 'ADMIN';
 }
 
+
 interface ObrasQuery {
   status?: 'pendente' | 'aprovada' | 'rejeitada' | 'exposta';
 }
+
 
 // ==================== CRIAR OBRA (Artista) ====================
 export async function createObra(request: FastifyRequest, reply: FastifyReply) {
   const { id: artistaId, role } = request.user;
 
+
   if (role !== 'ARTISTA') {
     return reply.status(403).send({ message: 'Apenas artistas podem cadastrar obras.' });
   }
+
 
   const {
     titulo_obra,
@@ -29,17 +34,20 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
     edital_id
   } = request.body as any;
 
+
   try {
     // Verificar limite de obras pendentes
     const obrasPendentes = await prisma.obra.count({
       where: { artista_id: artistaId, status: 'pendente' },
     });
 
+
     if (obrasPendentes >= 3) {
       return reply.status(400).send({
         message: 'Limite de 3 obras pendentes atingido. Aguarde aprovação antes de cadastrar novas obras.',
       });
     }
+
 
     // Se for um edital, verificar se está disponível para submissão
     if (edital_id) {
@@ -53,12 +61,14 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
         },
       });
 
+
       if (!edital) {
         return reply.status(400).send({
           message: 'Edital não está disponível para submissão no momento. Verifique as datas de submissão.',
         });
       }
     }
+
 
     const novaObra = await prisma.obra.create({
       data: {
@@ -105,7 +115,9 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
       }
     });
 
+
     console.log(`Obra criada com sucesso: ${novaObra.id_obra}`);
+
 
     // ==================== NOTIFICAR ADMINISTRADORES ====================
     try {
@@ -113,6 +125,7 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
         where: { role: 'ADMIN' },
         select: { email: true },
       });
+
 
       for (const admin of administradores) {
         if (admin.email) {
@@ -130,6 +143,7 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
       console.error('Erro ao notificar administradores:', emailError);
     }
 
+
     return reply.status(201).send(novaObra);
   } catch (error) {
     console.error('[createObra] Erro:', error);
@@ -137,16 +151,47 @@ export async function createObra(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-// src/controllers/ObraController.ts - getMyObras
 
+// ==================== LISTAR MINHAS OBRAS (ARTISTA) ====================
 export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
   const { id: artistaId, role } = request.user as { id: number; role: string };
+
 
   if (role !== 'ARTISTA') {
     return reply.status(403).send({ message: 'Apenas artistas podem visualizar suas obras.' });
   }
 
+
   try {
+    // ==================== ATUALIZAR STATUS AUTOMATICAMENTE ====================
+    const agora = new Date();
+
+
+    const eventosAtivos = await prisma.evento.findMany({
+      where: {
+        eh_edital: true,
+        data_hora_inicio: { lte: agora },
+      },
+      select: {
+        id_evento: true,
+      }
+    });
+
+
+    for (const evento of eventosAtivos) {
+      await prisma.obra.updateMany({
+        where: {
+          edital_id: evento.id_evento,
+          status: 'aprovada',
+        },
+        data: {
+          status: 'exposta',
+        },
+      });
+    }
+    // ==================== FIM DA ATUALIZAÇÃO AUTOMÁTICA ====================
+
+
     const rawResults = await prisma.$queryRaw`
       SELECT 
         o.id_obra,
@@ -175,6 +220,7 @@ export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
       ORDER BY o.data_envio DESC
     `;
 
+
     const obras = (rawResults as any[]).map(row => {
       let dataEnvio = '';
       if (row.data_envio) {
@@ -186,6 +232,7 @@ export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
           dataEnvio = String(row.data_envio);
         }
       }
+
 
       return {
         id_obra: Number(row.id_obra),
@@ -204,7 +251,6 @@ export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
           nome: String(row.artista_nome || ''),
           email: String(row.artista_email || ''),
         } : null,
-        // 🔧 CORREÇÃO: Adicionar o objeto edital
         edital: row.edital_id_evento ? {
           id_evento: Number(row.edital_id_evento),
           titulo_evento: String(row.edital_titulo || ''),
@@ -215,8 +261,10 @@ export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
       };
     });
 
+
     console.log(`📦 ${obras.length} obras encontradas para o artista ${artistaId}`);
     console.log('📅 data_envio da primeira obra:', obras[0]?.data_envio);
+
 
     // 🔧 Forçar a resposta como JSON
     const jsonResponse = JSON.stringify(obras);
@@ -229,10 +277,12 @@ export async function getMyObras(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
+
 // ==================== EXCLUIR OBRA (Artista) ====================
 export async function deleteObra(request: FastifyRequest, reply: FastifyReply) {
   const { id: artistaId, role } = request.user;
   const { id_obra } = request.params as any;
+
 
   try {
     const obra = await prisma.obra.findUnique({
@@ -244,13 +294,16 @@ export async function deleteObra(request: FastifyRequest, reply: FastifyReply) {
       }
     });
 
+
     if (!obra) {
       return reply.status(404).send({ message: 'Obra não encontrada.' });
     }
 
+
     if (role !== 'ARTISTA' || obra.artista_id !== artistaId) {
       return reply.status(403).send({ message: 'Você não tem permissão para excluir esta obra.' });
     }
+
 
     // Verificar se a obra já foi aprovada ou está em exposição
     if (obra.status === 'aprovada' || obra.status === 'exposta') {
@@ -259,7 +312,9 @@ export async function deleteObra(request: FastifyRequest, reply: FastifyReply) {
       });
     }
 
+
     await prisma.obra.delete({ where: { id_obra: Number(id_obra) } });
+
 
     console.log(`🗑️ Obra ${id_obra} deletada com sucesso`);
     return reply.send({ message: 'Obra excluída com sucesso.' });
@@ -269,17 +324,47 @@ export async function deleteObra(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-// ==================== LISTAR TODAS AS OBRAS (ADMIN) ====================
-// src/controllers/ObraController.ts - getAllObras
 
+// ==================== LISTAR TODAS AS OBRAS (ADMIN) ====================
 export async function getAllObras(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
+
 
   if (role !== 'ADMIN') {
     return reply.status(403).send({ message: 'Apenas administradores podem visualizar todas as obras.' });
   }
 
+
   try {
+    // ==================== ATUALIZAR STATUS AUTOMATICAMENTE ====================
+    const agora = new Date();
+
+
+    const eventosAtivos = await prisma.evento.findMany({
+      where: {
+        eh_edital: true,
+        data_hora_inicio: { lte: agora },
+      },
+      select: {
+        id_evento: true,
+      }
+    });
+
+
+    for (const evento of eventosAtivos) {
+      await prisma.obra.updateMany({
+        where: {
+          edital_id: evento.id_evento,
+          status: 'aprovada',
+        },
+        data: {
+          status: 'exposta',
+        },
+      });
+    }
+    // ==================== FIM DA ATUALIZAÇÃO AUTOMÁTICA ====================
+
+
     const rawResults = await prisma.$queryRaw`
       SELECT 
         o.id_obra,
@@ -307,6 +392,7 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
       ORDER BY o.data_envio DESC
     `;
 
+
     const obras = (rawResults as any[]).map(row => {
       let dataEnvio = '';
       if (row.data_envio) {
@@ -318,6 +404,7 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
           dataEnvio = String(row.data_envio);
         }
       }
+
 
       return {
         id_obra: Number(row.id_obra),
@@ -346,6 +433,7 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
       };
     });
 
+
     const jsonResponse = JSON.stringify(obras);
     return reply
       .header('Content-Type', 'application/json')
@@ -356,26 +444,61 @@ export async function getAllObras(request: FastifyRequest, reply: FastifyReply) 
   }
 }
 
+
 // ==================== LISTAR OBRAS DE UM ARTISTA ESPECÍFICO (ADMIN) ====================
 export async function getObrasArtista(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
   const { artistaId } = request.params as any;
   const { status } = request.query as ObrasQuery;
 
+
   if (role !== 'ADMIN') {
     return reply.status(403).send({ message: 'Apenas administradores podem listar obras de outros artistas.' });
   }
 
+
   const idArtistaNumber = Number(artistaId);
 
+
   try {
+    // ==================== ATUALIZAR STATUS AUTOMATICAMENTE ====================
+    const agora = new Date();
+
+
+    const eventosAtivos = await prisma.evento.findMany({
+      where: {
+        eh_edital: true,
+        data_hora_inicio: { lte: agora },
+      },
+      select: {
+        id_evento: true,
+      }
+    });
+
+
+    for (const evento of eventosAtivos) {
+      await prisma.obra.updateMany({
+        where: {
+          edital_id: evento.id_evento,
+          status: 'aprovada',
+        },
+        data: {
+          status: 'exposta',
+        },
+      });
+    }
+    // ==================== FIM DA ATUALIZAÇÃO AUTOMÁTICA ====================
+
+
     const whereClause: any = {
       artista_id: idArtistaNumber
     };
 
+
     if (status) {
       whereClause.status = status;
     }
+
 
     const obras = await prisma.obra.findMany({
       where: whereClause,
@@ -413,6 +536,7 @@ export async function getObrasArtista(request: FastifyRequest, reply: FastifyRep
       orderBy: { data_envio: 'desc' },
     });
 
+
     return reply.send(obras);
   } catch (error) {
     console.error('[getObrasArtista] Erro:', error);
@@ -420,15 +544,18 @@ export async function getObrasArtista(request: FastifyRequest, reply: FastifyRep
   }
 }
 
+
 // ==================== ATUALIZAR STATUS DA OBRA (ADMIN) ====================
 export async function updateObraStatus(request: FastifyRequest, reply: FastifyReply) {
   const { role } = request.user;
   const { id_obra } = request.params as any;
   const { status, parecer } = request.body as any;
 
+
   if (role !== 'ADMIN') {
     return reply.status(403).send({ message: 'Apenas administradores podem alterar o status de uma obra.' });
   }
+
 
   const validStatuses = ['pendente', 'aprovada', 'rejeitada', 'exposta'];
   if (!validStatuses.includes(status)) {
@@ -437,7 +564,9 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
     });
   }
 
+
   try {
+
 
     // Buscar a obra com os dados do artista (antes de atualizar)
     const obraExistente = await prisma.obra.findUnique({
@@ -458,9 +587,11 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
       }
     });
 
+
     if (!obraExistente) {
       return reply.status(404).send({ message: 'Obra não encontrada.' });
     }
+
 
     // Se o status não mudou, não faz nada
     if (obraExistente.status === status) {
@@ -468,6 +599,7 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
         message: `A obra já está com o status "${status}".`
       });
     }
+
 
     const obra = await prisma.obra.update({
       where: { id_obra: Number(id_obra) },
@@ -505,10 +637,13 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
       }
     });
 
+
     console.log(`Status da obra ${id_obra} atualizado para ${status}`);
+
 
     // ==================== ENVIAR NOTIFICAÇÃO POR EMAIL ====================
     let notificacaoEnviada = false;
+
 
     // Enviar notificação apenas se o status NÃO for 'pendente'
     if (status !== 'pendente' && obra.artista?.email) {
@@ -521,6 +656,7 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
           parecer
         );
 
+
         if (notificacaoEnviada) {
           console.log(`📧 Notificação enviada para ${obra.artista.email}`);
         } else {
@@ -530,6 +666,7 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
         console.error('Erro ao enviar email de notificação:', emailError);
       }
     }
+
 
     return reply.send({
       message: 'Status atualizado com sucesso.',
@@ -542,10 +679,12 @@ export async function updateObraStatus(request: FastifyRequest, reply: FastifyRe
   }
 }
 
+
 // ==================== BUSCAR OBRA POR ID ====================
 export async function getObraById(request: FastifyRequest, reply: FastifyReply) {
   const { id_obra } = request.params as any;
   const { id: usuarioId, role } = request.user;
+
 
   try {
     const obra = await prisma.obra.findUnique({
@@ -583,14 +722,17 @@ export async function getObraById(request: FastifyRequest, reply: FastifyReply) 
       },
     });
 
+
     if (!obra) {
       return reply.status(404).send({ message: 'Obra não encontrada.' });
     }
+
 
     // Verificar permissão: artista só pode ver suas próprias obras
     if (role === 'ARTISTA' && obra.artista_id !== usuarioId) {
       return reply.status(403).send({ message: 'Você não tem permissão para visualizar esta obra.' });
     }
+
 
     return reply.send(obra);
   } catch (error) {
