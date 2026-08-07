@@ -1,6 +1,4 @@
-import {
-  Upload
-} from "lucide-react";
+import { Upload } from "lucide-react";
 
 import type { Event } from "@/types/Event";
 
@@ -21,7 +19,7 @@ interface FormData {
 
 interface Props {
   formData: FormData;
-  selectedFile: File |null;
+  selectedFile: File | null;
   isSubmitting: boolean;
   uploadProgress: boolean;
   onClose: () => void;
@@ -35,6 +33,7 @@ interface Props {
       React.SetStateAction<FormData>
     >;
 }
+
 export default function EventForm({
   formData,
   selectedFile,
@@ -47,292 +46,254 @@ export default function EventForm({
 }: Props) {
   return (
     <>
-  <main className={styles.body}>
+      <main className={styles.form}>
 
-    {/* =========================
-        Informações do evento
-    ========================== */}
+        {/* =========================
+            Informações do evento
+        ========================== */}
 
-    <section className={styles.section}>
+        <section className={styles.sectionBlock}>
 
-      <h3 className={styles.sectionTitle}>
-        Informações do evento
-      </h3>
+          <h3 className={styles.sectionBlockTitle}>
+            Informações do evento
+          </h3>
 
-      <div className={styles.group}>
-        <label>Título</label>
-
-        <input
-          placeholder="Digite o nome do evento"
-          value={formData.titulo_evento}
-          onChange={(e) =>
-            setFormData(prev => ({
-              ...prev,
-              titulo_evento: e.target.value
-            }))
-          }
-        />
-      </div>
-
-      <div className={styles.group}>
-        <label>Descrição</label>
-
-        <textarea
-          rows={5}
-          placeholder="Descreva o evento"
-          value={formData.descricao_evento}
-          onChange={(e) =>
-            setFormData(prev => ({
-              ...prev,
-              descricao_evento: e.target.value
-            }))
-          }
-        />
-      </div>
-
-      <div className={styles.row}>
-
-        <div className={styles.group}>
-          <label>Categoria</label>
-
-          <select
-            value={formData.tipo_evento}
-            onChange={(e) =>
-              setFormData(prev => ({
-                ...prev,
-                tipo_evento: e.target.value as Event["tipo_evento"]
-              }))
-            }
-          >
-            <option value="">
-              Selecione
-            </option>
-
-            <option value="EXPOSICAO">
-              Exposição
-            </option>
-
-            <option value="OFICINA">
-              Oficina
-            </option>
-
-            <option value="PALESTRA">
-              Palestra
-            </option>
-
-            <option value="LANCAMENTO">
-              Lançamento
-            </option>
-
-            <option value="OUTRO">
-              Outro
-            </option>
-
-          </select>
-        </div>
-
-        <div className={styles.group}>
-          <label>Local</label>
-
-          <input
-            placeholder="Local do evento"
-            value={formData.local_evento}
-            onChange={(e) =>
-              setFormData(prev => ({
-                ...prev,
-                local_evento: e.target.value
-              }))
-            }
-          />
-        </div>
-
-      </div>
-
-      <div className={styles.row}>
-
-        <div className={styles.group}>
-          <label>Início do evento</label>
-
-          <input
-            type="datetime-local"
-            value={formData.data_hora_inicio}
-            onChange={(e) =>
-              setFormData(prev => ({
-                ...prev,
-                data_hora_inicio: e.target.value
-              }))
-            }
-          />
-        </div>
-
-        <div className={styles.group}>
-          <label>Fim do evento</label>
-
-          <input
-            type="datetime-local"
-            value={formData.data_hora_fim}
-            onChange={(e) =>
-              setFormData(prev => ({
-                ...prev,
-                data_hora_fim: e.target.value
-              }))
-            }
-          />
-        </div>
-
-      </div>
-
-    </section>
-
-    {/* =========================
-        Edital
-    ========================== */}
-
-    <section className={styles.section}>
-
-      <h3 className={styles.sectionTitle}>
-        Edital
-      </h3>
-
-      <label className={styles.checkbox}>
-        <input
-          type="checkbox"
-          checked={formData.eh_edital}
-          onChange={(e) =>
-            setFormData(prev => ({
-              ...prev,
-              eh_edital: e.target.checked
-            }))
-          }
-        />
-
-        <span>
-          Este evento possui edital para submissão de obras
-        </span>
-
-      </label>
-
-      {formData.eh_edital && (
-
-        <div className={styles.row}>
-
-          <div className={styles.group}>
-            <label>
-              Início das submissões
-            </label>
+          <div className={styles.inputGroup}>
+            <label>Título</label>
 
             <input
-              type="datetime-local"
-              value={formData.inicio_submissao}
+              placeholder="Digite o nome do evento"
+              value={formData.titulo_evento}
               onChange={(e) =>
-                setFormData(prev => ({
+                setFormData((prev) => ({
                   ...prev,
-                  inicio_submissao: e.target.value
+                  titulo_evento: e.target.value,
                 }))
               }
             />
           </div>
 
-          <div className={styles.group}>
-            <label>
-              Fim das submissões
-            </label>
+          <div className={styles.inputGroup}>
+            <label>Descrição</label>
 
-            <input
-              type="datetime-local"
-              value={formData.fim_submissao}
+            <textarea
+              placeholder="Descreva o evento"
+              value={formData.descricao_evento}
               onChange={(e) =>
-                setFormData(prev => ({
+                setFormData((prev) => ({
                   ...prev,
-                  fim_submissao: e.target.value
+                  descricao_evento: e.target.value,
                 }))
               }
             />
           </div>
 
-        </div>
+          <div className={styles.row}>
 
-      )}
+            <div className={styles.inputGroup}>
+              <label>Categoria</label>
 
-    </section>
+              <select
+                value={formData.tipo_evento}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    tipo_evento: e.target.value as Event["tipo_evento"],
+                  }))
+                }
+              >
+                <option value="">
+                  Selecione
+                </option>
 
-    {/* =========================
-        Imagem
-    ========================== */}
+                <option value="EXPOSICAO">
+                  Exposição
+                </option>
 
-    <section className={styles.section}>
+                <option value="OFICINA">
+                  Oficina
+                </option>
 
-      <h3 className={styles.sectionTitle}>
-        Imagem do evento
-      </h3>
+                <option value="PALESTRA">
+                  Palestra
+                </option>
 
-      <label className={styles.upload}>
+                <option value="LANCAMENTO">
+                  Lançamento
+                </option>
 
-        <input
-          hidden
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-        />
+                <option value="OUTRO">
+                  Outro
+                </option>
+              </select>
+            </div>
 
-        {formData.imagemPreview ? (
+            <div className={styles.inputGroup}>
+              <label>Local</label>
 
-          <img
-            src={formData.imagemPreview}
-            alt="Preview"
-            className={styles.preview}
-          />
+              <input
+                placeholder="Local do evento"
+                value={formData.local_evento}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    local_evento: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
 
-        ) : (
+          <div className={styles.row}>
 
-          <div className={styles.uploadEmpty}>
+            <div className={styles.inputGroup}>
+              <label>Início do evento</label>
 
-            <Upload size={32} />
+              <input
+                type="datetime-local"
+                value={formData.data_hora_inicio}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    data_hora_inicio: e.target.value,
+                  }))
+                }
+              />
+            </div>
 
-            <strong>
-              Selecione uma imagem
-            </strong>
+            <div className={styles.inputGroup}>
+              <label>Fim do evento</label>
+
+              <input
+                type="datetime-local"
+                value={formData.data_hora_fim}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    data_hora_fim: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* =========================
+            Edital
+        ========================== */}
+
+        <section className={styles.sectionBlock}>
+
+          <h3 className={styles.sectionBlockTitle}>
+            Edital
+          </h3>
+
+          <label className={styles.checkboxGroup}>
+            <input
+              type="checkbox"
+              checked={formData.eh_edital}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  eh_edital: e.target.checked,
+                }))
+              }
+            />
 
             <span>
-              JPG, PNG ou WEBP
+              Este evento possui edital para submissão de obras
             </span>
+          </label>
 
-          </div>
+          {formData.eh_edital && (
+            <div className={styles.row}>
 
-        )}
+              <div className={styles.inputGroup}>
+                <label>Início das submissões</label>
 
-      </label>
+                <input
+                  type="datetime-local"
+                  value={formData.inicio_submissao}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      inicio_submissao: e.target.value,
+                    }))
+                  }
+                />
+              </div>
 
-      {selectedFile && (
-        <small>{selectedFile.name}</small>
-      )}
+              <div className={styles.inputGroup}>
+                <label>Fim das submissões</label>
 
-    </section>
+                <input
+                  type="datetime-local"
+                  value={formData.fim_submissao}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      fim_submissao: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+          )}
+        </section>
 
-  </main>
+        {/* =========================
+            Imagem
+        ========================== */}
 
-  <footer className={styles.footer}>
+        <section className={styles.sectionBlock}>
 
-    <button
-      className={styles.cancel}
-      type="button"
-      onClick={onCancel}
-    >
-      Cancelar
-    </button>
+          <h3 className={styles.sectionBlockTitle}>
+            Imagem do evento
+          </h3>
 
-    <button
-      className={styles.save}
-      type="button"
-      disabled={isSubmitting || uploadProgress}
-      onClick={onSubmit}
-    >
-      {isSubmitting
-        ? "Salvando..."
-        : "Salvar evento"}
-    </button>
+          <label className={styles.upload}>
 
-  </footer>
-</>
- );
+            <input
+              hidden
+              type="file"
+              accept="image/*"
+              onChange={onFileChange}
+            />
+
+            {formData.imagemPreview ? (
+              <img
+                src={formData.imagemPreview}
+                alt="Preview"
+                className={styles.preview}
+              />
+            ) : (
+              <div className={styles.uploadEmpty}>
+                <Upload size={32} />
+
+                <strong>Selecione uma imagem</strong>
+
+                <span>JPG, PNG ou WEBP</span>
+              </div>
+            )}
+          </label>
+
+          {selectedFile && (
+            <small>{selectedFile.name}</small>
+          )}
+        </section>
+      </main>
+
+      <footer className={styles.footer}>
+
+        <button
+          type="button"
+          className={styles.submitButton}
+          disabled={isSubmitting || uploadProgress}
+          onClick={onSubmit}
+        >
+          {isSubmitting ? "Salvando..." : "Salvar Evento"}
+        </button>
+      </footer>
+    </>
+  );
 }

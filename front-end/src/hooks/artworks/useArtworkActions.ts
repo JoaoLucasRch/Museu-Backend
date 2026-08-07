@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import { ArtworkService } from "@/services/artworks/artworkService";
-
 import type { Artwork } from "@/types/Artwork";
 
 interface Props {
@@ -10,6 +8,7 @@ interface Props {
   closeModal: () => void;
   closeApproval: () => void;
   closeRejection: () => void;
+  closeExhibition: () => void;
 }
 
 export default function useArtworkActions({
@@ -18,16 +17,18 @@ export default function useArtworkActions({
   closeModal,
   closeApproval,
   closeRejection,
+  closeExhibition,
 }: Props) {
-  const [isUpdating, setIsUpdating] =
-    useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+
   async function updateStatus(
-    status: "aprovada" | "rejeitada"
+    status: "aprovada" | "rejeitada" | "exposta"
   ) {
     if (!selectedObra) return;
-    setIsUpdating(true);
-    try {
 
+    setIsUpdating(true);
+
+    try {
       await ArtworkService.updateStatus(
         selectedObra.id_obra,
         status
@@ -37,6 +38,7 @@ export default function useArtworkActions({
       closeModal();
       closeApproval();
       closeRejection();
+      closeExhibition();
     } finally {
       setIsUpdating(false);
     }
@@ -50,18 +52,20 @@ export default function useArtworkActions({
     await updateStatus("rejeitada");
   }
 
-  function formatDate(date?: string | null) {
-  if (!date) return "-";
+  async function confirmExhibition() {
+    await updateStatus("exposta");
+  }
 
-  return new Date(date).toLocaleDateString("pt-BR");
-}
+  function formatDate(date?: string | null) {
+    if (!date) return "-";
+    return new Date(date).toLocaleDateString("pt-BR");
+  }
 
   return {
     isUpdating,
     confirmApproval,
     confirmRejection,
+    confirmExhibition,
     formatDate,
-
   };
-
 }

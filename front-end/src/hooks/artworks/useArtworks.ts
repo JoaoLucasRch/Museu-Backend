@@ -77,22 +77,11 @@ export default function useArtworks() {
 
 
   async function updateStatus(
-    id:number,
-    status:
-      | "aprovada"
-      | "rejeitada"
+    id: number,
+    status: "aprovada" | "rejeitada" | "exposta"
   ) {
-
-
-    await ArtworkService
-      .updateStatus(
-        id,
-        status
-      );
-
-
+    await ArtworkService.updateStatus(id, status);
     await fetchObras();
-
   }
 
 
