@@ -93,6 +93,7 @@ export default function AdmObras() {
         statusFilter={statusFilter}
         onStatusChange={setStatusFilter}
       />
+      
 
       <ArtworkList
         obras={filteredObras}

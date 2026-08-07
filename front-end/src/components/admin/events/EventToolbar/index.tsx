@@ -100,33 +100,8 @@ export default function EventToolbar({
   return (
     <div className={styles.container}>
 
-      <div className={styles.header}>
-
-        <div>
-
-          <h1 className={styles.title}>
-            Eventos
-          </h1>
-
-          <p className={styles.subtitle}>
-            Cadastre, acompanhe e gerencie a programação do museu.
-          </p>
-
-        </div>
-
-        <button
-          type="button"
-          className={styles.createButton}
-          onClick={onCreate}
-        >
-          <Plus size={18} />
-          Novo Evento
-        </button>
-
-      </div>
-
       <div className={styles.filters}>
-
+        
         <div className={styles.searchBox}>
 
           <Search size={18} />
@@ -223,6 +198,17 @@ export default function EventToolbar({
           )}
 
         </div>
+          <div className={styles.header}>
+        <button
+          type="button"
+          className={styles.createButton}
+          onClick={onCreate}
+        >
+          <Plus size={18} />
+          Novo Evento
+        </button>
+
+      </div>
 
       </div>
 

@@ -41,29 +41,3 @@
 .colStatus {
   padding-left: 25px;
 }
-
-.scrollArea {
-  max-height: 372px;
-  overflow-y: auto;
-
-  scrollbar-width: thin;
-  scrollbar-color: #D8D3CF transparent;
-}
-
-.scrollArea::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scrollArea::-webkit-scrollbar-track {
-  background: transparent;
-  margin: 8px 0;
-}
-
-.scrollArea::-webkit-scrollbar-thumb {
-  background-color: #D8D3CF;
-  border-radius: 20px;
-}
-
-.scrollArea::-webkit-scrollbar-thumb:hover {
-  background-color: #C4BEBA;
-}

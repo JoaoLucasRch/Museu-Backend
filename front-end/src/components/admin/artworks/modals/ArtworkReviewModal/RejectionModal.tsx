@@ -24,22 +24,24 @@ export default function RejectionModal({
       className={styles.overlay}
       onClick={onCancel}
     >
+      
       <div
         className={styles.confirmModal}
         onClick={(e) =>
           e.stopPropagation()
         }
       >
-        <button
+       
+         <button
           className={styles.closeButton}
           onClick={onCancel}
         >
           <X size={20} />
         </button>
-
         <h3 className={styles.confirmTitle}>
           Confirmar Rejeição
         </h3>
+        
 
         <p className={styles.confirmText}>
           Deseja realmente rejeitar a obra{" "}

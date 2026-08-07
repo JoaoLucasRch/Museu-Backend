@@ -10,6 +10,8 @@ interface Props {
   onRetry?: () => void;
 }
 
+
+
 export default function ArtworkEmptyState({
   loading,
   error,
