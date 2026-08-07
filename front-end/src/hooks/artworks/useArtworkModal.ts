@@ -1,9 +1,7 @@
 import { useState } from "react";
-
 import type { Artwork } from "@/types/Artwork";
 
 export default function useArtworkModal() {
-
   const [selectedObra, setSelectedObra] =
     useState<Artwork | null>(null);
 
@@ -16,6 +14,9 @@ export default function useArtworkModal() {
   const [showRejection, setShowRejection] =
     useState(false);
 
+  const [showExhibition, setShowExhibition] =
+    useState(false);
+
   function openModal(obra: Artwork) {
     setSelectedObra(obra);
     setIsModalOpen(true);
@@ -24,9 +25,9 @@ export default function useArtworkModal() {
   function closeModal() {
     setSelectedObra(null);
     setIsModalOpen(false);
-
     setShowApproval(false);
     setShowRejection(false);
+    setShowExhibition(false);
   }
 
   function openApproval() {
@@ -45,17 +46,27 @@ export default function useArtworkModal() {
     setShowRejection(false);
   }
 
+  function openExhibition() {
+    setShowExhibition(true);
+  }
+
+  function closeExhibition() {
+    setShowExhibition(false);
+  }
+
   return {
     selectedObra,
     isModalOpen,
     showApproval,
     showRejection,
+    showExhibition,
     openModal,
     closeModal,
     openApproval,
     closeApproval,
     openRejection,
     closeRejection,
+    openExhibition,
+    closeExhibition,
   };
-
 }

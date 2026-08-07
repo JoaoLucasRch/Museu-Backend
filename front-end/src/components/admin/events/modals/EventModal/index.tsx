@@ -49,7 +49,9 @@ export default function EventModal({
 
           <div>
 
-            <h2>{title}</h2>
+            <h2 className={styles.title}>
+              {title}
+            </h2>
 
             <p className={styles.subtitle}>
               Preencha as informações abaixo para publicar o evento.
@@ -59,7 +61,7 @@ export default function EventModal({
 
           <button
             type="button"
-            className={styles.close}
+            className={styles.closeButton}
             onClick={onClose}
           >
             <X size={20} />

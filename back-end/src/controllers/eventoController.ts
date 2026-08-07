@@ -81,6 +81,7 @@ export async function criar(
   try {
     const body = req.body as any;
 
+
     const {
       titulo_evento,
       descricao_evento,
@@ -94,13 +95,16 @@ export async function criar(
       fim_submissao,
     } = body;
 
+
     // Usuário autenticado pelo JWT
     const criado_por_id = req.user.id;
+
 
     // Validação do tipo do evento
     const tipoUpper = String(
       tipo_evento ?? ""
     ).toUpperCase() as TipoEvento;
+
 
     if (!Object.values(TipoEvento).includes(tipoUpper)) {
       return reply.code(400).send({
@@ -108,15 +112,18 @@ export async function criar(
       });
     }
 
+
     // Validação das datas do evento
     const dataInicio = new Date(data_hora_inicio);
     const dataFim = new Date(data_hora_fim);
+
 
     if (dataInicio >= dataFim) {
       return reply.code(400).send({
         erro: "A data de início do evento deve ser anterior à data de término."
       });
     }
+
 
     // Validação dos editais
     if (eh_edital) {
@@ -126,8 +133,10 @@ export async function criar(
         });
       }
 
+
       const inicioSubmissao = new Date(inicio_submissao);
       const fimSubmissao = new Date(fim_submissao);
+
 
       if (inicioSubmissao >= fimSubmissao) {
         return reply.code(400).send({
@@ -135,17 +144,15 @@ export async function criar(
         });
       }
 
-      // Ajuste conforme sua regra de negócio.
-      // Se a submissão deve acontecer DURANTE o evento:
-      if (
-        inicioSubmissao < dataInicio ||
-        fimSubmissao > dataFim
-      ) {
+
+      // CORREÇÃO: Submissões devem ocorrer ANTES do evento
+      if (fimSubmissao > dataInicio) {
         return reply.code(400).send({
-          erro: "O período de submissão deve estar dentro do período do evento."
+          erro: "O período de submissão deve terminar antes do início do evento."
         });
       }
     }
+
 
     const novoEvento = await prisma.evento.create({
       data: {
@@ -154,19 +161,25 @@ export async function criar(
         local_evento: local_evento || "Museu",
         imagem_evento: imagem_evento || null,
 
+
         data_hora_inicio: dataInicio,
         data_hora_fim: dataFim,
 
+
         tipo_evento: tipoUpper,
+
 
         criado_por_id,
 
+
         eh_edital: Boolean(eh_edital),
+
 
         inicio_submissao:
           eh_edital
             ? new Date(inicio_submissao)
             : null,
+
 
         fim_submissao:
           eh_edital
@@ -175,16 +188,21 @@ export async function criar(
       },
     });
 
+
     return reply.code(201).send(novoEvento);
+
 
   } catch (error) {
 
+
     console.error("[criar] Erro:", error);
+
 
     return reply.code(500).send({
       erro: "Erro ao criar evento",
       detalhes: (error as Error).message,
     });
+
 
   }
 }
@@ -194,23 +212,29 @@ export async function atualizar(req: FastifyRequest, reply: FastifyReply) {
   const id = Number((req.params as any).id);
   const dados = req.body as any;
 
+
   if (Number.isNaN(id)) return reply.code(400).send({ erro: 'ID inválido' });
+
 
   try {
     const eventoExistente = await prisma.evento.findUnique({
       where: { id_evento: id },
     });
 
+
     if (!eventoExistente) {
       return reply.code(404).send({ erro: 'Evento não encontrado' });
     }
 
+
     // Verificar se está tentando atualizar um edital
     const ehEdital = dados.eh_edital !== undefined ? dados.eh_edital : eventoExistente.eh_edital;
+
 
     if (ehEdital) {
       const inicio = dados.inicio_submissao || eventoExistente.inicio_submissao;
       const fim = dados.fim_submissao || eventoExistente.fim_submissao;
+
 
       if (!inicio || !fim) {
         return reply.code(400).send({
@@ -218,25 +242,32 @@ export async function atualizar(req: FastifyRequest, reply: FastifyReply) {
         });
       }
 
-      if (new Date(inicio) >= new Date(fim)) {
+
+      const inicioSubmissao = new Date(inicio);
+      const fimSubmissao = new Date(fim);
+
+
+      if (inicioSubmissao >= fimSubmissao) {
         return reply.code(400).send({
           erro: 'A data de início da submissão deve ser anterior à data de fim'
         });
       }
 
-      // Se mudou de não-edital para edital, validar datas
-      if (!eventoExistente.eh_edital && ehEdital) {
-        const dataInicioEvento = dados.data_hora_inicio
-          ? new Date(dados.data_hora_inicio)
-          : eventoExistente.data_hora_inicio;
 
-        if (new Date(inicio) < dataInicioEvento) {
-          return reply.code(400).send({
-            erro: 'O início da submissão deve ser posterior ao início do evento'
-          });
-        }
+      // Datas do evento (usando as novas se fornecidas, ou as existentes)
+      const dataInicioEvento = dados.data_hora_inicio
+        ? new Date(dados.data_hora_inicio)
+        : eventoExistente.data_hora_inicio;
+
+
+      // Submissões devem ocorrer ANTES do evento
+      if (fimSubmissao > dataInicioEvento) {
+        return reply.code(400).send({
+          erro: 'O período de submissão deve terminar antes do início do evento'
+        });
       }
     }
+
 
     // Atualizar apenas campos fornecidos
     const dataAtualizacao: any = {};
@@ -244,11 +275,21 @@ export async function atualizar(req: FastifyRequest, reply: FastifyReply) {
     if (dados.titulo_evento !== undefined) dataAtualizacao.titulo_evento = dados.titulo_evento;
     if (dados.descricao_evento !== undefined) dataAtualizacao.descricao_evento = dados.descricao_evento;
     if (dados.local_evento !== undefined) dataAtualizacao.local_evento = dados.local_evento;
-    if (dados.imagem_evento !== undefined) dataAtualizacao.imagem_evento = dados.imagem_evento;
+
+    const imagemNova =
+      typeof dados.imagem_evento === "string"
+        ? dados.imagem_evento.trim()
+        : dados.imagem_evento;
+
+    if (imagemNova) {
+      dataAtualizacao.imagem_evento = imagemNova;
+    }
+
     if (dados.tipo_evento !== undefined) dataAtualizacao.tipo_evento = dados.tipo_evento;
     if (dados.data_hora_inicio !== undefined) dataAtualizacao.data_hora_inicio = new Date(dados.data_hora_inicio);
     if (dados.data_hora_fim !== undefined) dataAtualizacao.data_hora_fim = new Date(dados.data_hora_fim);
     if (dados.eh_edital !== undefined) dataAtualizacao.eh_edital = dados.eh_edital;
+
 
     // Campos de edital
     if (ehEdital) {
@@ -263,10 +304,12 @@ export async function atualizar(req: FastifyRequest, reply: FastifyReply) {
       dataAtualizacao.fim_submissao = null;
     }
 
+
     const evento = await prisma.evento.update({
       where: { id_evento: id },
       data: dataAtualizacao,
     });
+
 
     return reply.code(200).send(evento);
   } catch (error: any) {
@@ -332,7 +375,7 @@ export async function listarEditaisDisponiveis(req: FastifyRequest, reply: Fasti
     // Adicionar dias_restantes para cada edital
     const editaisComDias = editais.map(edital => ({
       ...edital,
-      dias_restantes: edital.fim_submissao 
+      dias_restantes: edital.fim_submissao
         ? Math.ceil((new Date(edital.fim_submissao).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
         : 0
     }));
@@ -343,6 +386,65 @@ export async function listarEditaisDisponiveis(req: FastifyRequest, reply: Fasti
     return reply.code(500).send({
       erro: 'Erro ao listar editais disponíveis',
       detalhes: (error as Error).message
+    });
+  }
+}
+
+// ==================== ATUALIZAR STATUS DAS OBRAS AUTOMATICAMENTE ====================
+export async function atualizarStatusObrasAutomatico(req: FastifyRequest, reply: FastifyReply) {
+  try {
+    const agora = new Date();
+
+
+    // Buscar todos os eventos que são editais e estão começando agora (ou já começaram)
+    const eventosAtivos = await prisma.evento.findMany({
+      where: {
+        eh_edital: true,
+        data_hora_inicio: { lte: agora },
+      },
+      select: {
+        id_evento: true,
+        titulo_evento: true,
+        data_hora_inicio: true,
+      }
+    });
+
+
+    let totalAtualizadas = 0;
+
+
+    for (const evento of eventosAtivos) {
+      // Atualizar todas as obras aprovadas deste edital para "exposta"
+      const resultado = await prisma.obra.updateMany({
+        where: {
+          edital_id: evento.id_evento,
+          status: 'aprovada',
+        },
+        data: {
+          status: 'exposta',
+        },
+      });
+
+
+      totalAtualizadas += resultado.count;
+
+
+      console.log(`📍 Evento "${evento.titulo_evento}" iniciado. ${resultado.count} obras atualizadas para "exposta".`);
+    }
+
+
+    return reply.code(200).send({
+      mensagem: 'Status das obras atualizados automaticamente.',
+      eventos_verificados: eventosAtivos.length,
+      obras_atualizadas: totalAtualizadas,
+    });
+
+
+  } catch (error) {
+    console.error('[atualizarStatusObrasAutomatico] Erro:', error);
+    return reply.code(500).send({
+      erro: 'Erro ao atualizar status das obras.',
+      detalhes: (error as Error).message,
     });
   }
 }

@@ -43,11 +43,10 @@ async getMyArtworks(): Promise<Artwork[]> {
     return response.data;
   },
 
-  async updateStatus(
+    async updateStatus(
     id: number,
-    status:
-      | "aprovada"
-      | "rejeitada"
+    status: "aprovada" | "rejeitada" | "exposta",
+    parecer?: string
   ): Promise<void> {
 
     await api.patch(
