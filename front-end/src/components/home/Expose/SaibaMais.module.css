@@ -1,0 +1,248 @@
+.pageContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+
+  color: #262322;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+/* NAVEGAÇÃO */
+.topNav {
+  margin-bottom: 2.5rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #79716B;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.backLink:hover {
+  color: #1A1817;
+}
+
+/* CABEÇALHO */
+.header {
+  max-width: 780px;
+  margin-bottom: 4rem;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #9A7450;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: #262322;
+  margin: 0 0 1.2rem;
+}
+
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #6C645E;
+  margin: 0;
+}
+
+/* SEÇÃO DE ETAPAS */
+.stepsSection {
+  margin-bottom: 4.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.8rem;
+  color: #262322;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.stepCard {
+  background-color: #FFFFFF;
+  border: 1px solid #ECE4DA;
+  border-radius: 16px;
+  padding: 1.8rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stepCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.stepNumber {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #9A7450;
+  margin-bottom: 1rem;
+}
+
+.stepTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #262322;
+  margin: 0 0 0.6rem;
+}
+
+.stepDesc {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #6C645E;
+  margin: 0;
+}
+
+/* DIRETRIZES GERAIS */
+.guidelinesSection {
+  margin-bottom: 4.5rem;
+}
+
+.guidelinesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.guideCard {
+  border-left: 2px solid #9A7450;
+  padding-left: 1.2rem;
+}
+
+.guideTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  color: #262322;
+}
+
+.guideText {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #6C645E;
+  margin: 0;
+}
+
+/* BANNER CTA */
+.ctaBanner {
+  background-color: #FFFFFF;
+  border: 1px solid #ECE4DA;
+  border-radius: 20px;
+  padding: 2.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+}
+
+.ctaContent {
+  max-width: 550px;
+}
+
+.ctaTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #262322;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.02em;
+}
+
+.ctaText {
+  font-size: 0.92rem;
+  color: #6C645E;
+  margin: 0;
+}
+
+.participateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.8rem;
+  background-color: #9A7450;
+  color: #FDF5EA;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(154, 116, 80, 0.25);
+  transition: all 0.2s ease;
+}
+
+.participateBtn:hover {
+  background-color: #886442;
+  box-shadow: 0 6px 18px rgba(154, 116, 80, 0.35);
+  transform: translateY(-1px);
+}
+
+.arrowIcon {
+  width: 15px;
+  height: 15px;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 992px) {
+  .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .guidelinesGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .ctaBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .pageContainer {
+    padding: 24px 16px 60px;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaBanner {
+    padding: 1.5rem;
+  }
+
+  .participateBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

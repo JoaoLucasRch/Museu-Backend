@@ -1,102 +1,60 @@
-import ParticipateButton from "@/components/home/ParticipateButton";
-
-import Pintura from "../../../assets/Expose/pinturaManuel.jpg";
-import Arara from "../../../assets/Expose/Arara.jpg";
-import Onca from "../../../assets/Expose/Onca.jpg";
-
+import FotoAmbiente from "../../../assets/Expose/IMG_0071.jpg";
+import PinturaRecortada from "../../../assets/Expose/pinturaManuel.png";
 import styles from "./Expose.module.css";
-
-const images = [
-  Pintura,
-  Arara,
-  Onca
-];
+import { Link } from "react-router-dom";
 
 export default function Expose() {
-
   const handleParticipate = () => {
     console.log("Clicou em Quero Participar");
   };
 
   return (
-    <section
-      className={styles.exposeContainer}
-      id="exposicoes"
-    >
+    <section className={styles.exposeSection} id="exposicoes">
+      {/* Texto */}
+      <div className={styles.contentWrapper}>
+        <span className={styles.tag}>Para artistas e criadores</span>
 
-      <div className={styles.exposeTextContent}>
-
-        <span className={styles.tag}>
-          Para artistas e criadores
-        </span>
-
-        <h2>
+        <h2 className={styles.title}>
           Sua arte pode
           <br />
-          fazer parte do museu
+          fazer parte do
+          <br />
+          museu
         </h2>
 
-        <p>
-          O Exponha sua Arte é um espaço dedicado a novos
-          artistas que desejam apresentar seus trabalhos,
-          participar de exposições e conectar sua produção
-          artística com a comunidade.
+        <p className={styles.description}>
+          O Exponha sua Arte é um espaço dedicado a novos artistas que desejam
+          apresentar seus trabalhos, participar de exposições e conectar sua
+          produção artística com a comunidade.
         </p>
 
-        <div className={styles.features}>
+        <Link to="/saiba-mais" className={styles.learnMore}>
+          Saiba mais
+          </Link>
 
-          <div>
-            <strong>Envie</strong>
-            <span>suas obras</span>
-          </div>
-
-          <div>
-            <strong>Participe</strong>
-            <span>de exposições</span>
-          </div>
-
-          <div>
-            <strong>Compartilhe</strong>
-            <span>sua história</span>
-          </div>
-
+        <div>
+          <button className={styles.participateBtn} onClick={() => window.location.href = "/login"}>
+            <span>Participar</span>
+          </button>
         </div>
-
-        <div className={styles.ctaWrapper}>
-
-          <ParticipateButton
-            onClick={handleParticipate}
-          />
-
-        </div>
-
       </div>
 
+      {/* Container de imagem com alinhamento gêmeo */}
+      <div className={styles.imageStage}>
+        {/* 1. Camada do fundo com o recorte chanfrado */}
+        <img
+          src={FotoAmbiente}
+          alt="Cenário do museu"
+          className={`${styles.layer} ${styles.bgClipped}`}
+        />
 
-      <div className={styles.exposeImagesWrapper}>
-
-        <div className={styles.cardsDisplay}>
-
-          {images.map((imgUrl, index) => (
-
-            <div
-              key={index}
-              className={styles.artCard}
-            >
-
-              <img
-                src={imgUrl}
-                alt={`Obra artística ${index + 1}`}
-              />
-
-            </div>
-
-          ))}
-
-        </div>
-
+        {/* 2. Camada da pintura recortada (sem corte, alinhada 1:1) */}
+        <img
+          src={PinturaRecortada}
+          alt="Pintura Manuel sobreposta"
+          className={`${styles.layer} ${styles.easelPopout}`}
+        />
       </div>
-
     </section>
   );
 }

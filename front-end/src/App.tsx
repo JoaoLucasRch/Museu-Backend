@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import SaibaMais from "../src/components/home/Expose/SaibaMais";
 
 import Dashboard from "./pages/Artist/Dashboard";
 
@@ -21,6 +22,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      
+      <Route path="/saiba-mais" element={<SaibaMais />} />
 
       <Route path="/register" element={<Register />} />
 
