@@ -15,7 +15,7 @@ import type {
   CreateArtworkData,
 } from "@/types/Artwork";
 
-
+  
 interface CreateArtworkModalProps {
   isOpen: boolean;
   onClose: () => void;
