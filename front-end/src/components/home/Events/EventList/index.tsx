@@ -2,6 +2,7 @@ import EventCard from "../EventCard";
 
 import type { Event } from "@/types/Event";
 
+import styles from "./EventList.module.css";
 
 interface Props {
   eventos: Event[];
@@ -24,11 +25,11 @@ interface Props {
     inicio: string,
     fim: string
   ) => string;
+
+  visibleEvents: Event[];
 }
 
-
 export default function EventList({
-  eventos,
   eventosEmExibicao,
   editais,
   activeTooltipId,
@@ -36,62 +37,42 @@ export default function EventList({
   onMouseEnter,
   onMouseLeave,
   formatarData,
+  visibleEvents,
 }: Props) {
-
   return (
-    <>
-      {eventos.map((evento) => {
-
+    <div className={styles.list}>
+      {visibleEvents.map((evento) => {
         const isEmExibicao =
           eventosEmExibicao.some(
             (item) =>
-              item.id_evento === evento.id_evento
+              item.id_evento ===
+              evento.id_evento
           );
-
 
         const isEdital =
           editais.some(
             (item) =>
-              item.id_evento === evento.id_evento
+              item.id_evento ===
+              evento.id_evento
           );
-
 
         return (
           <EventCard
             key={evento.id_evento}
-
             evento={evento}
-
-            isEmExibicao={
-              isEmExibicao
-            }
-
-            isEdital={
-              isEdital
-            }
-
+            isEmExibicao={isEmExibicao}
+            isEdital={isEdital}
             isTooltipOpen={
-              activeTooltipId === evento.id_evento
+              activeTooltipId ===
+              evento.id_evento
             }
-
-            onClick={
-              onClick
-            }
-
-            onMouseEnter={
-              onMouseEnter
-            }
-
-            onMouseLeave={
-              onMouseLeave
-            }
-
-            formatarData={
-              formatarData
-            }
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            formatarData={formatarData}
           />
         );
       })}
-    </>
+    </div>
   );
 }

@@ -12,6 +12,8 @@ import AdminObras from "./pages/Admin/Artworks";
 import AdminUsuarios from "./pages/Admin/Users";
 import AdminProfile from "./pages/Admin/Profile";
 
+import RoomPage from "@/pages/Rooms/RoomPage";
+
 import { PrivateRoute } from "@/components";
 import AdminLayout from "@/components/layouts/AdminLayout/AdminLayout";
 
@@ -25,6 +27,11 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       <Route path="/reset-password" element={<Login />} />
+
+      <Route
+        path="/salas/:slug"
+        element={<RoomPage />}
+      />
 
       {/* Dashboard do artista */}
       <Route
@@ -65,10 +72,10 @@ function App() {
           element={<AdminUsuarios />}
         />
 
-<Route
-  path="perfil"
-  element={<AdminProfile />}
-/>
+        <Route
+          path="perfil"
+          element={<AdminProfile />}
+        />
 
       </Route>
     </Routes>

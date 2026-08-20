@@ -1,4 +1,97 @@
+/* =========================================================
+   LISTA DE EVENTOS
+========================================================= */
+
 .list {
-  display: flex;
-  gap: 2rem;
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  column-gap: 32px;
+
+  row-gap: 0;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   GARANTE QUE O CARD NÃO ESTOURE A COLUNA
+========================================================= */
+
+.list > * {
+  width: 100%;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+  .list {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    column-gap: 26px;
+  }
+}
+
+
+/* =========================================================
+   TABLET PEQUENO
+========================================================= */
+
+@media (max-width: 820px) {
+  .list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    column-gap: 20px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    column-gap: 14px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE PEQUENO
+========================================================= */
+
+@media (max-width: 480px) {
+  .list {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    column-gap: 12px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE MUITO PEQUENO
+========================================================= */
+
+@media (max-width: 360px) {
+  .list {
+    grid-template-columns:
+      1fr;
+  }
 }

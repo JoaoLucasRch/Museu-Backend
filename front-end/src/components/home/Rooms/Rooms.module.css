@@ -1,232 +1,790 @@
 .roomsContainer {
-  padding: 60px 0;
-  background: #f5f5f5;
+  width: 100%;
+  padding: 85px 0 100px;
+
+  background: #f5f4f2;
+
+  overflow: hidden;
 }
 
+/* =========================================================
+CABECALHO
+========================================================= */
+
 .textHeader {
+  width: min(900px, calc(100% - 40px));
+
+  margin: 0 auto 40px;
+
   text-align: center;
-  margin-bottom: 45px;
+}
+
+.sectionLabel {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #9a7450;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .textHeader h2 {
-  margin-bottom: 10px;
+  margin: 0;
+
+  color: #24211f;
+
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+
+  letter-spacing: -0.04em;
+  font-weight: 700;
 }
 
 .textHeader p {
-  color: #666;
+  max-width: 620px;
+
+  margin: 14px auto 0;
+
+  color: #77716c;
+
+  font-size: 0.96rem;
+  line-height: 1.7;
 }
 
-/* ========================= */
+/* =========================================================
+CARROSSEL
+========================================================= */
 
-.carousel {
-  display: flex;
-  gap: 32px;
-
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  padding: 10px 50px 30px;
-
-  scroll-behavior: smooth;
-
-  scroll-snap-type: x mandatory;
-}
-
-.carousel::-webkit-scrollbar {
-  height: 8px;
-}
-
-.carousel::-webkit-scrollbar-thumb {
-  background: #bdbdbd;
-  border-radius: 999px;
-}
-
-.carousel::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* ========================= */
-
-.roomCard {
+.carouselWrapper {
   position: relative;
 
-  min-width: 680px;
-  max-width: 680px;
-
-  height: 420px;
-
-  border-radius: 22px;
-
-  overflow: hidden;
-
-  flex-shrink: 0;
-
-  scroll-snap-align: start;
-
-  cursor: pointer;
-
-  transition: transform .35s ease, box-shadow .35s ease;
-}
-
-.roomCard:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, .18);
-}
-
-.roomCard:hover {
-
-  transform: translateY(-10px);
-
-}
-
-.roomCard img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   width: 100%;
 
+  padding: 25px 0 70px;
+}
+
+/* =========================================================
+ÁREA DOS CARDS
+========================================================= */
+
+.carousel {
+  position: relative;
+
+  width: min(520px, 50vw);
+  height: 340px;
+
+  perspective: 1400px;
+
+  transform-style: preserve-3d;
+
+  isolation: isolate;
+}
+
+/* =========================================================
+CARD
+========================================================= */
+
+.roomCard {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 100%;
   height: 100%;
 
-  object-fit: cover;
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  border-radius: 24px;
+
+  background: #ddd;
+
+  cursor: pointer;
+
+  transform-origin: center center;
+
+  transform-style: preserve-3d;
+
+  box-shadow:
+    0 22px 52px rgba(35, 30, 26, 0.17);
+
+  will-change:
+    transform,
+    opacity,
+    filter;
+
+  transition:
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.65s ease,
+    filter 0.65s ease,
+    box-shadow 0.65s ease;
+}
+
+/* =========================================================
+CARD ATIVO
+========================================================= */
+
+.activeCard {
+  cursor: pointer;
+}
+
+/*
+ * Apenas o card ativo recebe os efeitos de hover.
+ * Os cards do fundo não respondem ao mouse.
+ */
+
+.activeCard:hover {
+  box-shadow:
+    0 28px 65px rgba(35, 30, 26, 0.22);
+}
+
+.activeCard:focus-visible {
+  outline: 3px solid rgba(154, 116, 80, 0.55);
+
+  outline-offset: 5px;
+}
+
+/* =========================================================
+CARDS INATIVOS
+========================================================= */
+
+.inactiveCard {
+  cursor: default;
+}
+
+/*
+ * Impede qualquer alteração visual provocada
+ * pelo hover nos cards que estão atrás.
+ */
+
+.inactiveCard:hover {
+  box-shadow:
+    0 22px 52px rgba(35, 30, 26, 0.17);
+}
+
+/* =========================================================
+IMAGEM
+========================================================= */
+
+.roomImage {
+  width: 100%;
+  height: 100%;
 
   display: block;
 
+  object-fit: cover;
+
+  transform: scale(1);
+
+  transition:
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s ease;
 }
 
-/* ========================= */
+/*
+ * O zoom só acontece no card ativo.
+ */
+
+.activeCard:hover .roomImage {
+  transform: scale(1.035);
+}
+
+/* =========================================================
+OVERLAY
+========================================================= */
 
 .overlay {
-
   position: absolute;
 
   inset: 0;
 
-  background: linear-gradient(
+  background:
+    linear-gradient(
       to top,
-      rgba(0,0,0,.70),
-      rgba(0,0,0,.10)
-  );
-
-  display: flex;
-
-  align-items: flex-end;
-
-  padding: 35px;
-
-  transition: .35s;
+      rgba(15, 13, 12, 0.9) 0%,
+      rgba(15, 13, 12, 0.45) 45%,
+      rgba(15, 13, 12, 0.03) 100%
+    );
 }
 
-.overlay h3 {
+/* =========================================================
+CONTEÚDO
+========================================================= */
 
-  color: white;
-
-  font-size: 2rem;
-
-  font-weight: 700;
-
-}
-
-/* ========================= */
-
-.description {
-
+.roomContent {
   position: absolute;
 
   left: 0;
   right: 0;
+  bottom: 0;
 
-  bottom: -140px;
+  z-index: 2;
 
-  background: white;
+  padding: 30px;
 
-  padding: 22px 28px;
+  color: #fff;
 
-  min-height: 140px;
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-  display: flex;
-  align-items: center;
+/*
+ * Somente o card ativo sobe o conteúdo no hover.
+ */
 
-  transition: .35s;
+.activeCard:hover .roomContent {
+  transform: translateY(-5px);
+}
+
+.roomLabel {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: rgba(255, 255, 255, 0.68);
+
+  font-size: 0.64rem;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.roomContent h3 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
+  line-height: 1.05;
+
+  letter-spacing: -0.035em;
+  font-weight: 700;
+}
+
+.explore {
+  display: inline-block;
+
+  margin-top: 12px;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  font-size: 0.74rem;
+  font-weight: 600;
+
+  opacity: 0.75;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.activeCard:hover .explore {
+  opacity: 1;
+
+  transform: translateX(3px);
+}
+
+/* =========================================================
+DESCRIÇÃO
+========================================================= */
+
+.description {
+  position: absolute;
+
+  top: 28px;
+  left: 30px;
+  right: 30px;
+
+  z-index: 3;
+
+  opacity: 0;
+
+  transform: translateY(-5px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 
 .description p {
+  max-width: 400px;
 
-  color: #555;
+  margin: 0;
 
-  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.86);
 
+  font-size: 0.78rem;
+  line-height: 1.6;
 }
 
-/* ========================= */
+/*
+ * IMPORTANTE:
+ * A descrição só pode aparecer no card ativo.
+ */
 
-.roomCard:hover .description {
+.activeCard:hover .description {
+  opacity: 1;
 
-  bottom: 0;
-
+  transform: translateY(0);
 }
 
-.roomCard:hover .overlay {
+/* =========================================================
+BOTÕES
+========================================================= */
 
-  background: linear-gradient(
-      to top,
-      rgba(0,0,0,.85),
-      rgba(0,0,0,.15)
-  );
+.carouselButton {
+  position: relative;
 
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(36, 33, 31, 0.1);
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  color: #4a4541;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 24px rgba(35, 30, 26, 0.1);
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* ========================= */
+.carouselButton:hover {
+  background: #fff;
 
-@media (max-width:900px){
+  transform: scale(1.08);
 
-.roomCard{
-
-    min-width:85vw;
-    max-width:85vw;
-
-    height:360px;
-
+  box-shadow:
+    0 12px 30px rgba(35, 30, 26, 0.15);
 }
 
-
-.overlay h3{
-
-    font-size:1.5rem;
-
+.carouselButton:active {
+  transform: scale(0.95);
 }
 
-.description{
+.carouselButton:focus-visible {
+  outline: 3px solid rgba(154, 116, 80, 0.4);
 
-    min-height:180px;
-
-    bottom:-180px;
-
+  outline-offset: 3px;
 }
 
+.previousButton {
+  margin-right: 26px;
 }
 
-@media (max-width:600px){
-
-.carousel{
-
-    padding:10px 20px 20px;
-
+.nextButton {
+  margin-left: 26px;
 }
 
-.roomCard{
+/* =========================================================
+INDICADORES
+========================================================= */
 
-    height:320px;
+.carouselIndicators {
+  display: flex;
 
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: -25px;
 }
 
-.overlay{
+.indicator {
+  width: 7px;
+  height: 7px;
 
-    padding:20px;
+  padding: 0;
 
+  border: 0;
+
+  border-radius: 999px;
+
+  background: #c9c3bd;
+
+  cursor: pointer;
+
+  transition:
+    width 0.35s ease,
+    background 0.35s ease;
 }
 
-.description{
-
-    padding:20px;
-
+.indicator:hover {
+  background: #9a7450;
 }
 
+.activeIndicator {
+  width: 24px;
+
+  background: #9a7450;
+}
+
+/* =========================================================
+TABLET GRANDE
+========================================================= */
+
+@media (max-width: 1100px) {
+  .carousel {
+    width: min(500px, 50vw);
+    height: 330px;
+  }
+
+  .previousButton {
+    margin-right: 20px;
+  }
+
+  .nextButton {
+    margin-left: 20px;
+  }
+}
+
+/* =========================================================
+TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+  .roomsContainer {
+    padding: 70px 0 75px;
+  }
+
+  .carouselWrapper {
+    padding: 20px 0 65px;
+  }
+
+  .carousel {
+    width: min(440px, 53vw);
+    height: 300px;
+
+    perspective: 1100px;
+  }
+
+  .carouselButton {
+    width: 44px;
+    height: 44px;
+  }
+
+  .previousButton {
+    margin-right: 14px;
+  }
+
+  .nextButton {
+    margin-left: 14px;
+  }
+
+  .roomContent {
+    padding: 22px;
+  }
+
+  .roomContent h3 {
+    font-size: 1.6rem;
+  }
+
+  .description {
+    top: 22px;
+
+    left: 22px;
+    right: 22px;
+  }
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .roomsContainer {
+    padding: 50px 0 55px;
+  }
+
+  .textHeader {
+    width: calc(100% - 30px);
+
+    margin-bottom: 20px;
+  }
+
+  .textHeader h2 {
+    font-size: 1.8rem;
+  }
+
+  .textHeader p {
+    margin-top: 10px;
+
+    font-size: 0.82rem;
+
+    line-height: 1.55;
+  }
+
+  /* =====================================================
+  ÁREA DO CARROSSEL
+  ===================================================== */
+
+  .carouselWrapper {
+    display: grid;
+
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+
+    gap: 4px;
+
+    width: 100%;
+
+    padding: 15px 6px 50px;
+  }
+
+  /* =====================================================
+  CARROSSEL MOBILE
+  ===================================================== */
+
+  .carousel {
+    width: min(270px, 100%);
+
+    height: 215px;
+
+    justify-self: center;
+
+    perspective: 900px;
+  }
+
+  /* =====================================================
+  CARD MOBILE
+  ===================================================== */
+
+  .roomCard {
+    border-radius: 17px;
+
+    box-shadow:
+      0 16px 38px rgba(35, 30, 26, 0.16);
+  }
+
+  /*
+   * Os cards laterais agora ficam visíveis nas bordas.
+   *
+   * O posicionamento é controlado pelo React,
+   * mas o overflow do container permanece oculto.
+   */
+
+  .inactiveCard {
+    pointer-events: none;
+  }
+
+  /* =====================================================
+  BOTÕES MOBILE
+  ===================================================== */
+
+  .carouselButton {
+    width: 36px;
+    height: 36px;
+
+    align-self: center;
+  }
+
+  .previousButton,
+  .nextButton {
+    margin: 0;
+  }
+
+  /* =====================================================
+  CONTEÚDO MOBILE
+  ===================================================== */
+
+  .roomContent {
+    padding: 16px;
+  }
+
+  .roomLabel {
+    margin-bottom: 5px;
+
+    font-size: 0.55rem;
+  }
+
+  .roomContent h3 {
+    font-size: 1.2rem;
+  }
+
+  .explore {
+    margin-top: 7px;
+
+    font-size: 0.62rem;
+  }
+
+  /* =====================================================
+  DESCRIÇÃO MOBILE
+  ===================================================== */
+
+  .description {
+    top: 16px;
+
+    left: 16px;
+    right: 16px;
+  }
+
+  .description p {
+    max-width: 230px;
+
+    font-size: 0.64rem;
+
+    line-height: 1.5;
+  }
+
+  /*
+   * A descrição continua exclusiva do card ativo.
+   */
+
+  .inactiveCard .description {
+    opacity: 0 !important;
+
+    transform: translateY(-5px) !important;
+  }
+
+  /* =====================================================
+  HOVER MOBILE
+  ===================================================== */
+
+  .activeCard:hover {
+    box-shadow:
+      0 20px 45px rgba(35, 30, 26, 0.2);
+  }
+
+  .activeCard:hover .roomImage {
+    transform: scale(1.025);
+  }
+
+  /* =====================================================
+  INDICADORES MOBILE
+  ===================================================== */
+
+  .carouselIndicators {
+    gap: 6px;
+
+    margin-top: -15px;
+  }
+
+  .indicator {
+    width: 6px;
+    height: 6px;
+  }
+
+  .activeIndicator {
+    width: 20px;
+  }
+
+  /* =====================================================
+  ANIMAÇÃO
+  ===================================================== */
+
+  .carousel .roomCard {
+    transition-duration: 0.6s;
+  }
+}
+
+/* =========================================================
+TELAS MUITO PEQUENAS
+========================================================= */
+
+@media (max-width: 380px) {
+  .carouselWrapper {
+    grid-template-columns: 32px minmax(0, 1fr) 32px;
+
+    gap: 3px;
+
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .carousel {
+    width: min(245px, 100%);
+
+    height: 195px;
+  }
+
+  .carouselButton {
+    width: 32px;
+    height: 32px;
+  }
+
+  .roomCard {
+    border-radius: 14px;
+  }
+
+  .roomContent {
+    padding: 14px;
+  }
+
+  .roomContent h3 {
+    font-size: 1.1rem;
+  }
+
+  .description {
+    top: 14px;
+
+    left: 14px;
+    right: 14px;
+  }
+
+  .description p {
+    max-width: 210px;
+
+    font-size: 0.6rem;
+  }
+}
+
+/* =========================================================
+REDUÇÃO DE MOVIMENTO
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .roomCard,
+  .roomImage,
+  .roomContent,
+  .explore,
+  .description,
+  .carouselButton,
+  .indicator {
+    transition: none;
+  }
+
+  .activeCard:hover {
+    box-shadow:
+      0 22px 52px rgba(35, 30, 26, 0.17);
+  }
+
+  .activeCard:hover .roomImage {
+    transform: none;
+  }
+
+  .activeCard:hover .roomContent {
+    transform: none;
+  }
 }
