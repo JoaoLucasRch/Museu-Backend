@@ -68,7 +68,7 @@ export class EmailService {
         detalhes: 'A obra será exposta em breve no museu.',
       },
       rejeitada: {
-        subject: '📝 Sua obra foi rejeitada',
+        subject: '📝 Sua obra não foi aprovada',
         emoji: '📝',
         cor: '#dc2626',
         mensagem: 'Infelizmente sua obra não foi aprovada desta vez.',
@@ -90,8 +90,8 @@ export class EmailService {
       return false;
     }
 
-    const tituloFormatado = tituloObra.length > 50 
-      ? tituloObra.substring(0, 50) + '...' 
+    const tituloFormatado = tituloObra.length > 50
+      ? tituloObra.substring(0, 50) + '...'
       : tituloObra;
 
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';

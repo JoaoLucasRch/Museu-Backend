@@ -12,15 +12,15 @@ export default function StatusBadge({ status }: Props) {
   const labels = {
     pendente: "PENDENTE",
     aprovada: "APROVADA",
-    rejeitada: "REJEITADA",
+    rejeitada: "NÃO APROVADA",
     exposta: "EXPOSTA",
   };
 
   const classes = {
-    pendente: styles.pending,
-    aprovada: styles.approved,
-    rejeitada: styles.rejected,
-    exposta: styles.exhibited,
+    pendente: styles.statusBadgePending,
+    aprovada: styles.statusBadgeApproved,
+    rejeitada: styles.statusBadgeRejected,
+    exposta: styles.statusBadgeExhibited,
   };
 
   return (

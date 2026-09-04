@@ -4,10 +4,7 @@ import styles from "./ArtworkRow.module.css";
 
 interface Props {
   artwork: Artwork;
-
-  onClick: (
-    artwork: Artwork
-  ) => void;
+  onClick: (artwork: Artwork) => void;
 }
 
 export default function ArtworkRow({
@@ -35,12 +32,41 @@ export default function ArtworkRow({
     ) {
       return styles.reprovado;
     }
-    
+
     if (value.includes("expost")) {
-    return styles.exposta;
+      return styles.exposta;
     }
 
     return "";
+  }
+
+  function getStatusLabel(status: string) {
+    if (!status) {
+      return "";
+    }
+
+    const value = status.toLowerCase().trim();
+
+    if (value.includes("pendente")) {
+      return "Pendente";
+    }
+
+    if (value.includes("aprovad")) {
+      return "Aprovada";
+    }
+
+    if (
+      value.includes("reprovad") ||
+      value.includes("rejeitad")
+    ) {
+      return "Não aprovada";
+    }
+
+    if (value.includes("expost")) {
+      return "Exposta";
+    }
+
+    return status;
   }
 
   function formatDate(dateString?: string) {
@@ -48,8 +74,9 @@ export default function ArtworkRow({
       return "-";
     }
 
-    const [year, month, day] =
-      dateString.split("T")[0].split("-");
+    const [year, month, day] = dateString
+      .split("T")[0]
+      .split("-");
 
     if (!year || !month || !day) {
       return "-";
@@ -95,7 +122,6 @@ export default function ArtworkRow({
 
           <span>
             Autor:{" "}
-
             <span className={styles.author}>
               {artwork.artista?.nome ??
                 artwork.autor ??
@@ -119,7 +145,7 @@ export default function ArtworkRow({
             artwork.status
           )}`}
         >
-          {artwork.status}
+          {getStatusLabel(artwork.status)}
         </span>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import EventRow from "@/components/admin/events/EventRow";
 import type { Event } from "@/types/Event";
+
 import styles from "./EventList.module.css";
 
 interface Props {
@@ -14,18 +15,10 @@ export default function EventList({
   return (
     <section className={styles.container}>
       <header className={styles.header}>
-        <div>
-          <h2 className={styles.title}>
-            Eventos cadastrados
-          </h2>
-
-          <p className={styles.subtitle}>
-            {events.length}{" "}
-            {events.length === 1
-              ? "evento cadastrado"
-              : "eventos cadastrados"}
-          </p>
-        </div>
+        <div className={styles.colEvento}>Evento</div>
+        <div className={styles.colTipo}>Tipo</div>
+        <div className={styles.colPeriodo}>Período</div>
+        <div className={styles.colLocal}>Local</div>
       </header>
 
       <div className={styles.body}>

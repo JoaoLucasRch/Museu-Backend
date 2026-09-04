@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+
 import styles from "./ArtworkReviewModal.module.css";
 
 interface Props {
@@ -21,27 +22,36 @@ export default function ExhibitionModal({
   return (
     <div className={styles.overlay} onClick={onCancel}>
       <div
-        className={styles.confirmModal}
+        className={`${styles.confirmModal} ${styles.confirmExhibition}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <header style={{ display: "flex", justifyContent: "flex-end" }}>
-          <button
-            className={styles.closeButton}
-            onClick={onCancel}
-            type="button"
-            disabled={loading}
-          >
-            <X size={20} />
-          </button>
-        </header>
+        <button
+          className={styles.closeButton}
+          onClick={onCancel}
+          type="button"
+          disabled={loading}
+          aria-label="Fechar"
+        >
+          <X size={20} />
+        </button>
 
-        <h3 className={styles.confirmTitle}>Marcar como exposta?</h3>
+        <div className={styles.confirmContent}>
+          <span className={styles.confirmEyebrow}>
+            Exposição
+          </span>
 
-        <p className={styles.confirmText}>
-          Confirma que a obra <strong>"{obra}"</strong> está sendo exposta
-          publicamente? O status será alterado de <strong>Aprovada</strong> para{" "}
-          <strong>Exposta</strong>.
-        </p>
+          <h3 className={styles.confirmTitle}>
+            Marcar como exposta?
+          </h3>
+
+          <p className={styles.confirmText}>
+            Confirma que a obra{" "}
+            <strong>"{obra}"</strong> está sendo exposta
+            publicamente? O status será alterado de{" "}
+            <strong>Aprovada</strong> para{" "}
+            <strong>Exposta</strong>.
+          </p>
+        </div>
 
         <div className={styles.confirmButtons}>
           <button

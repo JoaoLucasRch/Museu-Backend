@@ -165,7 +165,7 @@ export default function ArtworksList() {
     { value: "todas", label: "Todas" },
     { value: "pendente", label: "Pendentes" },
     { value: "aprovada", label: "Aprovadas" },
-    { value: "rejeitada", label: "Rejeitadas" },
+    { value: "rejeitada", label: "Não aprovadas" },
     { value: "exposta", label: "Expostas" },
   ];
 

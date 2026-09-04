@@ -1,497 +1,874 @@
 .overlay {
   position: fixed;
   inset: 0;
+  z-index: 1000;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  padding: 1.5rem;
+  padding: 24px;
 
-  background: rgba(20, 18, 17, 0.3);
+  background: rgba(48, 43, 40, 0.58);
+  backdrop-filter: blur(6px);
 
-  backdrop-filter: blur(3px);
-
-  z-index: 1000;
+  animation: overlayEnter 0.2s ease-out;
 }
 
 .modal {
+  position: relative;
+
   width: 100%;
-  max-width: 620px;
+  max-width: 680px;
   max-height: 90vh;
 
-  overflow-y: auto;
-
-  background: #fcfbfa;
-  border: 1px solid #ece3dd;
-  border-radius: 28px;
-  padding: 1.7rem 2rem;
-
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
-  animation: fade 0.25s ease;
-}
-
-/* HEADER */
-
-.header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1.4rem;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  color: #302b28;
+  background: #ffffff;
+
+  border: 1px solid #eee9e4;
+  border-radius: 20px;
+
+  box-shadow:
+    0 24px 60px rgba(48, 43, 40, 0.18),
+    0 4px 16px rgba(48, 43, 40, 0.08);
+
+  animation: modalEnter 0.24s ease-out;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
 }
 
-.title {
-  margin: 0;
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #2b2624;
+/* ─────────────────────────────
+   COR DO STATUS
+───────────────────────────── */
+
+.statusApproved {
+  background: #f5faf6;
+  border-color: rgba(92, 150, 112, 0.22);
 }
 
-.subtitle {
-  margin-top: 0.4rem;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  color: #867c75;
+.statusPending {
+  background: #fcfaf1;
+  border-color: rgba(185, 151, 69, 0.22);
 }
+
+.statusRejected {
+  background: #fcf6f5;
+  border-color: rgba(180, 93, 88, 0.22);
+}
+
+/* ─────────────────────────────
+   STATUS BADGE
+───────────────────────────── */
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+
+  border: 1px solid transparent;
+}
+
+.statusBadgePending {
+  color: #8a6a22;
+  background: #fbf4dc;
+  border-color: #eadcae;
+}
+
+.statusBadgeApproved,
+.statusBadgeExhibited {
+  color: #477052;
+  background: #eaf3eb;
+  border-color: #cbdcca;
+}
+
+.statusBadgeRejected {
+  color: #9a5751;
+  background: #f8e9e7;
+  border-color: #e7cfcc;
+}
+
+/* ─────────────────────────────
+   FECHAR
+───────────────────────────── */
 
 .closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+
   width: 36px;
   height: 36px;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  border: none;
-  background: transparent;
-  border-radius: 10px;
-  color: #8b817a;
+  padding: 0;
+
+  color: #302b28;
+  background: rgba(255, 255, 255, 0.72);
+
+  border: 1px solid rgba(48, 43, 40, 0.09);
+  border-radius: 50%;
+
   cursor: pointer;
-  transition: 0.2s;
-  flex-shrink: 0;
+
+  box-shadow: 0 3px 10px rgba(48, 43, 40, 0.05);
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .closeButton:hover {
-  background: #f7f4f2;
-  color: #2b2624;
+  color: #ffffff;
+  background: #302b28;
+  transform: scale(1.04);
 }
 
-/* CONTENT */
+/* ─────────────────────────────
+   CONTEÚDO
+───────────────────────────── */
 
 .content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  overflow-y: auto;
+  padding: 30px 28px 24px;
 }
 
-/* SECTIONS */
+/* ─────────────────────────────
+   CABEÇALHO
+───────────────────────────── */
 
-.sectionBox {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid #ece3dd;
-  border-radius: 16px;
+.intro {
+  padding-right: 48px;
 }
 
-.sectionHeader {
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 9px;
+}
+
+.eyebrow {
+  color: #9a7450;
+
+  font-size: 0.67rem;
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+
+  color: #302b28;
+
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.25;
+
+  letter-spacing: -0.025em;
+}
+
+.primaryMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  margin-top: 17px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #716963;
+
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.metaItem svg {
+  color: #9a7450;
+  flex-shrink: 0;
+}
+
+.metaDivider {
+  width: 3px;
+  height: 3px;
+
+  margin: 0 11px;
+
+  background: #c9c0b9;
+  border-radius: 50%;
+}
+
+/* ─────────────────────────────
+   DESCRIÇÃO
+───────────────────────────── */
+
+.descriptionSection {
+  padding: 28px 0 24px;
+}
+
+.sectionLabel {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #a18d7c;
+
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.description {
+  max-width: 620px;
+
+  margin: 0;
+
+  color: #514b47;
+
+  font-size: 0.92rem;
+  line-height: 1.7;
+
+  white-space: pre-wrap;
+}
+
+/* ─────────────────────────────
+   ARTISTA
+───────────────────────────── */
+
+.artistSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  padding: 18px 0;
+
+  border-top: 1px solid rgba(238, 233, 228, 0.8);
+  border-bottom: 1px solid rgba(238, 233, 228, 0.8);
+}
+
+.personItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  min-width: 0;
+}
+
+.personItem + .personItem {
+  padding-left: 22px;
+
+  border-left: 1px solid rgba(238, 233, 228, 0.8);
+}
+
+.personItem > svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  color: #9a7450;
+}
+
+.personItem > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.personItem span {
+  color: #a18d7c;
+
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.personItem strong,
+.emailLink {
+  overflow-wrap: anywhere;
+
+  color: #302b28;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.emailLink {
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.emailLink:hover {
+  color: #9a7450;
+}
+
+/* ─────────────────────────────
+   EDITAL
+───────────────────────────── */
+
+.editalSection {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 17px 0;
+
+  border-bottom: 1px solid rgba(238, 233, 228, 0.8);
+}
+
+.editalSection > svg {
+  flex-shrink: 0;
+  color: #9a7450;
+}
+
+.editalSection > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.editalSection span {
+  color: #a18d7c;
+
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.editalSection strong {
+  overflow-wrap: anywhere;
+
+  color: #302b28;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ─────────────────────────────
+   ARQUIVOS
+───────────────────────────── */
+
+.filesSection {
+  padding-top: 21px;
+}
+
+.filesHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
 
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid #f1eeeb;
+  margin-bottom: 8px;
 }
 
-.sectionTitle {
-  margin: 0;
+.filesHeader > span:first-child {
+  color: #a18d7c;
 
-  font-size: 0.72rem;
-  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+
   letter-spacing: 0.08em;
-  font-weight: 600;
-  color: #a18e84;
+  text-transform: uppercase;
 }
 
-.statusBadge {
-  display: flex;
+.filesCount {
+  min-width: 22px;
+  height: 22px;
+
+  display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  justify-content: center;
 
-  padding: 0.35rem 0.7rem;
+  padding: 0 6px;
+
+  color: #716963;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+
+  background: rgba(244, 240, 237, 0.8);
+
   border-radius: 999px;
-
-  background: rgba(43, 39, 36, 0.656);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 600;
-
-  pointer-events: none;
 }
 
-/* DESCRIPTION */
-
-.descriptionBox {
+.linksList {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-}
-
-.descriptionBox label,
-.linksBlock label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  color: #a18e84;
-}
-
-.descriptionBox p {
-  margin: 0;
-  color: #625954;
-  line-height: 1.75;
-  font-size: 0.95rem;
-}
-
-/* LINKS */
-
-.linksBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.linkBox {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
 }
 
 .fileLink {
   display: flex;
   align-items: center;
-  word-break: break-word;
+  gap: 11px;
 
-  padding: 0.9rem 1rem;
-  border: 1px solid #ece3dd;
-  border-radius: 12px;
-  background: #fafafa;
+  min-width: 0;
 
-  color: #2b2624;
-  font-size: 0.92rem;
-  font-weight: 500;
+  padding: 9px 0;
+
+  color: #514b47;
+
   text-decoration: none;
-  transition: 0.2s;
+
+  border-bottom: 1px solid rgba(238, 233, 228, 0.55);
+
+  transition:
+    color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.fileLink:last-child {
+  border-bottom: 0;
 }
 
 .fileLink:hover {
-  background: #f7f4f2;
-  border-color: #d8ccc4;
+  padding-left: 4px;
+  color: #9a7450;
+}
+
+.fileIndex {
+  flex-shrink: 0;
+
+  color: #b2a69d;
+
+  font-size: 0.65rem;
+  font-weight: 700;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.fileName {
+  min-width: 0;
+
+  overflow: hidden;
+
+  font-size: 0.8rem;
+  line-height: 1.4;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .emptyText {
   margin: 0;
-  color: #8b817a;
-  font-size: 0.92rem;
+
+  color: #a18d7c;
+
+  font-size: 0.8rem;
 }
 
-/* INFO */
-
-.infoGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-
-  padding-top: 1rem;
-  border-top: 1px solid #ece3dd;
-}
-
-.infoItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-}
-
-.infoItem svg {
-  margin-top: 2px;
-  color: #8b817a;
-  flex-shrink: 0;
-}
-
-.infoItem div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  min-width: 0;
-}
-
-.infoItem span {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #a18e84;
-}
-
-.infoItem strong {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #2b2624;
-  line-height: 1.5;
-  word-break: break-word;
-}
-
-.emailLink {
-  color: #2b2624;
-  text-decoration: none;
-  word-break: break-all;
-  transition: color 0.2s;
-}
-
-.emailLink:hover {
-  color: #053158;
-  text-decoration: underline;
-}
-
-/* FOOTER */
+/* ─────────────────────────────
+   AÇÕES
+───────────────────────────── */
 
 .footer {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.8rem;
+  gap: 9px;
+
+  padding: 15px 28px 18px;
+
+  border-top: 1px solid rgba(238, 233, 228, 0.8);
 }
 
-.footer button {
-  height: 44px;
-  padding: 0 1.5rem;
+.rejectButton,
+.approveButton {
+  min-height: 39px;
 
-  border: none;
+  padding: 0 18px;
+
   border-radius: 999px;
 
-  font-size: 0.9rem;
+  font-family: inherit;
+  font-size: 0.79rem;
   font-weight: 600;
+
   cursor: pointer;
-  transition: 0.2s;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .rejectButton {
-  background: #fff;
-  border: 1px solid #000000 !important;
-  color: #000000;
+  color: #716963;
+  background: transparent;
+
+  border: 1px solid #ddd6d0;
 }
 
-.rejectButton:hover {
-  background: #260101;
-  color: #ff0000;
+.rejectButton:hover:not(:disabled) {
+  color: #302b28;
+  background: rgba(247, 244, 242, 0.8);
 }
 
 .approveButton {
-  background: #2b2624;
-  color: #fff;
+  color: #ffffff;
+  background: #302b28;
+
+  border: 1px solid #302b28;
 }
 
-.approveButton:hover {
-  background: #011b01;
+.approveButton:hover:not(:disabled) {
+  background: #4a433e;
+  border-color: #4a433e;
+
+  transform: translateY(-1px);
 }
 
-.exhibitButton {
-  background: #23303d;
-  color: #fff;
-}
-
-.exhibitButton:hover {
-  background: #053158;
-}
-
-button:disabled {
-  opacity: 0.6;
+.rejectButton:disabled,
+.approveButton:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* ================= MODAIS DE CONFIRMAÇÃO (CONFIRMMODAL) ================= */
+
+ /* ─────────────────────────────
+    MODAIS DE CONFIRMAÇÃO
+ ───────────────────────────── */
 
 .confirmModal {
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: #FAFAFA;
-  border-radius: 24px;
-  padding: 2.25rem 2.5rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-}
-
-.confirmHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   position: relative;
-  margin-bottom: 0.5rem;
+
+  width: 100%;
+  max-width: 460px;
+
+  padding: 30px;
+
+  color: #302b28;
+  background: #ffffff;
+
+  border: 1px solid #eee9e4;
+  border-radius: 18px;
+
+  box-shadow:
+    0 24px 60px rgba(48, 43, 40, 0.18),
+    0 4px 16px rgba(48, 43, 40, 0.08);
+
+  animation: modalEnter 0.22s ease-out;
 }
 
-.badgeApprove {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #166534;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.4rem;
+.confirmApprove {
+  background: #f8fbf8;
+  border-color: rgba(92, 150, 112, 0.2);
 }
 
-.badgeReject {
+.confirmReject {
+  background: #fdf8f7;
+  border-color: rgba(180, 93, 88, 0.2);
+}
+
+.confirmExhibition {
+  background: #f8fbf8;
+  border-color: rgba(92, 150, 112, 0.2);
+}
+
+.confirmContent {
+  padding-right: 36px;
+}
+
+.confirmEyebrow {
   display: block;
-  font-size: 0.72rem;
+
+  margin-bottom: 9px;
+
+  color: #9a7450;
+
+  font-size: 0.65rem;
   font-weight: 700;
-  color: #000000;
+  line-height: 1;
+
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.4rem;
 }
 
 .confirmTitle {
   margin: 0;
-  font-size: 1.5rem;
+
+  color: #302b28;
+
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #1A1A1A;
-}
+  line-height: 1.3;
 
-.closeButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  margin-left: 300px;
-  border-radius: 50%;
-  background: transparent;
-  color: #737373;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.closeButton:hover {
-  background: #E5E5E5;
-}
-
-.confirmContent {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  padding: 0.25rem 0 1rem;
+  letter-spacing: -0.02em;
 }
 
 .confirmText {
-  margin: 0;
-  color: #525252;
-  line-height: 1.6;
-  font-size: 0.98rem;
+  margin: 13px 0 0;
+
+  color: #716963;
+
+  font-size: 0.88rem;
+  line-height: 1.65;
 }
 
 .confirmText strong {
-  color: #1A1A1A;
-  font-weight: 700;
+  color: #302b28;
+  font-weight: 650;
 }
 
 .confirmButtons {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  gap: 1.25rem;
-  margin-top: 0.25rem;
+  gap: 9px;
+
+  margin-top: 27px;
+  padding-top: 17px;
+
+  border-top: 1px solid rgba(238, 233, 228, 0.85);
 }
 
 .cancelButton,
 .confirmApproveButton,
 .confirmRejectButton {
-  height: 40px;
-  padding: 0 1.35rem;
+  min-height: 39px;
+
+  padding: 0 17px;
+
   border-radius: 999px;
-  font-size: 0.9rem;
+
+  font-family: inherit;
+  font-size: 0.78rem;
   font-weight: 600;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .cancelButton {
-  background: #FFFFFF;
-  color: #404040;
-  border: 1px solid #E5E5E5;
+  color: #716963;
+  background: transparent;
+  border: 1px solid #ddd6d0;
 }
 
 .cancelButton:hover:not(:disabled) {
-  background: #F5F5F5;
-  border-color: #D4D4D4;
+  color: #302b28;
+  background: #f7f4f2;
 }
 
 .confirmApproveButton {
-  background: #241F1D;
-  color: #FFFFFF;
-  border: none;
+  color: #ffffff;
+  background: #527b5d;
+  border: 1px solid #527b5d;
 }
 
 .confirmApproveButton:hover:not(:disabled) {
-  background: #0d3e00;
+  background: #456b50;
+  border-color: #456b50;
+  transform: translateY(-1px);
 }
 
 .confirmRejectButton {
-  background: #000000;
-  color: #FFFFFF;
-  border: none;
+  color: #ffffff;
+  background: #a45f59;
+  border: 1px solid #a45f59;
 }
 
 .confirmRejectButton:hover:not(:disabled) {
-  background: #7d0d0d;
+  background: #914f4a;
+  border-color: #914f4a;
+  transform: translateY(-1px);
 }
 
+.cancelButton:disabled,
+.confirmApproveButton:disabled,
+.confirmRejectButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
 
-@media (max-width: 768px) {
+/* ─────────────────────────────
+   RESPONSIVO
+───────────────────────────── */
+
+@media (max-width: 700px) {
   .overlay {
-    padding: 1rem;
+    padding: 16px;
   }
 
   .modal {
     max-height: 92vh;
-    border-radius: 22px;
-    padding: 1.5rem;
+    border-radius: 18px;
   }
 
-  .header h2,
+  .content {
+    padding: 27px 22px 22px;
+  }
+
+  .intro {
+    padding-right: 42px;
+  }
+
   .title {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 
-  .sectionHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .infoGrid {
+  .artistSection {
     grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .personItem + .personItem {
+    padding-top: 17px;
+    padding-left: 0;
+
+    border-top: 1px solid rgba(238, 233, 228, 0.8);
+    border-left: 0;
   }
 
   .footer {
-    flex-direction: column-reverse;
+    padding: 14px 22px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    align-items: flex-end;
+    padding: 0;
   }
 
-  .footer button {
-    width: 100%;
+  .modal {
+    max-height: 94vh;
+
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .content {
+    padding: 24px 18px 20px;
+  }
+
+  .intro {
+    padding-right: 38px;
+  }
+
+  .eyebrowRow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .primaryMeta {
+    gap: 7px;
+  }
+
+  .metaDivider {
+    margin: 0 5px;
+  }
+
+  .footer {
+    padding: 13px 18px 15px;
+  }
+
+  .rejectButton,
+  .approveButton {
+    flex: 1;
+  }
+}
+
+/* ─────────────────────────────
+   ANIMAÇÕES
+───────────────────────────── */
+
+@keyframes overlayEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmModal {
+    max-width: none;
+    padding: 25px 20px 20px;
+
+    border-radius: 18px 18px 0 0;
+  }
+
+  .confirmContent {
+    padding-right: 34px;
+  }
+
+  .confirmTitle {
+    font-size: 1.2rem;
   }
 
   .confirmButtons {
-    flex-direction: column-reverse;
+    margin-top: 23px;
   }
 
-  .confirmButtons button {
-    width: 100%;
+  .cancelButton,
+  .confirmApproveButton,
+  .confirmRejectButton {
+    flex: 1;
   }
 }

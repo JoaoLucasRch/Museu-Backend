@@ -56,7 +56,7 @@ export async function obraRoutes(app: FastifyInstance) {
     type: 'object',
     required: ['status'],
     properties: {
-      status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada', 'exposta'] },  // ← ATUALIZADO
+      status: { type: 'string', enum: ['pendente', 'aprovada', 'rejeitada', 'exposta'] }, 
     },
   };
 

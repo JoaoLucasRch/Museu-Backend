@@ -29,12 +29,12 @@ export default function ArtworkDetailsModal({
     artwork.edital?.titulo_evento ??
     "Exponha sua Arte";
 
-  const statusLabel = {
-    pendente: "Pendente",
-    aprovada: "Aprovada",
-    rejeitada: "Rejeitada",
-    exposta: "Em exposição",
-  };
+const statusLabel = {
+  pendente: "Pendente",
+  aprovada: "Aprovada",
+  rejeitada: "Não aprovada",
+  exposta: "Em exposição",
+};
 
   const statusMessage = {
     pendente:

@@ -1,9 +1,8 @@
 import { useState } from "react";
-
 import type { Event } from "@/types/Event";
-
 import {
   CalendarDays,
+  ImageOff,
   MapPin,
   Pencil,
   Tag,
@@ -11,9 +10,7 @@ import {
   User,
   X,
   ZoomIn,
-  ImageOff,
 } from "lucide-react";
-
 import styles from "./EventDetailsModal.module.css";
 
 interface Props {
@@ -34,29 +31,21 @@ export default function EventDetails({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  console.log("EVENTO RECEBIDO PELO MODAL:", evento);
-console.log("CRIADO POR:", evento.criado_por);
-console.log("CRIADO POR ID:", evento.criado_por_id);
-
   const imageSrc = evento.imagem_evento
     ? evento.imagem_evento.startsWith("http")
       ? evento.imagem_evento
       : `http://localhost:3333/uploads/${evento.imagem_evento}`
-    : null;
+    : undefined;
 
   const hasImage = Boolean(imageSrc) && !imageError;
 
   return (
     <>
-      <div
-        className={styles.overlay}
-        onClick={onClose}
-      >
+      <div className={styles.overlay} onClick={onClose}>
         <div
           className={styles.modal}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* BOTÃO FECHAR */}
           <header className={styles.header}>
             <button
               onClick={onClose}
@@ -73,7 +62,6 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
           </header>
 
           <main className={styles.content}>
-            {/* IMAGEM */}
             {hasImage ? (
               <button
                 type="button"
@@ -100,18 +88,12 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                   strokeWidth={1.3}
                   aria-hidden="true"
                 />
-
                 <span>Sem imagem</span>
-
-                <span>
-                  {evento.titulo_evento}
-                </span>
+                <span>{evento.titulo_evento}</span>
               </div>
             )}
 
-            {/* INFORMAÇÕES */}
             <section className={styles.section}>
-              {/* TÍTULO */}
               <div className={styles.titleArea}>
                 <span className={styles.eyebrow}>
                   Evento
@@ -120,7 +102,6 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                 <h2>{evento.titulo_evento}</h2>
               </div>
 
-              {/* META-INFORMAÇÕES PRINCIPAIS */}
               <div className={styles.meta}>
                 <div className={styles.metaItem}>
                   <MapPin
@@ -129,9 +110,7 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                     aria-hidden="true"
                   />
 
-                  <span>
-                    {evento.local_evento}
-                  </span>
+                  <span>{evento.local_evento}</span>
                 </div>
 
                 <div className={styles.metaDivider} />
@@ -144,27 +123,19 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                   />
 
                   <span>
-                    {formatDate(
-                      evento.data_hora_inicio
-                    )}
+                    {formatDate(evento.data_hora_inicio)}
                     {" até "}
-                    {formatDate(
-                      evento.data_hora_fim
-                    )}
+                    {formatDate(evento.data_hora_fim)}
                   </span>
                 </div>
               </div>
 
-              {/* DESCRIÇÃO */}
               {evento.descricao_evento && (
                 <div className={styles.modalDescription}>
-                  <p>
-                    {evento.descricao_evento}
-                  </p>
+                  <p>{evento.descricao_evento}</p>
                 </div>
               )}
 
-              {/* INFORMAÇÕES ADMINISTRATIVAS */}
               <div className={styles.infoGrid}>
                 <div className={styles.infoItem}>
                   <Tag
@@ -174,38 +145,34 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                   />
 
                   <div>
-                    <span
-                      className={styles.infoLabel}
-                    >
+                    <span className={styles.infoLabel}>
                       Categoria
                     </span>
 
-                    <strong>
-                      {evento.tipo_evento}
-                    </strong>
+                    <strong>{evento.tipo_evento}</strong>
                   </div>
                 </div>
 
                 <div className={styles.infoItem}>
-  <User
-    size={16}
-    strokeWidth={1.7}
-    aria-hidden="true"
-  />
+                  <User
+                    size={16}
+                    strokeWidth={1.7}
+                    aria-hidden="true"
+                  />
 
-  <div>
-    <span className={styles.infoLabel}>
-      Criado por
-    </span>
+                  <div>
+                    <span className={styles.infoLabel}>
+                      Criado por
+                    </span>
 
-    <strong>
-      {evento.criado_por?.nome ?? "Não informado"}
-    </strong>
-  </div>
-</div>
+                    <strong>
+                      {evento.criado_por?.nome ??
+                        "Não informado"}
+                    </strong>
+                  </div>
+                </div>
               </div>
 
-              {/* EDITAL */}
               {evento.eh_edital && (
                 <div className={styles.editalBox}>
                   <span className={styles.editalBadge}>
@@ -220,16 +187,14 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                     <p>
                       {evento.inicio_submissao
                         ? formatDate(
-                          evento.inicio_submissao
-                        )
+                            evento.inicio_submissao
+                          )
                         : "—"}
-
                       {" até "}
-
                       {evento.fim_submissao
                         ? formatDate(
-                          evento.fim_submissao
-                        )
+                            evento.fim_submissao
+                          )
                         : "—"}
                     </p>
                   </div>
@@ -238,7 +203,6 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
             </section>
           </main>
 
-          {/* AÇÕES */}
           {(onEdit || onDelete) && (
             <footer className={styles.footer}>
               <div className={styles.actions}>
@@ -253,7 +217,6 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                       size={16}
                       strokeWidth={1.8}
                     />
-
                     <span>Editar</span>
                   </button>
                 )}
@@ -269,7 +232,6 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
                       size={16}
                       strokeWidth={1.8}
                     />
-
                     <span>Excluir</span>
                   </button>
                 )}
@@ -279,7 +241,6 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
         </div>
       </div>
 
-      {/* LIGHTBOX */}
       {lightboxOpen && hasImage && (
         <div
           className={styles.lightbox}
@@ -291,19 +252,14 @@ console.log("CRIADO POR ID:", evento.criado_por_id);
             onClick={() => setLightboxOpen(false)}
             aria-label="Fechar imagem"
           >
-            <X
-              size={24}
-              strokeWidth={1.8}
-            />
+            <X size={24} strokeWidth={1.8} />
           </button>
 
           <img
             src={imageSrc}
             alt={evento.titulo_evento}
             className={styles.lightboxImage}
-            onClick={(e) =>
-              e.stopPropagation()
-            }
+            onClick={(e) => e.stopPropagation()}
             onError={() => {
               setImageError(true);
               setLightboxOpen(false);

@@ -1,4 +1,5 @@
 import styles from "./ArtworkCard.module.css";
+
 import type { Artwork } from "@/types/Artwork";
 
 interface ArtworkCardProps {
@@ -12,13 +13,34 @@ export default function ArtworkCard({
 }: ArtworkCardProps) {
   const formatDate = (date?: string) => {
     if (!date) return "-";
+
     return new Date(date).toLocaleDateString("pt-BR");
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case "pendente":
+        return "PENDENTE";
+
+      case "aprovada":
+        return "APROVADA";
+
+      case "rejeitada":
+        return "NÃO APROVADA";
+
+      case "exposta":
+        return "EXPOSTA";
+
+      default:
+        return status.toUpperCase();
+    }
   };
 
   const statusClass = styles[artwork.status];
 
   const origemObra =
-    artwork.edital?.titulo_evento ?? "Exponha sua Arte";
+    artwork.edital?.titulo_evento ??
+    "Exponha sua Arte";
 
   return (
     <div
@@ -48,8 +70,10 @@ export default function ArtworkCard({
         </div>
 
         <div className={styles.status}>
-          <span className={`${styles.badge} ${statusClass}`}>
-            {artwork.status.toUpperCase()}
+          <span
+            className={`${styles.badge} ${statusClass}`}
+          >
+            {getStatusLabel(artwork.status)}
           </span>
         </div>
       </div>
@@ -57,9 +81,14 @@ export default function ArtworkCard({
       {/* Mobile: card layout */}
       <div className={styles.mobileCard}>
         <div className={styles.mobileHeader}>
-          <strong className={styles.mobileTitle}>{artwork.titulo_obra}</strong>
-          <span className={`${styles.mobileBadge} ${statusClass}`}>
-            {artwork.status.toUpperCase()}
+          <strong className={styles.mobileTitle}>
+            {artwork.titulo_obra}
+          </strong>
+
+          <span
+            className={`${styles.mobileBadge} ${statusClass}`}
+          >
+            {getStatusLabel(artwork.status)}
           </span>
         </div>
 
@@ -67,11 +96,13 @@ export default function ArtworkCard({
           <span className={styles.mobileCategoria}>
             {artwork.categoria_obra}
           </span>
+
           <span className={styles.mobileOrigem}>
-             {origemObra}
+            {origemObra}
           </span>
+
           <span className={styles.mobileData}>
-             {formatDate(artwork.data_envio)}
+            {formatDate(artwork.data_envio)}
           </span>
         </div>
       </div>

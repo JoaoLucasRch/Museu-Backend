@@ -36,23 +36,23 @@ const STATUS_OPTIONS: {
   label: string;
   value: StatusFilter;
 }[] = [
-  {
-    label: "Todos",
-    value: "todos",
-  },
-  {
-    label: "Pendente",
-    value: "pendente",
-  },
-  {
-    label: "Aprovada",
-    value: "aprovada",
-  },
-  {
-    label: "Rejeitada",
-    value: "rejeitada",
-  },
-];
+    {
+      label: "Todos",
+      value: "todos",
+    },
+    {
+      label: "Pendente",
+      value: "pendente",
+    },
+    {
+      label: "Aprovada",
+      value: "aprovada",
+    },
+    {
+      label: "Não aprovada",
+      value: "rejeitada",
+    },
+  ];
 
 export default function ArtworkToolbar({
   searchTerm,
@@ -146,13 +146,11 @@ export default function ArtworkToolbar({
 
           <ChevronDown
             size={16}
-            className={`${
-              styles.chevron
-            } ${
-              isOpen
+            className={`${styles.chevron
+              } ${isOpen
                 ? styles.rotate
                 : ""
-            }`}
+              }`}
           />
         </button>
 
@@ -166,14 +164,12 @@ export default function ArtworkToolbar({
               (option) => (
                 <li
                   key={option.value}
-                  className={`${
-                    styles.dropdownOption
-                  } ${
-                    statusFilter ===
-                    option.value
+                  className={`${styles.dropdownOption
+                    } ${statusFilter ===
+                      option.value
                       ? styles.selectedOption
                       : ""
-                  }`}
+                    }`}
                   onClick={() => {
                     onStatusChange(
                       option.value

@@ -1,13 +1,9 @@
 import {
-  CalendarDays,
   ImageOff,
   MapPin,
-  Tag,
-  ArrowUpRight,
 } from "lucide-react";
 
 import type { Event } from "@/types/Event";
-
 import styles from "./EventRow.module.css";
 
 interface Props {
@@ -19,33 +15,110 @@ export default function EventRow({
   event,
   onView,
 }: Props) {
-  function formatDate(date: string) {
+  function parseDate(date: string) {
     const parsedDate = new Date(date);
 
-    if (Number.isNaN(parsedDate.getTime())) {
-      return "Data não informada";
+    return Number.isNaN(parsedDate.getTime())
+      ? null
+      : parsedDate;
+  }
+
+  function formatDate(
+    date: Date,
+    options?: Intl.DateTimeFormatOptions
+  ) {
+    return date
+      .toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        ...options,
+      })
+      .replace(".", "");
+  }
+
+  function formatPeriod(
+    startDate: string,
+    endDate: string
+  ) {
+    const start = parseDate(startDate);
+    const end = parseDate(endDate);
+
+    if (!start && !end) {
+      return "Período não informado";
     }
 
-    return parsedDate.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+    if (!start) {
+      return formatDate(end!);
+    }
+
+    if (!end) {
+      return formatDate(start);
+    }
+
+    const sameDay =
+      start.getFullYear() === end.getFullYear() &&
+      start.getMonth() === end.getMonth() &&
+      start.getDate() === end.getDate();
+
+    const sameMonth =
+      start.getFullYear() === end.getFullYear() &&
+      start.getMonth() === end.getMonth();
+
+    const sameYear =
+      start.getFullYear() === end.getFullYear();
+
+    if (sameDay) {
+      return formatDate(start);
+    }
+
+    if (sameMonth) {
+      return `${String(start.getDate()).padStart(2, "0")} — ${formatDate(
+        end,
+        {
+          day: undefined,
+        }
+      )}`;
+    }
+
+    if (sameYear) {
+      return `${formatDate(start, {
+        year: undefined,
+      })} — ${formatDate(end)}`;
+    }
+
+    return `${formatDate(start)} — ${formatDate(end)}`;
   }
 
   function formatType(type: Event["tipo_evento"]) {
     switch (type) {
       case "EXPOSICAO":
         return "Exposição";
+
       case "OFICINA":
         return "Oficina";
+
       case "PALESTRA":
         return "Palestra";
+
       case "LANCAMENTO":
         return "Lançamento";
+
       default:
         return "Outro";
     }
+  }
+
+  function getStatus() {
+    const finished =
+      new Date(event.data_hora_fim).getTime() < Date.now();
+
+    return {
+      label: finished ? "Encerrado" : "Ativo",
+      className: finished
+        ? styles.statusFinished
+        : styles.statusActive,
+    };
   }
 
   const imageUrl = event.imagem_evento
@@ -54,8 +127,7 @@ export default function EventRow({
       : `http://localhost:3333/uploads/${event.imagem_evento}`
     : null;
 
-  const isFinished =
-    new Date(event.data_hora_fim).getTime() < Date.now();
+  const status = getStatus();
 
   return (
     <article
@@ -70,84 +142,78 @@ export default function EventRow({
         }
       }}
     >
-      <div className={styles.thumbnail}>
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt=""
-            loading="lazy"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
+      {/* STATUS */}
+      <div className={styles.statusArea}>
+        <span
+          className={`${styles.status} ${status.className}`}
+        >
+          <span className={styles.statusDot} />
+          {status.label}
+        </span>
+      </div>
+
+      {/* EVENTO */}
+      <div className={styles.eventColumn}>
+        <div className={styles.thumbnail}>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt=""
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          ) : (
+            <div className={styles.placeholder}>
+              <ImageOff
+                size={20}
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.eventInfo}>
+          <span className={styles.title}>
+            {event.titulo_evento}
+          </span>
+
+          <span className={styles.description}>
+            {event.descricao_evento || "Sem descrição"}
+          </span>
+        </div>
+      </div>
+
+      {/* TIPO */}
+      <div className={styles.cellText}>
+        {formatType(event.tipo_evento)}
+      </div>
+
+      {/* PERÍODO */}
+      <div className={styles.cellText}>
+        <span className={styles.dateRange}>
+          {formatPeriod(
+            event.data_hora_inicio,
+            event.data_hora_fim
+          )}
+        </span>
+      </div>
+
+      {/* LOCAL */}
+      <div className={styles.cellText}>
+        <span className={styles.location}>
+          <MapPin
+            size={14}
+            strokeWidth={1.6}
+            aria-hidden="true"
           />
-        ) : (
-          <div className={styles.placeholder}>
-            <ImageOff
-              size={24}
-              strokeWidth={1.4}
-              aria-hidden="true"
-            />
-            <span>Sem imagem</span>
-          </div>
-        )}
-      </div>
 
-      <div className={styles.content}>
-        <div className={styles.topLine}>
-          <span
-            className={`${styles.status} ${isFinished
-                ? styles.statusFinished
-                : styles.statusActive
-              }`}
-          >
-            <span className={styles.statusDot} />
-            {isFinished ? "Encerrado" : "Ativo"}
+          <span>
+            {event.local_evento || "Não informado"}
           </span>
-
-          <span className={styles.type}>
-            {formatType(event.tipo_evento)}
-          </span>
-        </div>
-
-        <h3 className={styles.title}>
-          {event.titulo_evento}
-        </h3>
-
-        <p className={styles.description}>
-          {event.descricao_evento}
-        </p>
-
-        <div className={styles.meta}>
-          <span className={styles.metaItem}>
-            <CalendarDays
-              size={15}
-              strokeWidth={1.6}
-              aria-hidden="true"
-            />
-            <span>
-              {formatDate(event.data_hora_inicio)}
-              {" — "}
-              {formatDate(event.data_hora_fim)}
-            </span>
-          </span>
-
-          <span className={styles.metaItem}>
-            <MapPin
-              size={15}
-              strokeWidth={1.6}
-              aria-hidden="true"
-            />
-            <span>{event.local_evento}</span>
-          </span>
-        </div>
-      </div>
-
-      <div className={styles.action}>
-        <ArrowUpRight
-          size={18}
-          strokeWidth={1.7}
-          aria-hidden="true"
-        />
+        </span>
       </div>
     </article>
   );
