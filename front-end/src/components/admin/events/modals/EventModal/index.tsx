@@ -11,6 +11,7 @@ interface Props {
   selectedFile: File | null;
   isSubmitting: boolean;
   uploadProgress: boolean;
+  isCreateMode: boolean;
   onClose: () => void;
   onSubmit: () => void;
   onFileChange: (
@@ -28,6 +29,7 @@ export default function EventModal({
   selectedFile,
   isSubmitting,
   uploadProgress,
+  isCreateMode,
   onClose,
   onSubmit,
   onFileChange,
@@ -74,9 +76,8 @@ export default function EventModal({
           selectedFile={selectedFile}
           isSubmitting={isSubmitting}
           uploadProgress={uploadProgress}
+          isCreateMode={isCreateMode}
           onSubmit={onSubmit}
-          onClose={onClose}
-          onCancel={onClose}
           onFileChange={onFileChange}
           setFormData={setFormData}
         />

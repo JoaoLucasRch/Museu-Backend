@@ -22,16 +22,23 @@ interface Props {
   selectedFile: File | null;
   isSubmitting: boolean;
   uploadProgress: boolean;
-  onClose: () => void;
-  onCancel: () => void;
+  isCreateMode: boolean;
   onSubmit: () => void;
   onFileChange: (
     e: React.ChangeEvent<HTMLInputElement>
   ) => void;
-  setFormData:
-    React.Dispatch<
-      React.SetStateAction<FormData>
-    >;
+  setFormData: React.Dispatch<
+    React.SetStateAction<FormData>
+  >;
+}
+
+function getCurrentDateTimeLocal() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+
+  return new Date(now.getTime() - offset * 60000)
+    .toISOString()
+    .slice(0, 16);
 }
 
 export default function EventForm({
@@ -39,7 +46,7 @@ export default function EventForm({
   selectedFile,
   isSubmitting,
   uploadProgress,
-  onCancel,
+  isCreateMode,
   onSubmit,
   onFileChange,
   setFormData,
@@ -78,6 +85,7 @@ export default function EventForm({
 
             <textarea
               placeholder="Descreva o evento"
+              maxLength={191}
               value={formData.descricao_evento}
               onChange={(e) =>
                 setFormData((prev) => ({
@@ -86,6 +94,10 @@ export default function EventForm({
                 }))
               }
             />
+
+            <span className={styles.characterCount}>
+              {formData.descricao_evento.length}/191
+            </span>
           </div>
 
           <div className={styles.row}>
@@ -151,6 +163,7 @@ export default function EventForm({
 
               <input
                 type="datetime-local"
+                min={isCreateMode ? getCurrentDateTimeLocal() : undefined}
                 value={formData.data_hora_inicio}
                 onChange={(e) =>
                   setFormData((prev) => ({
@@ -166,6 +179,10 @@ export default function EventForm({
 
               <input
                 type="datetime-local"
+                min={
+                  formData.data_hora_inicio ||
+                  (isCreateMode ? getCurrentDateTimeLocal() : undefined)
+                }
                 value={formData.data_hora_fim}
                 onChange={(e) =>
                   setFormData((prev) => ({

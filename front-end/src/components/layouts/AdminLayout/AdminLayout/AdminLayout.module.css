@@ -5,33 +5,40 @@
 
 /* CONTENT */
 
-.content{
-  min-height:100vh;
+.content {
+  min-height: 100vh;
 
-  margin-left:240px;
-  padding-left:1.5rem;
+  margin-left: 240px;
 
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 
-  min-width:0;
+  min-width: 0;
 
   transition:
-    margin-left .25s ease,
-    padding-left .25s ease;
+    margin-left 0.25s ease;
 }
 
-.contentCollapsed{
-  margin-left:84px;
-  padding-left:1.5rem;
+.contentCollapsed {
+  margin-left: 84px;
 }
 
 /* MAIN */
 
-.main{
-  flex:1;
+.main {
+  flex: 1;
 
-  padding:0 2rem 2rem 0;
+  width: min(100% - 48px, 1120px);
 
-  overflow-y:auto;
+  margin: 0 auto;
+
+  padding: 0 0 2rem;
+
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .main {
+    width: calc(100% - 32px);
+  }
 }

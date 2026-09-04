@@ -147,41 +147,71 @@ export default function Events() {
       <div className={styles.container}>
         <EventsHeader />
 
-        {todosEventos.length > 0 ? (
-          <Carousel
-            currentSlide={currentSlide}
-            totalSlides={totalSlides}
-            onPrevious={prevSlide}
-            onNext={nextSlide}
-            onSelectSlide={handleSelectSlide}
-          >
-            <EventList
-              eventos={todosEventos}
-              visibleEvents={visibleEvents}
-              eventosEmExibicao={
-                eventosEmExibicao
-              }
-              editais={editais}
-              activeTooltipId={
-                activeTooltipId
-              }
-              onClick={handleCardClick}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              formatarData={formatarData}
-              formatarHorario={
-                formatarHorarioCompleto
-              }
-            />
-          </Carousel>
-        ) : (
-          <div className={styles.noEvents}>
-            <p>
-              Nenhum evento disponível no
-              momento.
-            </p>
-          </div>
-        )}
+      {todosEventos.length > 0 ? (
+  <Carousel
+    currentSlide={currentSlide}
+    totalSlides={totalSlides}
+    onPrevious={prevSlide}
+    onNext={nextSlide}
+    onSelectSlide={handleSelectSlide}
+  >
+    <EventList
+      eventos={todosEventos}
+      visibleEvents={visibleEvents}
+      eventosEmExibicao={eventosEmExibicao}
+      editais={editais}
+      activeTooltipId={activeTooltipId}
+      onClick={handleCardClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      formatarData={formatarData}
+      formatarHorario={formatarHorarioCompleto}
+    />
+  </Carousel>
+) : (
+  <div className={styles.noEvents}>
+    <div className={styles.noEventsMain}>
+      <span className={styles.noEventsEyebrow}>
+        Programação do museu
+      </span>
+
+      <h2>
+        Cultura, memória e encontros
+      </h2>
+
+      <p>
+        Acompanhe nesta seção as próximas atividades,
+        exposições e experiências realizadas pelo
+        Museu Municipal Francisco Coelho.
+      </p>
+    </div>
+
+    <div className={styles.noEventsTypes}>
+      <div className={styles.noEventsType}>
+        <span>01</span>
+        <strong>Exposições</strong>
+        <p>Acervo, arte e memória</p>
+      </div>
+
+      <div className={styles.noEventsType}>
+        <span>02</span>
+        <strong>Oficinas</strong>
+        <p>Aprendizado e criação</p>
+      </div>
+
+      <div className={styles.noEventsType}>
+        <span>03</span>
+        <strong>Encontros</strong>
+        <p>Palestras e atividades</p>
+      </div>
+    </div>
+
+    <div className={styles.noEventsFooter}>
+      <span className={styles.noEventsLine} />
+      <span>Novas atividades serão divulgadas aqui</span>
+    </div>
+  </div>
+)}
 
         <EventModal
           evento={selectedEvento}

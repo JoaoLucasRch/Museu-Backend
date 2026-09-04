@@ -11,17 +11,175 @@
 }
 
 .noEvents {
-  text-align: center;
-  padding: 4rem 2rem;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 4rem;
+
+  min-height: 280px;
+
+  padding: 3.5rem 3.5rem;
+
+  border: 1px solid rgba(74, 67, 62, 0.14);
+  border-radius: 18px;
+
+  background: #faf9f6;
 }
 
-.noEvents p {
-  color: #6c757d;
-  font-size: 1.1rem;
+.noEventsMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.noEventsEyebrow {
+  margin-bottom: 0.9rem;
+
+  color: #8a7768;
+
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.noEventsMain h2 {
+  max-width: 420px;
+
   margin: 0;
+
+  color: #403934;
+
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.noEventsMain > p {
+  max-width: 500px;
+
+  margin: 1rem 0 0;
+
+  color: #817870;
+
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* Tipos de programação */
+
+.noEventsTypes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: 1rem;
+}
+
+.noEventsType {
+  min-height: 125px;
+
+  padding: 1.2rem 1rem;
+
+  border-left: 1px solid rgba(74, 67, 62, 0.16);
+}
+
+.noEventsType span {
+  display: block;
+
+  margin-bottom: 1.8rem;
+
+  color: #a49384;
+
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.noEventsType strong {
+  display: block;
+
+  color: #4a433e;
+
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.noEventsType p {
+  margin: 0.35rem 0 0;
+
+  color: #978c84;
+
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+/* Rodapé editorial */
+
+.noEventsFooter {
+  grid-column: 1 / -1;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #978c84;
+
+  font-size: 0.68rem;
+}
+
+.noEventsLine {
+  width: 34px;
+  height: 1px;
+
+  background: rgba(74, 67, 62, 0.2);
+}
+
+@media (max-width: 900px) {
+  .noEvents {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+
+    padding: 2.5rem;
+  }
+
+  .noEventsTypes {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+  .noEvents {
+    gap: 2rem;
+
+    padding: 2rem 1.5rem;
+  }
+
+  .noEventsMain h2 {
+    font-size: 1.45rem;
+  }
+
+  .noEventsMain > p {
+    font-size: 0.82rem;
+  }
+
+  .noEventsTypes {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .noEventsType {
+    min-height: auto;
+    padding: 1rem 0;
+    border-left: none;
+    border-top: 1px solid rgba(74, 67, 62, 0.12);
+  }
+
+  .noEventsType span {
+    margin-bottom: 0.6rem;
+  }
+
+  .noEventsFooter {
+    padding-top: 0.5rem;
+  }
 }
 
 @media (max-width: 768px) {

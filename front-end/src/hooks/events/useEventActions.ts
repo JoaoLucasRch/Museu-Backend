@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import type { Event } from "@/types/Event";
+
 import type {
   CreateEventData,
   UpdateEventData,
@@ -10,14 +11,10 @@ interface FormData {
   titulo_evento: string;
   descricao_evento: string;
   local_evento: string;
-
   data_hora_inicio: string;
   data_hora_fim: string;
-
   tipo_evento: Event["tipo_evento"];
-
   imagemPreview: string;
-
   eh_edital: boolean;
   inicio_submissao: string;
   fim_submissao: string;
@@ -33,20 +30,21 @@ interface Props {
   formData: FormData;
   isCreateMode: boolean;
   closeModal: () => void;
-
   criarEvento: (
     data: CreateEventoPayload
   ) => Promise<void>;
-
   editarEvento: (
     id: number,
     data: UpdateEventData,
     file?: File | null
   ) => Promise<void>;
-
   excluirEvento: (
     id: number
   ) => Promise<void>;
+}
+
+function formatDateTimeLocal(date: string | Date) {
+  return new Date(date).toISOString().slice(0, 16);
 }
 
 export default function useEventoActions({
@@ -69,31 +67,98 @@ export default function useEventoActions({
     try {
       setIsSubmitting(true);
 
-      if (
-        !formData.titulo_evento.trim() ||
-        !formData.descricao_evento.trim() ||
-        !formData.local_evento.trim()
-      ) {
-        throw new Error(
-          "Preencha todos os campos obrigatórios."
-        );
+      // Validação dos campos obrigatórios
+      const camposFaltantes: string[] = [];
+
+      if (!formData.titulo_evento.trim()) {
+        camposFaltantes.push("título do evento");
+      }
+
+      if (!formData.descricao_evento.trim()) {
+        camposFaltantes.push("descrição do evento");
+      }
+
+      if (!formData.local_evento.trim()) {
+        camposFaltantes.push("local do evento");
+      }
+
+      if (!formData.data_hora_inicio) {
+        camposFaltantes.push("data de início");
+      }
+
+      if (!formData.data_hora_fim) {
+        camposFaltantes.push("data de término");
       }
 
       if (!formData.tipo_evento) {
+        camposFaltantes.push("tipo do evento");
+      }
+
+      if (camposFaltantes.length > 0) {
+        if (camposFaltantes.length === 1) {
+          throw new Error(
+            `Informe o ${camposFaltantes[0]}.`
+          );
+        }
+
+        const ultimoCampo =
+          camposFaltantes.pop();
+
         throw new Error(
-          "Selecione o tipo do evento."
+          `Preencha ${camposFaltantes.join(", ")} e ${ultimoCampo}.`
+        );
+      }
+
+      // Validação das datas
+      const dataInicio = new Date(
+        formData.data_hora_inicio
+      );
+
+      const dataFim = new Date(
+        formData.data_hora_fim
+      );
+
+      const agora = new Date();
+
+      if (
+        isNaN(dataInicio.getTime()) ||
+        isNaN(dataFim.getTime())
+      ) {
+        throw new Error(
+          "Informe datas válidas para o evento."
         );
       }
 
       if (
-        !formData.data_hora_inicio ||
-        !formData.data_hora_fim
+        isCreateMode &&
+        dataInicio < agora
       ) {
         throw new Error(
-          "Informe as datas do evento."
+          "A data de início do evento não pode estar no passado."
         );
       }
 
+      if (
+        !isCreateMode &&
+        selectedEvento &&
+        formData.data_hora_inicio !==
+        formatDateTimeLocal(
+          selectedEvento.data_hora_inicio
+        ) &&
+        dataInicio < agora
+      ) {
+        throw new Error(
+          "A nova data de início do evento não pode estar no passado."
+        );
+      }
+
+      if (dataFim <= dataInicio) {
+        throw new Error(
+          "A data de término deve ser posterior à data de início."
+        );
+      }
+
+      // Validação específica para edital
       if (
         formData.eh_edital &&
         (
@@ -168,7 +233,6 @@ export default function useEventoActions({
       closeModal();
 
     } catch (error: any) {
-
       console.error(
         "Erro completo:",
         error
@@ -181,8 +245,12 @@ export default function useEventoActions({
         );
 
         console.log(
-          "Resposta:",
-          error.response.data
+          "ERROS DE VALIDAÇÃO:",
+          JSON.stringify(
+            error.response?.data?.errors,
+            null,
+            2
+          )
         );
 
         console.log(
@@ -190,16 +258,22 @@ export default function useEventoActions({
           {
             titulo_evento:
               formData.titulo_evento,
+
             descricao_evento:
               formData.descricao_evento,
+
             local_evento:
               formData.local_evento,
+
             tipo_evento:
               formData.tipo_evento,
+
             eh_edital:
               formData.eh_edital,
+
             inicio_submissao:
               formData.inicio_submissao,
+
             fim_submissao:
               formData.fim_submissao,
           }
@@ -214,9 +288,7 @@ export default function useEventoActions({
       );
 
     } finally {
-
       setIsSubmitting(false);
-
     }
   }
 
@@ -232,17 +304,24 @@ export default function useEventoActions({
     try {
       setIsSubmitting(true);
 
-      await excluirEvento(selectedEvento.id_evento);
+      await excluirEvento(
+        selectedEvento.id_evento
+      );
 
       closeModal();
+
     } catch (error: any) {
-      console.error("Erro ao excluir:", error);
+      console.error(
+        "Erro ao excluir:",
+        error
+      );
 
       alert(
         error?.response?.data?.erro ??
         error?.response?.data?.message ??
         "Erro ao excluir evento."
       );
+
     } finally {
       setIsSubmitting(false);
     }

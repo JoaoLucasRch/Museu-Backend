@@ -24,24 +24,28 @@ export default function DeleteEventModal({
   }
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div
+      className={styles.overlay}
+      onClick={onClose}
+    >
       <div
         className={styles.modal}
         onClick={(e) => e.stopPropagation()}
       >
         <header className={styles.header}>
           <div>
-            <span className={styles.badge}>EXCLUSÃO</span>
-            <h2>Excluir evento</h2>
-            <p className={styles.subtitle}>
-              Remover este evento do museu.
-            </p>
+            <span className={styles.badge}>
+              EXCLUSÃO
+            </span>
+
+            <h2>Confirmar ação</h2>
           </div>
 
           <button
             type="button"
             className={styles.close}
             onClick={onClose}
+            aria-label="Fechar"
           >
             <X size={18} />
           </button>
@@ -49,7 +53,7 @@ export default function DeleteEventModal({
 
         <main className={styles.content}>
           <p className={styles.message}>
-            Você tem certeza que deseja apagar o evento{" "}
+            Deseja realmente remover{" "}
             <strong>{evento.titulo_evento}</strong>?
           </p>
         </main>
@@ -70,7 +74,7 @@ export default function DeleteEventModal({
             onClick={onConfirm}
             disabled={isDeleting}
           >
-            {isDeleting ? "Excluindo..." : "Excluir evento"}
+            {isDeleting ? "Excluindo..." : "Confirmar"}
           </button>
         </footer>
       </div>
